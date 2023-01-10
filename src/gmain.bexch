@@ -1,0 +1,20 @@
+[GENERATED OBJECT FILE]
+b__gmain.o
+[PROJECT FILES]
+/home/vscode/gnat/share/gpr/_default.gpr
+20210519052212 0bbea80a38f4ae0e4e17326c40766272
+[BOUND OBJECT FILES]
+/workspaces/ada_rust_programs/src//greetings.o
+/workspaces/ada_rust_programs/src//gmain.o
+[GENERATED SOURCE FILES]
+b__gmain.ads
+b__gmain.adb
+b__gmain.ali
+[RESULTING OPTIONS]
+-L/workspaces/ada_rust_programs/src/
+-L/workspaces/ada_rust_programs/src//
+-L/home/vscode/gnat/lib/gcc/x86_64-pc-linux-gnu/10.3.1/adalib/
+-static
+-static-libgcc
+/home/vscode/gnat/lib/gcc/x86_64-pc-linux-gnu/10.3.1/adalib/libgnat.a
+-ldl
