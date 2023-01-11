@@ -11,3 +11,7 @@
 *lib/
 *alire/
 *config/
+
+# Rust files
+*target
+*target/
