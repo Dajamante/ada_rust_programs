@@ -3,3 +3,11 @@
 
 # Ada Library Information
 *.ali
+
+#Other compilation files
+*.bexch
+# Alire
+*obj/
+*lib/
+*alire/
+*config/
