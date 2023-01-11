@@ -2,13 +2,10 @@ with Ada.Text_IO;
 
 procedure Main is
 
-   procedure Swap (X, Y : in out Integer)
-   with
-     Import,
-     Convention => C,
-     Global => null,
-     Annotate => (GNATprove, Always_Return),
-     Post => X = Y'Old and then Y = X'Old;
+   procedure Swap (X, Y : in out Integer) with
+     Import, Convention => C, Global => null,
+     Annotate           => (GNATprove, Always_Return),
+     Post               => X = Y'Old and then Y = X'Old;
 
    X : Integer := 1;
    Y : Integer := 2;
