@@ -12,6 +12,7 @@ RUN sudo apt-get update \
     libx11-dev \
     libx11-xcb1 \
     libfontconfig \
+    libgmp-dev \
     dbus \
     unzip \
     python3 python3-pip \
@@ -38,10 +39,10 @@ RUN sudo apt-get update \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
 
-RUN wget -q https://github.com/alire-project/alire/releases/download/v1.1.2/alr-1.1.2-bin-x86_64-linux.zip \
-    -O /tmp/alr-1.1.2-bin-x86_64-linux.zip \
+RUN wget -q https://github.com/alire-project/alire/releases/download/v1.2.1/alr-1.2.1-bin-x86_64-linux.zip \
+    -O /tmp/alr-1.2.1-bin-x86_64-linux.zip \
     && mkdir -p /home/vscode/alire \
-    && unzip /tmp/alr-1.1.2-bin-x86_64-linux.zip -d /home/vscode/alire
+    && unzip /tmp/alr-1.2.1-bin-x86_64-linux.zip -d /home/vscode/alire
 
 
 # [Optional] Uncomment this section to install additional OS packages.
