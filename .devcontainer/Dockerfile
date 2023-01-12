@@ -39,6 +39,8 @@ RUN sudo apt-get update \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
 
+RUN pip install virtualenv
+adacore
 RUN wget -q https://github.com/alire-project/alire/releases/download/v1.2.1/alr-1.2.1-bin-x86_64-linux.zip \
     -O /tmp/alr-1.2.1-bin-x86_64-linux.zip \
     && mkdir -p /home/vscode/alire \
