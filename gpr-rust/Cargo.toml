@@ -1,0 +1,24 @@
+[package]
+name = "gpr"
+version = "0.1.0"
+edition = "2021"
+authors = ["Johannes Kliemann <jk@jkliemann.de"]
+description = "Libgpr binding for Rust. Provides an easy way to build Ada projects with cargo."
+readme = "README.md"
+repository = "https://github.com/jklmnn/gpr-rust"
+license = "Apache-2.0"
+keywords = ["ada", "gpr", "build"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+enum-display-derive = "0.1"
+thiserror = "1.0"
+
+[dev-dependencies]
+libloading = "0.5"
+
+[build-dependencies]
+git2 = "0.14"
