@@ -1,7 +1,7 @@
 package Ada_Hello
 is
 
-   procedure Hello with
+   function Hello return Integer with
       Export,
       Convention => C,
       External_Name => "ada_hello";
