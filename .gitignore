@@ -3,7 +3,8 @@
 
 # Ada Library Information
 *.ali
-
+*.stdout
+*.stderr
 #Other compilation files
 *.bexch
 # Alire
