@@ -1,0 +1,62 @@
+<!ELEMENT why3session (prover*, file*)>
+<!ATTLIST why3session shape_version CDATA #IMPLIED>
+
+<!ELEMENT prover EMPTY>
+<!ATTLIST prover id CDATA #REQUIRED>
+<!ATTLIST prover name CDATA #REQUIRED>
+<!ATTLIST prover version CDATA #REQUIRED>
+<!ATTLIST prover alternative CDATA #IMPLIED>
+<!ATTLIST prover timelimit CDATA #IMPLIED>
+<!ATTLIST prover memlimit CDATA #IMPLIED>
+<!ATTLIST prover steplimit CDATA #IMPLIED>
+
+<!ELEMENT file (path*, theory*)>
+<!ATTLIST file format CDATA #IMPLIED>
+<!ATTLIST file name CDATA #IMPLIED>
+<!ATTLIST file verified CDATA #IMPLIED>
+<!ATTLIST file proved CDATA #IMPLIED>
+
+<!ELEMENT path EMPTY>
+<!ATTLIST path name CDATA #REQUIRED>
+
+<!ELEMENT theory (label*,goal*)>
+<!ATTLIST theory name CDATA #REQUIRED>
+<!ATTLIST theory verified CDATA #IMPLIED>
+<!ATTLIST theory proved CDATA #IMPLIED>
+
+<!ELEMENT goal (label*, proof*, transf*)>
+<!ATTLIST goal name CDATA #REQUIRED>
+<!ATTLIST goal expl CDATA #IMPLIED>
+<!ATTLIST goal sum CDATA #IMPLIED>
+<!ATTLIST goal shape CDATA #IMPLIED>
+<!ATTLIST goal proved CDATA #IMPLIED>
+
+<!ELEMENT proof (path*, (result|undone|internalfailure|unedited))>
+<!ATTLIST proof prover CDATA #REQUIRED>
+<!ATTLIST proof timelimit CDATA #IMPLIED>
+<!ATTLIST proof memlimit CDATA #IMPLIED>
+<!ATTLIST proof steplimit CDATA #IMPLIED>
+<!ATTLIST proof edited CDATA #IMPLIED>
+<!ATTLIST proof obsolete CDATA #IMPLIED>
+
+<!ELEMENT result EMPTY>
+<!ATTLIST result status (valid|invalid|unknown|timeout|outofmemory|steplimitexceeded|failure|highfailure) #REQUIRED>
+<!ATTLIST result time CDATA #IMPLIED>
+<!ATTLIST result steps CDATA #IMPLIED>
+
+<!ELEMENT undone EMPTY>
+<!ELEMENT unedited EMPTY>
+
+<!ELEMENT internalfailure EMPTY>
+<!ATTLIST internalfailure reason CDATA #REQUIRED>
+
+<!ELEMENT transf (goal*)>
+<!ATTLIST transf name CDATA #REQUIRED>
+<!ATTLIST transf proved CDATA #IMPLIED>
+<!ATTLIST transf arg1 CDATA #IMPLIED>
+<!ATTLIST transf arg2 CDATA #IMPLIED>
+<!ATTLIST transf arg3 CDATA #IMPLIED>
+<!ATTLIST transf arg4 CDATA #IMPLIED>
+
+<!ELEMENT label EMPTY>
+<!ATTLIST label name CDATA #REQUIRED>

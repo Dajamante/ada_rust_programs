@@ -1,0 +1,13 @@
+project Allocators is
+
+   package Prove is
+      for Switches use ("-j0",
+                        "--level=3",
+                        "--no-axiom-guard");
+   end Prove;
+
+   package Compiler is
+      for Switches ("ada") use ("-gnat2020");
+   end Compiler;
+
+end Allocators;

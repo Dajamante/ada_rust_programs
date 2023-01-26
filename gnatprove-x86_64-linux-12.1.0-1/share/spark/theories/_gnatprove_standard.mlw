@@ -1,0 +1,1897 @@
+module Main
+  use export "_gnatprove_standard_th".Main_Main
+
+  (* equality over private types *)
+  val function private__bool_eq __private __private : bool
+
+  (* dummy value for the null extension when the dynamic type matches the
+  static type *)
+  val constant __null_ext__ : __private
+
+  (* exception used to simulate return statements *)
+  exception Return__exc
+
+  (* The type for the heap, and the heap variable. This variable represents
+     all effects that we cannot describe more precisely, and that do not
+     interfere with other variables, i.e., writes through pointers, aliased
+     variables etc. *)
+  type __type_of_heap
+  type __type_of_heap__ref = { mutable __type_of_heap__content [@model_trace:] : __type_of_heap }
+  val __HEAP : __type_of_heap__ref
+
+  (* the return type for the functions that correspond to 'Image *)
+  type __image
+
+  (* Mutable records holding references over builtin types *)
+  type int__ref  = { mutable int__content [@model_trace:]  : int  }
+  type bool__ref = { mutable bool__content [@model_trace:] : bool }
+  type __fixed__ref = { mutable __fixed__content [@model_trace:] : __fixed }
+  type real__ref = { mutable real__content [@model_trace:] : real }
+  type __private__ref = { mutable __private__content [@model_trace:] : __private }
+
+  (* Boolean value to simulate calls to possibly nonreturning procedures *)
+  val no__return : bool__ref
+
+  (* Projections from records holding references over builtin types to builtin types *)
+  function int__ref___projection
+    (a : int__ref)  : int =
+    a.int__content
+  meta "model_projection" function int__ref___projection
+  meta "inline:no" function int__ref___projection
+
+  function __fixed__ref___projection
+    (a : __fixed__ref)  : __fixed =
+    a.__fixed__content
+  meta "model_projection" function __fixed__ref___projection
+  meta "inline:no" function __fixed__ref___projection
+
+  function bool__ref___projection
+    (a : bool__ref)  : bool =
+    a.bool__content
+  meta "model_projection" function bool__ref___projection
+  meta "inline:no" function bool__ref___projection
+
+  function real__ref___projection
+    (a : real__ref)  : real =
+    a.real__content
+  meta "model_projection" function real__ref___projection
+  meta "inline:no" function real__ref___projection
+
+  function __private__ref___projection
+    (a : __private__ref)  : __private =
+    a.__private__content
+  meta "model_projection" function __private__ref___projection
+  meta "inline:no" function __private__ref___projection
+
+  (* Program function that sets the value of its parameter to any possible
+     value allowed by its type. *)
+  val int__havoc (x : int__ref) : unit
+     writes { x }
+  val bool__havoc (x : bool__ref) : unit
+     writes { x }
+  val real__havoc (x : real__ref) : unit
+     writes { x }
+  val __private__havoc (x : __private__ref) : unit
+     writes { x }
+  val __fixed__havoc (x : __fixed__ref) : unit
+     writes { x }
+
+  (* Counterexample branching-if variable. The model_trace is intentionally not
+     a node_id. We use another label to recognize the node_id corresponding to
+     values but we still need to trigger counterexample on this.  *)
+  val spark__branch [@model_trace:0000]: bool__ref
+end
+
+(* Functions reading built-in values from __image *)
+
+module Builtin_from_image
+  use Main
+
+  (* function reading an integer from an image *)
+
+  function int__attr__ATTRIBUTE_VALUE __image : int
+
+  predicate int__attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  val int__attr__ATTRIBUTE_VALUE_ (x : __image) : int
+    requires { int__attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { result = int__attr__ATTRIBUTE_VALUE x }
+
+  (* function reading a real from an image *)
+
+  function real__attr__ATTRIBUTE_VALUE __image : real
+
+  predicate real__attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  val real__attr__ATTRIBUTE_VALUE_ (x : __image) : real
+    requires { real__attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures {  result = real__attr__ATTRIBUTE_VALUE x }
+end
+
+module Compatible_Tags
+  (* A prediacte to check compatibility between tags *)
+  val predicate __compatible_tags (from_tag : int) (to_tag : int)
+  axiom __compatible_tags_refl :
+    forall tag : int. __compatible_tags tag tag
+end
+
+module Integer
+  use export "_gnatprove_standard_th".Integer
+
+  val bool_eq (x y : int) : bool
+  ensures { result = bool_eq x y }
+  val bool_ne (x y : int) : bool
+  ensures { result = bool_ne x y }
+  val bool_lt (x y : int) : bool
+  ensures { result = bool_lt x y }
+  val bool_le (x y : int) : bool
+  ensures { result = bool_le x y }
+  val bool_gt (x y : int) : bool
+  ensures { result = bool_gt x y }
+  val bool_ge (x y : int) : bool
+  ensures { result = bool_ge x y }
+
+  val length (x y : int) : int
+  ensures { result = length x y }
+end
+
+module Int_Gcd
+  use number.Gcd as Gcd
+  use int.Int
+
+  function gcd int int : int
+
+  axiom gcd_pos :
+    forall x, y : int. x > 0 /\ y > 0 -> gcd x y = Gcd.gcd x y
+
+  val gcd_ (x:int) (y:int) : int
+     requires { x <> 0 /\ y <> 0 }
+     ensures { result = gcd x y }
+end
+
+module Int_Power
+  use export int.Power
+end
+
+module Int_Minmax
+  use int.Int
+  use int.MinMax as MinMax
+
+  let function int_max (x y : int) : int = MinMax.max x y
+
+  let function int_min (x y : int) : int = MinMax.min x y
+
+end
+
+module Int_Abs
+  use export int.Abs
+end
+
+module Int_Division
+  use int.Int
+  use int.ComputerDivision as ComputerDivision
+  use int.EuclideanDivision as EuclideanDivision
+
+  (* Ada division and rem operator correspond to what Why3 calls "computer
+  division". Ada mod operator does not correspond to any predefined operator
+  in Why3. *)
+  function div (x y : int) : int = ComputerDivision.div x y
+  val div (x:int) (y:int) : int
+     ensures { result = div x y }
+
+  function rem (x y : int) : int = ComputerDivision.mod x y
+  val rem (x:int) (y:int) : int
+     ensures { result = rem x y }
+
+  (* rem is always of the sign of the dividend. mod is always of the sign of
+  the divisor. Thus they are equal when the dividend and the divisor have the
+  same sign. rem and mod are equal to zero on the same arguments. Otherwise,
+  mod can be obtained from rem by adding the divisor. *)
+  function mod (x y : int) : int =
+    if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then rem x y
+    else if rem x y = 0 then 0
+    else rem x y + y
+  val mod (x:int) (y:int) : int
+     ensures { result = mod x y }
+
+  (* This function is used for the (implicit) modulo operation on modular
+  types. The modulus is always positive, and in that case, the Ada mod or
+  Euclidean mod are OK. We take the Euclidean one because it is better
+  supported. *)
+  function math_mod (x y : int) : int = EuclideanDivision.mod x y
+  val math_mod (x y:int) : int
+    ensures { result = EuclideanDivision.mod x y }
+
+  (* These program functions are there to generate division checks *)
+
+  val div_ (x:int) (y:int) : int
+     requires { y <> 0 }
+     ensures { result = div x y }
+
+  val rem_ (x:int) (y:int) : int
+     requires { y <> 0 }
+     ensures{ result = rem x y }
+
+  val mod_ (x:int) (y:int) : int
+     requires { y <> 0 }
+     ensures { result = mod x y }
+
+end
+
+module Int_Shift
+  use int.Int
+  use int.Power as Power
+  use int.ComputerDivision as ComputerDivision
+
+  (* Signed to unsigned interpretation of the same bitvector of size bits *)
+  let function to_unsigned (x size : int) : int =
+    if x >= 0 then x else x + Power.power 2 size
+
+  (* Unsigned to signed interpretation of the same bitvector of size bits *)
+  let function to_signed (x size : int) : int =
+    if x < Power.power 2 (size-1) then x else x - Power.power 2 size
+
+  (* Lazy modulus, only applied when x >= m *)
+  let function lazy_mod (x m : int) : int =
+    if x < m then x else ComputerDivision.mod x m
+
+  (* shift_left behavior on signed is the same as:
+     - applying to_unsigned
+     - doing the shift on unsigned value: (uns * 2**n) mod 2**size
+     - applying to_signed
+     We don't apply the mod operation if not needed, in order to
+     improve proof results, as provers tend to be ignorant of mod.
+   *)
+  let function shift_left (x n size : int) : int =
+    let uns = to_unsigned x size in
+    let res = lazy_mod (uns * (Power.power 2 n)) (Power.power 2 size) in
+    to_signed res size
+
+  (* shift_right behavior on signed is the same as:
+     - applying to_unsigned
+     - doing the shift on unsigned value: (uns / 2**n)
+     - applying to_signed
+   *)
+  let function shift_right (x n size : int) : int =
+    let uns = to_unsigned x size in
+    let res = ComputerDivision.div uns (Power.power 2 n) in
+    to_signed res size
+
+  (* shift_right_arithmetic behavior on signed is the same as:
+     - doing the division for the shift: (x / 2**n)
+     - with round down for negative, that is, subtract one if the
+       rest of the division is not null in that case
+     Note: argument 'size' is not used.
+   *)
+  let function shift_right_arithmetic (x n size : int) : int =
+    if x < 0 then
+      ComputerDivision.div (x + 1) (Power.power 2 n) - 1
+    else
+      ComputerDivision.div x (Power.power 2 n)
+
+  (* rotate_left and rotate_right are left uninterpreted for now *)
+  val function rotate_left (x n size : int) : int
+  val function rotate_right (x n size : int) : int
+
+end
+
+module Real
+  use        real.RealInfix
+  use export "_gnatprove_standard_th".Real
+
+  val bool_eq (x y : real) : bool
+  ensures { result = bool_eq x y }
+  val bool_ne (x y : real) : bool
+  ensures { result = bool_ne x y }
+  val bool_lt (x y : real) : bool
+  ensures { result = bool_lt x y }
+  val bool_le (x y : real) : bool
+  ensures { result = bool_le x y }
+  val bool_gt (x y : real) : bool
+  ensures { result = bool_gt x y }
+  val bool_ge (x y : real) : bool
+  ensures { result = bool_ge x y }
+
+  (* Division operators with no preconditions, to use when no checks are
+   * necessary. *)
+
+  function div (x y:real) : real = x /. y
+
+  val div (x y:real) : real
+    ensures  { y <> 0.0 -> result = div x y }
+end
+
+module Real_Power
+  use export real.PowerInt
+  val power (x : real) (n : int) : real
+  ensures { result = power x n }
+end
+
+module Real_Minmax
+  use real.RealInfix
+  use export real.MinMax
+
+  let min (x y : real) : real
+    ensures { result = min x y }
+  = if x <=. y then x else y
+
+  let max (x y : real) : real
+    ensures { result = max x y }
+   = if x <=. y then y else x
+
+end
+
+module Real_FromInt
+  use export real.FromInt
+
+  val from_int (x : int) : real
+    ensures { result = from_int x }
+
+end
+
+module Real_Abs
+  use export real.Abs
+  val abs (x : real) : real
+  ensures { result = abs x }
+end
+
+module Floating_power
+  (* Ada's exponentiation operator "**" axiomatization:
+
+     As said in the Ada RM (sec 4.5.6), "X**N" can be equal to any one of the
+     possible factorizations of the exponentiation: "multiplications are
+     associated in an arbitrary order". Also, it is guaranteed that for "N"
+     negative "the result is the reciprocal of the result using the absolute
+     value of "N"". Hence, since multiplication on floats is commutative but
+     not associative, we can only be sure of the value of "X**N" for "N"
+     between -3 and 3. *)
+
+  type t
+
+  use int.Int
+  predicate is_finite t
+  predicate is_zero t
+  predicate eq t t
+
+  function of_int int : t
+  function ( * ) t t   : t
+  function div   t t   : t
+  val function power t int : t
+
+  axiom Power_0 : forall x: t. is_finite x -> eq (power x 0) (of_int 1)
+
+  lemma Power_1 : forall x : t. is_finite x -> eq (power x 1) x
+
+  axiom Power_2 : forall x : t. is_finite x -> eq (power x 2) (x * x)
+
+  axiom Power_3 : forall x : t. is_finite x -> eq (power x 3) (x * (x * x))
+
+  axiom Power_neg1 : forall x : t. is_finite x -> not (is_zero x) ->
+    eq (power x (-1)) (div (of_int 1) x)
+
+  axiom Power_neg2 : forall x : t. is_finite x -> not (is_zero x) ->
+    eq (power x (-2)) (div (of_int 1) (power x 2))
+
+  axiom Power_neg3 : forall x : t. is_finite x -> not (is_zero x) ->
+    eq (power x (-2)) (div (of_int 1) (power x 3))
+end
+
+module Floating_next_prev
+  (* next/prev representable:
+     Next and previous representable reals. The functions return respectively
+     the representable real greater than or lower than the argument x, which
+     may or not be representable. *)
+
+  type t
+
+  constant max_value : t
+  function neg t : t
+
+  predicate is_finite t
+  predicate eq t t
+  predicate lt t t
+  predicate le t t
+  predicate gt t t
+  predicate ge t t
+
+  val function next_representable (x : t) : t
+  val function prev_representable (x : t) : t
+
+  (* Note that Succ (-0) > +0 *)
+
+  (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
+  axiom next_representable_def :
+    forall x : t [next_representable x]. is_finite x -> gt (next_representable x) x
+
+  axiom prev_representable_def :
+    forall x : t [prev_representable x]. is_finite x -> lt (prev_representable x) x
+
+  (* does not need is finite since gt y x implies that neither x or y is NaN *)
+  axiom next_representable_def2 :
+    forall x y : t. gt y x -> ge y (next_representable x)
+
+  axiom prev_representable_def2 :
+    forall x y : t. lt y x -> le y (prev_representable x)
+
+  (* possible addition: *)
+
+  (* axiom next_representable_gt :
+    forall x y z : t. gt y x -> gt z y -> gt z (next_representable x)
+
+    and idem for prev.
+  *)
+
+  axiom next_representable_finite :
+    forall x : t [is_finite (next_representable x)].
+      is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
+
+  axiom prev_representable_finite :
+    forall x : t [is_finite (prev_representable x)].
+      is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
+end
+
+module Floating
+  clone export _gnatprove_standard_th.Floating_Func
+
+  predicate is_zero t
+  predicate is_positive t
+  function div_rne t t : t
+  function sqrt_rne t : t
+  function rem t t : t
+
+  val sqrt_rne_ (x:t) : t
+     requires { is_zero x \/ is_positive x }
+     ensures { result = sqrt_rne x }
+
+  val div_rne_ (x:t) (y:t) : t
+     requires { not (is_zero y) }
+     ensures { result = div_rne x y }
+
+  val rem_ (x:t) (y:t) : t
+     requires { not (is_zero y) }
+     ensures { result = rem x y }
+
+  val neq (x : t) (y : t) : bool
+   ensures { result <-> neq x y }
+end
+
+module Float32RNE
+  use export ieee_float.Float32
+
+  function mul_rne (x y : t) : t = mul RNE x y
+  function div_rne (x y : t) : t = div RNE x y
+  function add_rne (x y : t) : t = add RNE x y
+  function sub_rne (x y : t) : t = sub RNE x y
+
+  function sqrt_rne (x : t) : t = sqrt RNE x
+
+  function of_int_rne (x:int) : t = of_int RNE x
+  function to_int_rna (x:t) : int = to_int RNA x
+
+  function ceil     (x:t) : t = roundToIntegral RTP x
+  function floor    (x:t) : t = roundToIntegral RTN x
+  function rounding (x:t) : t = roundToIntegral RNA x
+  function truncate (x:t) : t = roundToIntegral RTZ x
+
+  val mul_rne (x y : t) : t
+    ensures { result = mul RNE x y }
+  val div_rne (x y : t) : t
+    ensures { result = div RNE x y }
+  val add_rne (x y : t) : t
+    ensures { result = add RNE x y }
+  val sub_rne (x y : t) : t
+    ensures { result = sub RNE x y }
+
+  val sqrt_rne (x : t) : t
+    ensures { result = sqrt RNE x }
+
+  val of_int_rne (x:int) : t
+    ensures { result = of_int RNE x }
+  val to_int_rna (x:t) : int
+    ensures { result = to_int RNA x }
+
+  val ceil     (x:t) : t
+    ensures { result = roundToIntegral RTP x }
+  val floor    (x:t) : t
+    ensures { result = roundToIntegral RTN x }
+  val rounding (x:t) : t
+    ensures { result = roundToIntegral RNA x }
+  val truncate (x:t) : t
+    ensures { result = roundToIntegral RTZ x }
+
+  val min (x:t) (y:t) : t
+     ensures { result = min x y }
+  val max (x:t) (y:t) : t
+     ensures { result = max x y }
+
+  val constant _zeroF : t
+    ensures { result = zeroF }
+
+  function to_real (x : t) : real = t'real x
+  val to_real (x:t) : real
+    ensures { result = t'real x }
+
+  function copy_sign (x : t) (y : t) : t =
+    if same_sign x y then x else neg x
+  val copy_sign (x : t) (y : t) : t
+    ensures { result = (if same_sign x y then x else neg x) }
+
+end
+
+module Float64RNE
+  use export ieee_float.Float64
+
+  function mul_rne (x y : t) : t = mul RNE x y
+  function div_rne (x y : t) : t = div RNE x y
+  function add_rne (x y : t) : t = add RNE x y
+  function sub_rne (x y : t) : t = sub RNE x y
+
+  function sqrt_rne (x : t) : t = sqrt RNE x
+
+  function of_int_rne (x:int) : t = of_int RNE x
+  function to_int_rna (x:t) : int = to_int RNA x
+
+  function ceil     (x:t) : t = roundToIntegral RTP x
+  function floor    (x:t) : t = roundToIntegral RTN x
+  function rounding (x:t) : t = roundToIntegral RNA x
+  function truncate (x:t) : t = roundToIntegral RTZ x
+
+  val mul_rne (x y : t) : t
+    ensures { result = mul RNE x y }
+  val div_rne (x y : t) : t
+    ensures { result = div RNE x y }
+  val add_rne (x y : t) : t
+    ensures { result = add RNE x y }
+  val sub_rne (x y : t) : t
+    ensures { result = sub RNE x y }
+
+  val sqrt_rne (x : t) : t
+    ensures { result = sqrt RNE x }
+
+  val of_int_rne (x:int) : t
+    ensures { result = of_int RNE x }
+  val to_int_rna (x:t) : int
+    ensures { result = to_int RNA x }
+
+  val ceil     (x:t) : t
+    ensures { result = roundToIntegral RTP x }
+  val floor    (x:t) : t
+    ensures { result = roundToIntegral RTN x }
+  val rounding (x:t) : t
+    ensures { result = roundToIntegral RNA x }
+  val truncate (x:t) : t
+    ensures { result = roundToIntegral RTZ x }
+
+  val min (x:t) (y:t) : t
+     ensures { result = min x y }
+  val max (x:t) (y:t) : t
+     ensures { result = max x y }
+
+  val constant _zeroF : t
+    ensures { result = zeroF }
+
+  function to_real (x : t) : real = t'real x
+  val to_real (x:t) : real
+    ensures { result = t'real x }
+end
+
+module Float80RNE
+  use export ieee_float.Float80
+
+  function mul_rne (x y : t) : t = mul RNE x y
+  function div_rne (x y : t) : t = div RNE x y
+  function add_rne (x y : t) : t = add RNE x y
+  function sub_rne (x y : t) : t = sub RNE x y
+
+  function sqrt_rne (x : t) : t = sqrt RNE x
+
+  function of_int_rne (x:int) : t = of_int RNE x
+  function to_int_rna (x:t) : int = to_int RNA x
+
+  function ceil     (x:t) : t = roundToIntegral RTP x
+  function floor    (x:t) : t = roundToIntegral RTN x
+  function rounding (x:t) : t = roundToIntegral RNA x
+  function truncate (x:t) : t = roundToIntegral RTZ x
+
+  val mul_rne (x y : t) : t
+    ensures { result = mul RNE x y }
+  val div_rne (x y : t) : t
+    ensures { result = div RNE x y }
+  val add_rne (x y : t) : t
+    ensures { result = add RNE x y }
+  val sub_rne (x y : t) : t
+    ensures { result = sub RNE x y }
+
+  val sqrt_rne (x : t) : t
+    ensures { result = sqrt RNE x }
+
+  val of_int_rne (x:int) : t
+    ensures { result = of_int RNE x }
+  val to_int_rna (x:t) : int
+    ensures { result = to_int RNA x }
+
+  val ceil     (x:t) : t
+    ensures { result = roundToIntegral RTP x }
+  val floor    (x:t) : t
+    ensures { result = roundToIntegral RTN x }
+  val rounding (x:t) : t
+    ensures { result = roundToIntegral RNA x }
+  val truncate (x:t) : t
+    ensures { result = roundToIntegral RTZ x }
+
+  val min (x:t) (y:t) : t
+     ensures { result = min x y }
+  val max (x:t) (y:t) : t
+     ensures { result = max x y }
+
+  val constant _zeroF : t
+    ensures { result = zeroF }
+
+  function to_real (x : t) : real = t'real x
+  val to_real (x:t) : real
+    ensures { result = t'real x }
+end
+
+module Float32_power
+  use export Float32RNE
+
+  clone export Floating_power with
+    type t = t,
+    function ( * ) = mul_rne,
+    function div = div_rne,
+    function of_int = of_int_rne,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate is_zero = is_zero
+end
+
+module Float64_power
+  use export Float64RNE
+
+  clone export Floating_power with
+    type t = t,
+    function ( * ) = mul_rne,
+    function div = div_rne,
+    function of_int = of_int_rne,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate is_zero = is_zero
+end
+
+module Float80_power
+  use export Float80RNE
+
+  clone export Floating_power with
+    type t = t,
+    function ( * ) = mul_rne,
+    function div = div_rne,
+    function of_int = of_int_rne,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate is_zero = is_zero
+end
+
+module Float32_next_prev
+  use export Float32RNE
+
+  constant max_value : t
+  axiom max_value : max_real = t'real max_value
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
+module Float64_next_prev
+  use export Float64RNE
+
+  constant max_value : t
+  axiom max_value : max_real = t'real max_value
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
+module Float80_next_prev
+  use export Float80RNE
+
+  constant max_value : t
+  axiom max_value : max_real = t'real max_value
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = t'isFinite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
+module Float32
+  use export Float32RNE
+
+  clone export Floating with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_positive = is_positive,
+    function sqrt_rne = sqrt_rne,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div_rne = div_rne
+
+  val constant one : t
+  ensures { result = (1.0:t) }
+  axiom one_is_int: is_int one
+  axiom one_of_int: one = of_int RNA 1
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+end
+
+module Float64
+  use export Float64RNE
+
+  clone export Floating with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_positive = is_positive,
+    function sqrt_rne = sqrt_rne,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div_rne = div_rne
+
+  val constant one : t
+  ensures { result = (1.0:t) }
+  axiom one_is_int: is_int one
+  axiom one_of_int: one = of_int RNA 1
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+end
+
+module Float80
+  use export Float80RNE
+
+  clone export Floating with
+    type t = t,
+    predicate is_zero = is_zero,
+    predicate is_positive = is_positive,
+    function sqrt_rne = sqrt_rne,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div_rne = div_rne
+
+  val constant one : t
+  ensures { result = (1.0:t) }
+  axiom one_is_int: is_int one
+  axiom one_of_int: one = of_int RNA 1
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+end
+
+module Float32_64_Converter
+  use export ieee_float.Float32_64_Converter
+
+  function to_float64_rne (x:Float32.t) : Float64.t = to_large RNE x
+  function to_float32_rne (x:Float64.t) : Float32.t = to_small RNE x
+
+  val to_float64_rne (x:Float32.t) : Float64.t
+  ensures { result = to_large RNE x }
+  val to_float32_rne (x:Float64.t) : Float32.t
+  ensures { result = to_small RNE x }
+
+  val range_check_ (f l x : Float64.t) : Float64.t
+    requires { (Float64.(.<=) f x) /\ (Float64.(.<=) x l) }
+    ensures { result = x }
+end
+
+module Float32_80_Converter
+  use export ieee_float.Float32_80_Converter
+
+  function to_float80_rne (x:Float32.t) : Float80.t = to_large RNE x
+  function to_float32_rne (x:Float80.t) : Float32.t = to_small RNE x
+
+  val to_float80_rne (x:Float32.t) : Float80.t
+  ensures { result = to_large RNE x }
+  val to_float32_rne (x:Float80.t) : Float32.t
+  ensures { result = to_small RNE x }
+
+  val range_check_ (f l x : Float80.t) : Float80.t
+    requires { (Float80.(.<=) f x) /\ (Float80.(.<=) x l) }
+    ensures { result = x }
+end
+
+module Float64_80_Converter
+  use export ieee_float.Float64_80_Converter
+
+  function to_float80_rne (x:Float64.t) : Float80.t = to_large RNE x
+  function to_float64_rne (x:Float80.t) : Float64.t = to_small RNE x
+
+  val to_float80_rne (x:Float64.t) : Float80.t
+  ensures { result = to_large RNE x }
+  val to_float64_rne (x:Float80.t) : Float64.t
+  ensures { result = to_small RNE x }
+
+  val range_check_ (f l x : Float80.t) : Float80.t
+    requires { (Float80.(.<=) f x) /\ (Float80.(.<=) x l) }
+    ensures { result = x }
+end
+
+module Float32_BV_Converter
+  use export ieee_float.Float32_BV_Converter
+  use        ieee_float.Float32
+
+  function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
+  function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
+  function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
+  function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
+  val of_ubv8_rne  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RNE x }
+  val of_ubv16_rne (x:BV16.t) : t
+  ensures { result = of_ubv16 RNE x }
+  val of_ubv32_rne (x:BV32.t) : t
+  ensures { result = of_ubv32 RNE x }
+  val of_ubv64_rne (x:BV64.t) : t
+  ensures { result = of_ubv64 RNE x }
+
+  function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
+  function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
+  function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
+  function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+  val of_ubv8_rtp  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTP x }
+  val of_ubv16_rtp (x:BV16.t) : t
+  ensures { result = of_ubv16 RTP x }
+  val of_ubv32_rtp (x:BV32.t) : t
+  ensures { result = of_ubv32 RTP x }
+  val of_ubv64_rtp (x:BV64.t) : t
+  ensures { result = of_ubv64 RTP x }
+
+  function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
+  function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
+  function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
+  function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+  val of_ubv8_rtn  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTN x }
+  val of_ubv16_rtn (x:BV16.t) : t
+  ensures { result = of_ubv16 RTN x }
+  val of_ubv32_rtn (x:BV32.t) : t
+  ensures { result = of_ubv32 RTN x }
+  val of_ubv64_rtn (x:BV64.t) : t
+  ensures { result = of_ubv64 RTN x }
+
+  function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
+  function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
+  function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
+  function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+  val to_ubv8_rna  (x:t) : BV8.t
+  ensures { result = to_ubv8  RNA x }
+  val to_ubv16_rna (x:t) : BV16.t
+  ensures { result = to_ubv16 RNA x }
+  val to_ubv32_rna (x:t) : BV32.t
+  ensures { result = to_ubv32 RNA x }
+  val to_ubv64_rna (x:t) : BV64.t
+  ensures { result = to_ubv64 RNA x }
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
+end
+
+module Float64_BV_Converter
+  use export ieee_float.Float64_BV_Converter
+  use        ieee_float.Float64
+
+  function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
+  function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
+  function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
+  function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
+  val of_ubv8_rne  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RNE x }
+  val of_ubv16_rne (x:BV16.t) : t
+  ensures { result = of_ubv16 RNE x }
+  val of_ubv32_rne (x:BV32.t) : t
+  ensures { result = of_ubv32 RNE x }
+  val of_ubv64_rne (x:BV64.t) : t
+  ensures { result = of_ubv64 RNE x }
+
+  function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
+  function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
+  function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
+  function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+  val of_ubv8_rtp  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTP x }
+  val of_ubv16_rtp (x:BV16.t) : t
+  ensures { result = of_ubv16 RTP x }
+  val of_ubv32_rtp (x:BV32.t) : t
+  ensures { result = of_ubv32 RTP x }
+  val of_ubv64_rtp (x:BV64.t) : t
+  ensures { result = of_ubv64 RTP x }
+
+  function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
+  function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
+  function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
+  function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+  val of_ubv8_rtn  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTN x }
+  val of_ubv16_rtn (x:BV16.t) : t
+  ensures { result = of_ubv16 RTN x }
+  val of_ubv32_rtn (x:BV32.t) : t
+  ensures { result = of_ubv32 RTN x }
+  val of_ubv64_rtn (x:BV64.t) : t
+  ensures { result = of_ubv64 RTN x }
+
+  function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
+  function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
+  function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
+  function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+  val to_ubv8_rna  (x:t) : BV8.t
+  ensures { result = to_ubv8  RNA x }
+  val to_ubv16_rna (x:t) : BV16.t
+  ensures { result = to_ubv16 RNA x }
+  val to_ubv32_rna (x:t) : BV32.t
+  ensures { result = to_ubv32 RNA x }
+  val to_ubv64_rna (x:t) : BV64.t
+  ensures { result = to_ubv64 RNA x }
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
+end
+
+module Float80_BV_Converter
+  use export ieee_float.Float80_BV_Converter
+  use        ieee_float.Float80
+
+  function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
+  function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
+  function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
+  function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
+  val of_ubv8_rne  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RNE x }
+  val of_ubv16_rne (x:BV16.t) : t
+  ensures { result = of_ubv16 RNE x }
+  val of_ubv32_rne (x:BV32.t) : t
+  ensures { result = of_ubv32 RNE x }
+  val of_ubv64_rne (x:BV64.t) : t
+  ensures { result = of_ubv64 RNE x }
+
+  function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
+  function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
+  function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
+  function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+  val of_ubv8_rtp  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTP x }
+  val of_ubv16_rtp (x:BV16.t) : t
+  ensures { result = of_ubv16 RTP x }
+  val of_ubv32_rtp (x:BV32.t) : t
+  ensures { result = of_ubv32 RTP x }
+  val of_ubv64_rtp (x:BV64.t) : t
+  ensures { result = of_ubv64 RTP x }
+
+  function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
+  function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
+  function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
+  function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+  val of_ubv8_rtn  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTN x }
+  val of_ubv16_rtn (x:BV16.t) : t
+  ensures { result = of_ubv16 RTN x }
+  val of_ubv32_rtn (x:BV32.t) : t
+  ensures { result = of_ubv32 RTN x }
+  val of_ubv64_rtn (x:BV64.t) : t
+  ensures { result = of_ubv64 RTN x }
+
+  function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
+  function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
+  function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
+  function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+  val to_ubv8_rna  (x:t) : BV8.t
+  ensures { result = to_ubv8  RNA x }
+  val to_ubv16_rna (x:t) : BV16.t
+  ensures { result = to_ubv16 RNA x }
+  val to_ubv32_rna (x:t) : BV32.t
+  ensures { result = to_ubv32 RNA x }
+  val to_ubv64_rna (x:t) : BV64.t
+  ensures { result = to_ubv64 RNA x }
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
+end
+
+module Boolean
+  use export bool.Bool
+  use export bool.Ite
+  use        int.Int
+  use        Main
+
+  use export "_gnatprove_standard_th".Boolean_Func
+
+  (* Boolean logical connectors, functions for conversion of booleans, etc *)
+
+  val to_int (b : bool) : int
+  ensures { result = to_int b }
+
+  val of_int (i : int) : bool
+  ensures { result = of_int i }
+
+  let function last : int = 1
+  let function first : int = 0
+
+  predicate in_range (x : int) = x = 0 \/ x = 1
+  val in_range (x : int) : bool
+  ensures { result <-> in_range x }
+
+  predicate dynamic_property (f l x : int) = in_range x
+
+  val function attr__ATTRIBUTE_IMAGE bool : __image
+
+  predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  function attr__ATTRIBUTE_VALUE __image : bool
+
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : bool
+    requires { attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { true }
+
+  val range_check_ (n : int) : int
+    requires { in_range n }
+    ensures { result = n }
+
+  val check_not_last (n : int) : int
+    requires { n <> last }
+    ensures { result = n }
+
+  val check_not_first (n : int) : int
+    requires { n <> first }
+    ensures { result = n }
+
+  val bool_eq (x : bool) (y : bool) : bool
+    ensures { result = if x = y then True else False }
+
+end
+
+(* The following theories care about the *contents* of Arrays, and defines
+   access and update functions. They do not care about properties of bounds.
+   However, boolean equality and sliding needs array bounds as *inputs*. These
+   functions are independent of the representation of constrained/unconstrained
+   arrays. This also means that there is some special circuitry in gnat2why to
+   actually call these functions.
+
+   For Boolean equality, the arguments are, in order:
+    - the first array
+    - for each dimension, first and last
+    - the second array
+    - for each dimension, first and last
+
+  Boolean equality returns true when all dimensions of the two arrays are of
+  the same length, and the arrays contain the same elements in their valid
+  range (note that access needs to be slided when the bounds do not coincide,
+  but the length is still the same).
+
+  For sliding, the arguments are, in order:
+    - the array
+    - for each dimension, the old and new value of first
+
+  Sliding shifts the elements of the array according to the difference between
+  the old and new value of first.
+
+*)
+module Array__Index
+  type t
+
+  predicate le t t
+  predicate lt t t
+  predicate gt t t
+
+  function  add t t : t
+  function  sub t t : t
+
+  function one : t
+end
+
+module Array__1
+  use map.Map
+  use bool.Bool
+
+  clone Array__Index as I1
+
+  type component_type
+
+  type map = Map.map I1.t component_type
+  type map__ref = { mutable map__content [@model_trace:] : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
+
+  function get (a : map) (i : I1.t) : component_type = Map.get a i
+  function set (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
+
+  val get (a : map) (i : I1.t) : component_type
+    ensures { result = Map.get a i }
+  val set (a : map) (i : I1.t) (v : component_type) : map
+    ensures { result = Map.set a i v }
+
+  val function slide map I1.t I1.t : map
+  meta "encoding:lskept" function slide
+
+  axiom slide_eq :
+    forall a : map.
+    forall first : I1.t
+      [slide a first first].
+      slide a first first = a
+
+  axiom slide_def :
+    forall a : map.
+    forall old_first : I1.t.
+    forall new_first : I1.t.
+    forall i : I1.t
+      [get (slide a old_first new_first) i].
+      get (slide a old_first new_first) i = get a (I1.sub i (I1.sub new_first old_first))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t  [get (const v) i].
+      get (const v) i = v
+end
+
+module Array__1__Concat
+
+  clone Array__Index as Index
+
+  type component_type
+
+  type map
+
+  function get (a : map) (i : Index.t) : component_type
+
+  (* Concatenation is only defined for one-dimensional arrays; it appends a
+     map to another. We do not really care about the valid ranges of the
+     original arrays, but we need to know for each access to the
+     concatenation, which of the arguments we need to look at. Also, if we are
+     interested in the second argument, a shift must be made depending on the
+     original "first" value. *)
+
+  val function concat map Index.t Index.t map Index.t Index.t : map
+  meta "encoding:lskept" function concat
+
+  axiom concat_def :
+    forall a b : map.
+    forall a_first a_last b_first b_last : Index.t.
+    forall i : Index.t [get (concat a a_first a_last b b_first b_last) i].
+      ((Index.le a_first i /\ Index.le i a_last) ->
+          get (concat a a_first a_last b b_first b_last) i = get a i)
+         /\
+      ((Index.gt i a_last) ->
+        get (concat a a_first a_last b b_first b_last) i = get b (Index.add (Index.sub i a_last) (Index.sub b_first Index.one)))
+
+  (* Special case of concatenation when the left operand is a component. a_first
+     is the first index of the new array. The right operand is slided so that it
+     starts at a_first + 1. *)
+
+  val function concat_singleton_left component_type Index.t map Index.t Index.t : map
+  meta "encoding:lskept" function concat_singleton_left
+
+  axiom concat_singleton_left_def :
+    forall a : component_type.
+    forall b : map.
+    forall a_first b_first b_last : Index.t
+    [concat_singleton_left a a_first b b_first b_last].
+    get (concat_singleton_left a a_first b b_first b_last) a_first = a
+  /\
+    forall i : Index.t [get (concat_singleton_left a a_first b b_first b_last) i].
+      ((Index.gt i a_first) ->
+        get (concat_singleton_left a a_first b b_first b_last) i = get b (Index.add (Index.sub i a_first) (Index.sub b_first Index.one)))
+
+  (* Special case of concatenation when the right operand is a component. *)
+
+  val function concat_singleton_right map Index.t Index.t component_type : map
+  meta "encoding:lskept" function concat_singleton_right
+
+  axiom concat_singleton_right_def :
+    forall a : map.
+    forall b : component_type.
+    forall a_first a_last : Index.t
+    [concat_singleton_right a a_first a_last b].
+    get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b
+  /\
+    forall i : Index.t [get (concat_singleton_right a a_first a_last b) i | get a i].
+      ((Index.le a_first i /\ Index.le i a_last) ->
+          get (concat_singleton_right a a_first a_last b) i = get a i)
+
+  (* Special case of concatenation when both operands are components. a_first
+     is the first index of the resulting array. *)
+
+  val function concat_singletons component_type Index.t component_type : map
+  meta "encoding:lskept" function concat_singletons
+
+  axiom concat_singletons_def :
+    forall a b : component_type.
+    forall a_first : Index.t
+    [concat_singletons a a_first b].
+    get (concat_singletons a a_first b) a_first = a
+  /\
+    get (concat_singletons a a_first b) (Index.add a_first Index.one) = b
+
+  (* An array containing the value v at index i. It is used for the result of
+     the concatenation of an empty array with a component. *)
+
+   val function singleton component_type Index.t : map
+   meta "encoding:lskept" function singleton
+
+   axiom singleton_def :
+    forall v : component_type.
+    forall i : Index.t  [get (singleton v i) i].
+      get (singleton v i) i = v
+end
+
+module Array__2
+  use bool.Bool
+
+  clone Array__Index as I1
+  clone Array__Index as I2
+
+  type component_type
+
+  type map
+  type map__ref = { mutable map__content [@model_trace:] : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
+
+  val function get map I1.t I2.t : component_type
+  meta "encoding:lskept" function get
+  val function set map I1.t I2.t component_type : map
+  meta "encoding:lskept" function set
+
+  axiom Select_eq :
+    forall m : map.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall a : component_type [set m i j a].  get (set m i j a) i j = a
+
+  axiom Select_neq :
+    forall m : map.
+    forall i i2 : I1.t.
+    forall j j2 : I2.t.
+    forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
+    not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
+
+  val function slide map I1.t I1.t I2.t I2.t : map
+  meta "encoding:lskept" function slide
+
+  axiom slide_def :
+    forall a : map.
+    forall new_first    old_first   : I1.t.
+    forall new_first_2  old_first_2 : I2.t.
+    forall i : I1.t.
+    forall j : I2.t
+      [get (slide a old_first new_first old_first_2 new_first_2) i j].
+      get (slide a old_first new_first old_first_2 new_first_2) i j =
+        get a (I1.sub i (I1.sub new_first old_first)) (I2.sub j (I2.sub new_first_2 old_first_2))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t.
+    forall j : I2.t  [get (const v) i j].
+      get (const v) i j = v
+end
+
+module Array__3
+  use bool.Bool
+
+  clone Array__Index as I1
+  clone Array__Index as I2
+  clone Array__Index as I3
+
+  type component_type
+
+  type map
+  type map__ref = { mutable map__content [@model_trace:] : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
+
+  val function get map I1.t I2.t I3.t : component_type
+  meta "encoding:lskept" function get
+  val function set map I1.t I2.t I3.t component_type : map
+  meta "encoding:lskept" function set
+
+  axiom Select_eq :
+    forall m : map.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall a : component_type [set m i j k a].  get (set m i j k a) i j k = a
+
+  axiom Select_neq :
+    forall m : map.
+    forall i i2 : I1.t.
+    forall j j2 : I2.t.
+    forall k k2 : I3.t.
+    forall a : component_type [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
+    not (i = i2 /\ j = j2 /\ k = k2) ->
+      get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
+
+  val function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
+  meta "encoding:lskept" function slide
+
+  axiom slide_def :
+    forall a : map.
+    forall old_first   new_first   : I1.t.
+    forall old_first_2 new_first_2 : I2.t.
+    forall old_first_3 new_first_3 : I3.t.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t
+      [get (slide a old_first new_first old_first_2 new_first_2
+                    old_first_3 new_first_3) i j k].
+      get (slide a old_first new_first old_first_2 new_first_2
+                   old_first_3 new_first_3) i j k =
+        get a (I1.sub i (I1.sub new_first old_first))
+              (I2.sub j (I2.sub new_first_2 old_first_2))
+              (I3.sub k (I3.sub new_first_3 old_first_3))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t  [get (const v) i j k].
+      get (const v) i j k = v
+end
+
+module Array__4
+  use bool.Bool
+
+  clone Array__Index as I1
+  clone Array__Index as I2
+  clone Array__Index as I3
+  clone Array__Index as I4
+
+  type component_type
+
+  type map
+  type map__ref = { mutable map__content [@model_trace:] : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
+
+  val function get map I1.t I2.t I3.t I4.t : component_type
+  meta "encoding:lskept" function get
+  val function set map I1.t I2.t I3.t I4.t component_type : map
+  meta "encoding:lskept" function set
+
+  axiom Select_eq :
+    forall m : map.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t.
+    forall a : component_type [set m i j k l a].  get (set m i j k l a) i j k l = a
+
+  axiom Select_neq :
+    forall m : map.
+    forall i i2 : I1.t.
+    forall j j2 : I2.t.
+    forall k k2 : I3.t.
+    forall l l2 : I4.t.
+    forall a : component_type
+      [get (set m i j k l a) i2 j2 k2 l2|
+       set m i j k l a, get m i2 j2 k2 l2].
+    not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
+      get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
+
+  val function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
+  meta "encoding:lskept" function slide
+
+  axiom slide_def :
+    forall a : map.
+    forall old_first   new_first   : I1.t.
+    forall old_first_2 new_first_2 : I2.t.
+    forall old_first_3 new_first_3 : I3.t.
+    forall old_first_4 new_first_4 : I4.t.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t
+      [get (slide a old_first new_first old_first_2 new_first_2
+                    old_first_3 new_first_3 old_first_4 new_first_4) i j k l].
+      get (slide a old_first new_first old_first_2 new_first_2
+                   old_first_3 new_first_3 old_first_4 new_first_4) i j k l =
+        get a (I1.sub i (I1.sub new_first old_first))
+              (I2.sub j (I2.sub new_first_2 old_first_2))
+              (I3.sub k (I3.sub new_first_3 old_first_3))
+              (I4.sub l (I4.sub new_first_4 old_first_4))
+
+  (* An array containing the value v at all indexes. It is used for the value
+     of aggregate associations with a box. *)
+
+   val function const component_type : map
+   meta "encoding:lskept" function const
+
+   axiom const_def :
+    forall v : component_type.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t  [get (const v) i j k l].
+      get (const v) i j k l = v
+end
+
+module BVAda
+  type t
+
+  let function abs (x : t) : t = x
+
+  predicate ult t t
+  predicate ule t t
+  predicate ugt t t
+  predicate uge t t
+
+  function to_uint t : int
+
+  use bool.Bool
+  function bool_eq (x: t) (y: t) : bool = x = y
+  function bool_ne (x: t) (y: t) : bool = x <> y
+  function bool_lt (x: t) (y: t) : bool = ult x y
+  function bool_le (x: t) (y: t) : bool = ule x y
+  function bool_gt (x: t) (y: t) : bool = ugt x y
+  function bool_ge (x: t) (y: t) : bool = uge x y
+
+  val bool_eq (x y : t) : bool
+  ensures { result = bool_eq x y }
+  val bool_ne (x y : t) : bool
+  ensures { result = bool_ne x y }
+  val bool_lt (x y : t) : bool
+  ensures { result = bool_lt x y }
+  val bool_le (x y : t) : bool
+  ensures { result = bool_le x y }
+  val bool_gt (x y : t) : bool
+  ensures { result = bool_gt x y }
+  val bool_ge (x y : t) : bool
+  ensures { result = bool_ge x y }
+
+  val neq (v1: t) (v2: t) : bool
+    ensures { result <-> v1 <> v2 }
+
+  use int.Int
+  function one : t
+
+  function (*) t t : t
+
+  val function power t int : t
+
+  axiom Power_0 : forall x: t. power x 0 = one
+
+  lemma Power_1 : forall x : t. power x 1 = x
+
+  axiom Power_s : forall x: t, n: int. n >= 0 -> power x (n+1) = x * power x n
+
+  lemma Power_s_alt: forall x: t, n: int. n > 0 -> power x n = x * power x (n-1)
+
+  lemma Power_sum : forall x: t, n m: int. 0 <= n -> 0 <= m ->
+    power x (n+m) = power x n * power x m
+
+  lemma Power_mult : forall x:t, n m : int. 0 <= n -> 0 <= m ->
+    power x (Int.(*) n m) = power (power x n) m
+
+  lemma Power_mult2 : forall x y: t, n: int. 0 <= n ->
+    power (x * y) n = power x n * power y n
+
+  function bv_min (x y : t) : t = if ule x y then x else y
+  function bv_max (x y : t) : t = if ule x y then y else x
+
+  val bv_min (x y : t) : t
+  ensures { result = if ule x y then x else y }
+  val bv_max (x y : t) : t
+  ensures { result = if ule x y then y else x }
+
+  use int.MinMax as MinMax
+
+  lemma bv_min_to_uint: forall x y.
+    to_uint (bv_min x y) = MinMax.min (to_uint x) (to_uint y)
+
+  lemma bv_max_to_uint: forall x y.
+    to_uint (bv_max x y) = MinMax.max (to_uint x) (to_uint y)
+
+  (** Unchecked_Conversion from/to integers
+      This is used to translate SPARK Unchecked_Conversion between
+      signed and modular integers of the same bit size.
+  *)
+
+  function of_int int : t
+  function neg t : t
+  constant two_power_size_minus_one : int
+
+  function uc_of_int (x : int) : t =
+    if x >= 0 then (of_int x) else (neg (of_int (- x)))
+  val uc_of_int (x : int) : t ensures { result = uc_of_int x }
+
+  function uc_to_int (x : t) : int =
+    if bool_lt x (of_int two_power_size_minus_one) then (to_uint x)
+    else (- (to_uint (neg x)))
+  val uc_to_int (x : t) : int ensures { result = uc_to_int x }
+
+end
+
+module BV8
+  use export bv.BV8
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
+  clone export BVAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function to_uint = t'int,
+    function of_int = of_int,
+    function ( * ) = mul,
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
+
+  val of_int_ (i : int) : t
+    requires{ uint_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
+end
+
+module BV16
+  use export bv.BV16
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
+  clone export BVAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function to_uint = t'int,
+    function of_int = of_int,
+    function ( * ) = mul,
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
+
+  val of_int_ (i : int) : t
+    requires{ uint_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
+end
+
+module BV32
+  use export bv.BV32
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
+  clone export BVAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function to_uint = t'int,
+    function of_int = of_int,
+    function ( * ) = mul,
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
+
+  val of_int_ (i : int) : t
+    requires{ uint_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
+end
+
+module BV64
+  use export bv.BV64
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
+  clone export BVAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function to_uint = t'int,
+    function of_int = of_int,
+    function ( * ) = mul,
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
+
+  val of_int_ (i : int) : t
+    requires{ uint_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
+end
+
+module BV128
+  use export bv.BV128
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
+  clone export BVAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function to_uint = t'int,
+    function of_int = of_int,
+    function ( * ) = mul,
+    function neg = neg,
+    function one = one,
+    function two_power_size_minus_one = two_power_size_minus_one
+
+  val of_int_ (i : int) : t
+    requires{ uint_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
+end
+
+(* For conversion to bv 256 bits, only need version from 128 bits, as part
+   of checking of overflows on some 128 bits modular operations. There are no
+   user-defined conversions to bv 256 bits otherwise.
+ *)
+module BVConv_128_256
+  use export bv.BVConverter_128_256
+
+  val range_check_ (f l x : BV256.t) : BV256.t
+    requires { (BV256.ule f x) /\ (BV256.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_64_128
+  use export bv.BVConverter_64_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_32_128
+  use export bv.BVConverter_32_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_16_128
+  use export bv.BVConverter_16_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_128
+  use export bv.BVConverter_8_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_32_64
+  use export bv.BVConverter_32_64
+
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_16_64
+  use export bv.BVConverter_16_64
+
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_64
+  use export bv.BVConverter_8_64
+
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_16_32
+  use export bv.BVConverter_16_32
+
+  val range_check_ (f l x : BV32.t) : BV32.t
+    requires { (BV32.ule f x) /\ (BV32.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_32
+  use export bv.BVConverter_8_32
+
+  val range_check_ (f l x : BV32.t) : BV32.t
+    requires { (BV32.ule f x) /\ (BV32.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_16
+  use export bv.BVConverter_8_16
+
+  val range_check_ (f l x : BV16.t) : BV16.t
+    requires { (BV16.ule f x) /\ (BV16.ule x l) }
+    ensures { result = x }
+end
+
+(* Module for the representative type of all access-to-subprogram types *)
+
+module Subprogram_Pointer_Rep
+  type __subprogram
+
+  type __rep =
+    { __is_null_pointer : bool;
+      __pointer_value   : __subprogram }
+
+  type __rep__ref = {
+    mutable __rep__content : __rep
+  }
+
+  val __rep__havoc (x: __rep__ref) : unit writes { x }
+
+  function bool_eq (a: __rep) (b: __rep) : bool =
+    a.__is_null_pointer = b.__is_null_pointer &&
+     (if not a.__is_null_pointer
+      then a.__pointer_value = b.__pointer_value
+      else true)
+
+  val bool_eq (a: __rep) (b: __rep) : bool
+    ensures { result = bool_eq a b }
+
+  val function __null_pointer : __rep
+
+  axiom __null_pointer__def_axiom:
+    __null_pointer.__is_null_pointer
+
+  val __pointer_value_ (a: __rep) : __subprogram
+    requires { not a.__is_null_pointer }
+    ensures { result = a.__pointer_value }
+
+  val assign_null_check_ (a: __rep) : __rep
+    requires { not a.__is_null_pointer }
+    ensures { result = a }
+
+end

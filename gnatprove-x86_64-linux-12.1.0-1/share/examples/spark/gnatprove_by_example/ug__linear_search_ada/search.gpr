@@ -1,0 +1,7 @@
+project Search is
+   for Source_Dirs use (".");
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnatwa");
+   end Compiler;
+end Search;
