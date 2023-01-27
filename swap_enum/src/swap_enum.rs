@@ -6,6 +6,7 @@
 pub enum TwoNumbers {
     One,
     Two,
+    Three,
 }
 
 #[no_mangle]
@@ -20,8 +21,9 @@ pub enum TwoNumbers {
 // ca sera toujours aligné ? quand paramètres
 // comment les choses sont passées pour que l'ABI reste la même
 // comment les choses sont mises sur la pile
-extern "C" fn swap_enum(one: &mut TwoNumbers, two: &mut TwoNumbers) {
+extern "C" fn swap_enum(one: &mut TwoNumbers, two: &mut TwoNumbers, three: &mut TwoNumbers) {
     let tmp = *one;
-    *one = *two;
+    *one = *three;
+    *three = *two;
     *two = tmp;
 }
