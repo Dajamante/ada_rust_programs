@@ -1,0 +1,8 @@
+project Data_caller is
+    for Main use("date_caller.adb");
+    for Object_Dir use ".objs";
+
+    package Compiler is
+        for Default_Switches ("Ada") use ("-g -gnat2022");
+    end Compiler;
+end Data_caller;

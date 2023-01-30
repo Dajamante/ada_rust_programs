@@ -1,0 +1,26 @@
+Summary of SPARK analysis
+=========================
+
+-------------------------------------------------------------------------------------------
+SPARK Analysis results        Total      Flow   CodePeer     Provers   Justified   Unproved
+-------------------------------------------------------------------------------------------
+Data Dependencies                 .         .          .           .           .          .
+Flow Dependencies                 .         .          .           .           .          .
+Initialization                    .         .          .           .           .          .
+Non-Aliasing                      .         .          .           .           .          .
+Run-time Checks                   6         .          .    6 (CVC4)           .          .
+Assertions                        1         .          .           .           .          1
+Functional Contracts              .         .          .           .           .          .
+LSP Verification                  .         .          .           .           .          .
+Termination                       .         .          .           .           .          .
+Concurrency                       .         .          .           .           .          .
+-------------------------------------------------------------------------------------------
+Total                             7         .          .     6 (86%)           .    1 (14%)
+
+
+max steps used for successful proof: 1
+
+Analyzed 1 unit
+in unit main, 1 subprograms and packages out of 2 analyzed
+  Main at main.adb:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 6 checks out of 7 proved
+  Main.Swap at main.adb:5 skipped; body is SPARK_Mode => Off
