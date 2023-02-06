@@ -9,7 +9,6 @@
 *.bexch
 # Alire
 *obj/
-*lib/
 *alire/
 *config/
 
