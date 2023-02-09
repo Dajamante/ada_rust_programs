@@ -1,0 +1,9 @@
+name = "string_sender"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["aissata"]
+maintainers = ["aissata <example@example.com>"]
+maintainers-logins = ["aissata"]
+[[depends-on]]
+libgpr2 = "^23.0.0"
