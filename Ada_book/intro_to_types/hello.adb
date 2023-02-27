@@ -1,7 +1,10 @@
-with Ada.Text_IO; use Ada.Text_IO;
-
 procedure Hello is
+    type String_A is new String (1 .. 5);
+    type String_B is new String (1 .. 5);
+    Hello : String_A := "Hello";
+    World : String_B := "World";
+
 begin
-    -- Print "Hello, World!" to the screen
-    Put_Line ("Hello World!");
+    Hello := World;
+
 end Hello;

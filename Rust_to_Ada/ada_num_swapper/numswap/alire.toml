@@ -1,0 +1,7 @@
+name = "numswap"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["aissata"]
+maintainers = ["aissata <example@example.com>"]
+maintainers-logins = ["aissata"]

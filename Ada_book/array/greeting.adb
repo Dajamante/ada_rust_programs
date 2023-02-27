@@ -5,6 +5,7 @@ procedure Greeting is
 -- missing range keyword
 -- greeting.adb:6:11: error: incorrect constraint for this kind of type
 -- A: String (1..12) := "Hello, World";
+
 A: String := "Hello";
 begin 
 for I in reverse A'Range loop

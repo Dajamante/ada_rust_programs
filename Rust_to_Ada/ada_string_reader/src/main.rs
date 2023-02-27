@@ -6,7 +6,7 @@ fn main() {
         let s = ada_sender();
         println!(
             "Hello, {:?}!",
-            s.map(|c| TryInto::<char>::try_into(c).unwrap())
+            s.map(|c| c as char).into_iter().collect::<String>()
         );
     }
 }
