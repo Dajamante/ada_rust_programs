@@ -1,5 +1,5 @@
 extern "C" {
-    fn add(x: i32, y: i32) -> i32;
+    fn add(x: Box<i32>, y: Box<i32>) -> i32;
 }
 
 #[macro_export]
@@ -15,7 +15,7 @@ macro_rules! to_ada {
 
 
 fn main() {
-    let x = 1;
-    let y = 2;
-    println!("The unsafe z is {:?}",to_ada!(x,y));
+    let x = Box::new(1);
+    let y = Box::new(2);
+    println!("The unsafe z is {:?}", unsafe { add(x,y) });
 }
