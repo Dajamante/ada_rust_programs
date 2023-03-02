@@ -1,0 +1,29 @@
+with "config/enum_sender_config.gpr";
+project Enum_Sender is
+
+   for Library_Name use "Enum_Sender";
+   for Library_Version use Project'Library_Name & ".so." & Enum_Sender_Config.Crate_Version;
+
+   for Source_Dirs use ("src/", "config/");
+   for Object_Dir use "obj/" & Enum_Sender_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "lib";
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("ENUM_SENDER_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+   for Library_Kind use Library_Type;
+
+   package Compiler is
+      for Default_Switches ("Ada") use Enum_Sender_Config.Ada_Compiler_Switches;
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end Enum_Sender;
