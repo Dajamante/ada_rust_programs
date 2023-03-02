@@ -11,11 +11,11 @@ is
   function Bloat (word : String_5) return String_5 with
    Import, Convention => C, Annotate => Terminating, Global => null;
 
-  Res : String_5 := Bloat (Hello);
+  Res : String_5;
 begin
   Res := Bloat (Hello);
   -- Gives a huge bug on Gnat
-  Put_Line (String_5'Image (Res));
+  -- Put_Line (String_5'Image (Res));
 end Mem_Violation;
 
 -- String from the perspective of rust are not easy types

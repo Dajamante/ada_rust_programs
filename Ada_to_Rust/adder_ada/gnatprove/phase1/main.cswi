@@ -1,0 +1,7 @@
+20230302111618
+-c
+-x
+ada
+-gnatA
+-gnatc
+-gnates=/workspaces/ada_rust_programs/Ada_to_Rust/adder_ada/gnatprove/d73b353f.tmp

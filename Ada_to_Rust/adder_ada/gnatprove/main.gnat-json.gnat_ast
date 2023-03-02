@@ -1,0 +1,1177 @@
+(* Module for axiomatizing type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  
+  type integer  = <range -2147483648 2147483647>
+  
+  function   first () requires { True } ensures  { True } returns
+    int = -2147483648
+  
+  function   last () requires { True } ensures  { True } returns
+    int = 2147483647
+  
+  function [GP_Inline]  in_range (x : int) requires { True } ensures 
+    { True } returns
+     = (([GP_Pretty_Ada:-1] (first <= x)) /\ ([GP_Pretty_Ada:-2] (x <= last)))
+  
+  clone export ada__model.Static_Discrete with axiom . type t = integer,
+    function first = first, function last = last,
+    predicate in_range = in_range
+  
+  type integer__ref  = { mutable integer__content : integer }
+  
+  function   integer__ref_integer__content__projection (a : integer__ref)
+    requires {  } ensures  {  } returns integer = a.integer__content
+  
+  meta model_projection function integer__ref_integer__content__projection
+  
+  meta inline:no function integer__ref_integer__content__projection
+  
+  function   integer__havoc (x : integer__ref) requires {  } ensures  {  }
+    returns unit
+
+end
+
+(* Module for axiomatizing type "positive", created in Gnat2Why.Types.Translate_Type *)
+module Standard__positive
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  
+  type positive  = <range 1 2147483647>
+  
+  function   first () requires { True } ensures  { True } returns int = 1
+  
+  function   last () requires { True } ensures  { True } returns
+    int = 2147483647
+  
+  function [GP_Inline]  in_range (x : int) requires { True } ensures 
+    { True } returns
+     = (([GP_Pretty_Ada:-1] (first <= x)) /\ ([GP_Pretty_Ada:-2] (x <= last)))
+  
+  clone export ada__model.Static_Discrete with axiom . type t = positive,
+    function first = first, function last = last,
+    predicate in_range = in_range
+  
+  type positive__ref  = { mutable positive__content : positive }
+  
+  function   positive__ref_positive__content__projection (a : positive__ref)
+    requires {  } ensures  {  } returns positive = a.positive__content
+  
+  meta model_projection function positive__ref_positive__content__projection
+  
+  meta inline:no function positive__ref_positive__content__projection
+  
+  function   positive__havoc (x : positive__ref) requires {  } ensures  {  }
+    returns unit
+
+end
+
+(* Module for axiomatizing type "character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__character
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  
+  type character  
+  
+  function   first () requires { True } ensures  { True } returns int = 0
+  
+  function   last () requires { True } ensures  { True } returns int = 255
+  
+  function [GP_Inline]  in_range (x : int) requires { True } ensures 
+    { True } returns
+     = (([GP_Pretty_Ada:-1] (first <= x)) /\ ([GP_Pretty_Ada:-2] (x <= last)))
+  
+  clone export ada__model.Static_Discrete with axiom . type t = character,
+    function first = first, function last = last,
+    predicate in_range = in_range
+  
+  type character__ref  = { mutable character__content : character }
+  
+  function   character__ref_character__content__projection
+    (a : character__ref) requires {  } ensures  {  } returns
+    character = a.character__content
+  
+  meta model_projection function character__ref_character__content__projection
+  
+  meta inline:no function character__ref_character__content__projection
+  
+  function   character__havoc (x : character__ref) requires {  } ensures 
+    {  } returns unit
+
+end
+
+(* Module defining to_rep/of_rep for type "character", created in Gnat2Why.Types.Translate_Type *)
+module Standard__character__rep
+  
+  use        Standard__character
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  clone export ada__model.Rep_Proj_Int with axiom . type t = Standard__character.character,
+    predicate in_range = Standard__character.in_range
+  
+  meta model_projection function to_rep
+  
+  meta inline:no function to_rep
+
+end
+
+(* Module for axiomatizing the array theory associated to type "string", created in Why.Gen.Arrays.Create_Rep_Array_Theory *)
+module Array__Int__Standard__character
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__character
+  use        Standard__character__rep
+  
+  function   index_I1_one () requires { True } ensures  { True } returns
+    int = 1
+  
+  type component_type  = Standard__character.character
+  
+  clone export _gnatprove_standard.Array__1 with axiom . type I1.t = int,
+    predicate I1.le = <=, predicate I1.lt = <, predicate I1.gt = >,
+    function I1.add = +, function I1.sub = -, function I1.one = index_I1_one,
+    type component_type = component_type
+  
+  function   bool_eq
+    (a : map a__first : int a__last : int b : map b__first : int
+    b__last : int) requires { True } ensures  { True } returns
+    bool = ((if (a__first <= a__last) then
+            ((b__first <= b__last) /\
+               ((a__last - a__first) = (b__last - b__first)))
+             else (b__first > b__last)) /\
+              ( forall ([mlw:proxy_symbol] [introduced] temp___idx_105) : int
+              [].(if
+                 ((a__first <= ([mlw:proxy_symbol]
+                     [introduced] temp___idx_105)) /\
+                    (([mlw:proxy_symbol] [introduced] temp___idx_105)
+                       <= a__last))
+                 then
+                 ((Standard__character__rep.to_rep
+                     (get a ([mlw:proxy_symbol] [introduced] temp___idx_105)))
+                    = (Standard__character__rep.to_rep
+                         (get b
+                            ((b__first - a__first) + ([mlw:proxy_symbol]
+                               [introduced] temp___idx_105)))))
+                 )))
+  
+  axiom bool_eq_rev : ( forall a b : map
+                      [].( forall a__first a__last b__first b__last : int
+                         [].(((bool_eq b b__first b__last a a__first a__last)
+                                = True) ->
+                               ((if (a__first <= a__last) then
+                                ((b__first <= b__last) /\
+                                   ((a__last - a__first)
+                                      = (b__last - b__first)))
+                                 else (b__first > b__last)) /\
+                                  ( forall ([mlw:proxy_symbol]
+                                  [introduced] temp___idx_105) : int
+                                  [].(if
+                                     ((a__first <= ([mlw:proxy_symbol]
+                                         [introduced] temp___idx_105)) /\
+                                        (([mlw:proxy_symbol]
+                                           [introduced] temp___idx_105)
+                                           <= a__last))
+                                     then
+                                     ((Standard__character__rep.to_rep
+                                         (get a ([mlw:proxy_symbol]
+                                            [introduced] temp___idx_105)))
+                                        = (Standard__character__rep.to_rep
+                                             (get b
+                                                ((b__first - a__first)
+                                                   + ([mlw:proxy_symbol]
+                                                   [introduced] temp___idx_105)))))
+                                     ))))))
+
+end
+
+(* Module defining to_rep/of_rep for type "integer", created in Gnat2Why.Types.Translate_Type *)
+module Standard__integer__rep
+  
+  use        Standard__integer
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  function   to_rep (x : Standard__integer.integer) requires { True }
+    ensures  { True } returns int = (Standard__integer.integer'int x)
+  
+  clone export ada__model.Rep_Proj_Int with axiom . type t = Standard__integer.integer,
+    predicate in_range = Standard__integer.in_range, function to_rep = to_rep
+  
+  meta model_projection function to_rep
+  
+  meta inline:no function to_rep
+
+end
+
+(* Module for axiomatizing type "string", created in Gnat2Why.Types.Translate_Type *)
+module Standard__string
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__integer
+  use        Standard__positive
+  use        Standard__character
+  use        Array__Int__Standard__character
+  use        Standard__integer__rep
+  
+  type component_type  = Standard__character.character
+  
+  function   index_1_id (x : int) requires { True } ensures  { True } returns
+    int = x
+  
+  clone export ada__model.Unconstr_Array with axiom . type map = Array__Int__Standard__character.map,
+    function array_bool_eq = Array__Int__Standard__character.bool_eq,
+    type index_base_type = Standard__integer.integer,
+    type index_rep_type = int,
+    function to_rep = Standard__integer__rep.to_rep,
+    function rep_to_int = index_1_id,
+    predicate in_range_base = Standard__integer.in_range,
+    predicate index_dynamic_property = Standard__positive.dynamic_property,
+    predicate index_rep_le = <=
+  
+  type string__  = __t
+  
+  meta model_projection function to_array
+  
+  meta inline:no function to_array
+  
+  meta model_projection function first
+  
+  meta inline:no function first
+  
+  meta model_projection function last
+  
+  meta inline:no function last
+  
+  type string____ref  = { mutable string____content : string__ }
+  
+  function   string____ref_string____content__projection (a : string____ref)
+    requires {  } ensures  {  } returns string__ = a.string____content
+  
+  meta model_projection function string____ref_string____content__projection
+  
+  meta inline:no function string____ref_string____content__projection
+  
+  function   string____havoc (x : string____ref) requires {  } ensures  {  }
+    returns unit
+
+end
+
+(* Module defining to_string/of_string functions, created in Gnat2Why.Types.Translate_Type *)
+module Standard_String__Img
+  
+  use import int.Int
+  use        Standard__string
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  function   to_string (x : _gnatprove_standard.Main.__image s : int)
+    requires { True } ensures  { True } returns Standard__string.string__
+  
+  function   from_string (x : Standard__string.string__) requires { True }
+    ensures  { True } returns _gnatprove_standard.Main.__image
+  
+  axiom to_string__first : ( forall x : _gnatprove_standard.Main.__image
+                           [].( forall s : int
+                              [(to_string x s)].((Standard__string.first
+                                                    (to_string x s)) = 1)))
+  
+  axiom to_string__length : ( forall x : _gnatprove_standard.Main.__image
+                            [].( forall s : int
+                               [(to_string x s)].((s >= 0) ->
+                                                    ((Standard__string.length
+                                                        (to_string x s)) <= s))))
+
+end
+
+(* Module giving axioms for type "integer", created in Gnat2Why.Types.Generate_Type_Completion *)
+module Standard__integer___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__integer
+  
+  function   dynamic_invariant
+    (([mlw:proxy_symbol] [introduced] temp___expr_18) : int
+    ([mlw:proxy_symbol] [introduced] temp___is_init_14) : bool
+    ([mlw:proxy_symbol] [introduced] temp___skip_constant_15) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_toplevel_16) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_typ_inv_17) : bool) requires
+    { True } ensures  { True } returns
+     = (if
+       ((([mlw:proxy_symbol] [introduced] temp___is_init_14) = True) \/
+          (Standard__integer.first <= Standard__integer.last))
+       then
+       (Standard__integer.dynamic_property Standard__integer.first
+          Standard__integer.last ([mlw:proxy_symbol]
+          [introduced] temp___expr_18))
+       )
+  
+  function   default_initial_assumption
+    (([mlw:proxy_symbol] [introduced] temp___expr_19) : int
+    ([mlw:proxy_symbol] [introduced] temp___skip_top_level_20) : bool)
+    requires { True } ensures  { True } returns  = True
+
+end
+
+(* Module for axiomatizing concatenation for the array theory associated to type "string", created in Why.Gen.Arrays.Declare_Concatenation_Symbols *)
+module Array__Int__Standard__character__Concat
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Array__Int__Standard__character
+  
+  function   index_Index_one () requires { True } ensures  { True } returns
+    int = 1
+  
+  clone export _gnatprove_standard.Array__1__Concat with axiom . type component_type = Array__Int__Standard__character.component_type,
+    type map = Array__Int__Standard__character.map, type Index.t = int,
+    predicate Index.le = <=, predicate Index.lt = <, predicate Index.gt = >,
+    function Index.add = +, function Index.sub = -,
+    function Index.one = index_Index_one,
+    function get = Array__Int__Standard__character.get
+
+end
+
+(* Module for declaring a program function (and possibly an axiom) for "add" defined at main.adb:5, created in Gnat2Why.Subprograms.Generate_Subprogram_Completion *)
+module Main__add___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__integer___axiom
+  
+  function   add (x : int__ref y : int__ref z : int__ref) requires { True }
+    ensures 
+    { ((!z = ((at old !x) + (at old !y))) /\
+         (((Standard__integer___axiom.dynamic_invariant !x True True True
+              True) /\
+             (Standard__integer___axiom.dynamic_invariant !y True True True
+                True)) /\
+            (Standard__integer___axiom.dynamic_invariant !z True True True
+               True))) } returns unit
+
+end
+
+(* Module for defining a ref holding the value of variable "x" defined at main.adb:11, created in Gnat2Why.Decls.Translate_Variable *)
+module Main__x
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val x [model_projected] [model_trace:873] [name:X] [sloc:main.adb:11]: int
+
+end
+
+(* Module for defining a ref holding the value of variable "y" defined at main.adb:12, created in Gnat2Why.Decls.Translate_Variable *)
+module Main__y
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val y [model_projected] [model_trace:877] [name:Y] [sloc:main.adb:12]: int
+
+end
+
+(* Module for defining a ref holding the value of variable "z" defined at main.adb:13, created in Gnat2Why.Decls.Translate_Variable *)
+module Main__z
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val z [model_trace:881] [model_projected] [name:Z] [sloc:main.adb:13]: int
+
+end
+
+(* Module for possibly declaring a logic function for "line_length" defined at a-textio.ads:244, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module Ada___ada__text_io__line_length__2
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use        _gnatprove_standard.Main
+  
+  function   line_length
+    (Ada___ada__text_io__file_system___file_system___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_in___standard_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_out___standard_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_err___standard_err___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_in___current_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_out___current_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_err___current_err___ : _gnatprove_standard.Main.__private)
+    requires { True } ensures  { True } returns int
+  
+  function   line_length__function_guard
+    (([mlw:proxy_symbol] [introduced] temp___result_168) : int
+    Ada___ada__text_io__file_system___file_system___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_in___standard_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_out___standard_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_err___standard_err___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_in___current_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_out___current_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_err___current_err___ : _gnatprove_standard.Main.__private)
+    requires { True } ensures  { True } returns bool
+
+end
+
+(* Module for possibly declaring a logic function for "page_length" defined at a-textio.ads:250, created in Gnat2Why.Subprograms.Translate_Subprogram_Spec *)
+module Ada___ada__text_io__page_length__2
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use        _gnatprove_standard.Main
+  
+  function   page_length
+    (Ada___ada__text_io__file_system___file_system___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_in___standard_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_out___standard_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_err___standard_err___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_in___current_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_out___current_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_err___current_err___ : _gnatprove_standard.Main.__private)
+    requires { True } ensures  { True } returns int
+  
+  function   page_length__function_guard
+    (([mlw:proxy_symbol] [introduced] temp___result_169) : int
+    Ada___ada__text_io__file_system___file_system___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_in___standard_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_out___standard_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__standard_err___standard_err___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_in___current_in___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_out___current_out___ : _gnatprove_standard.Main.__private
+    Ada___ada__text_io__current_err___current_err___ : _gnatprove_standard.Main.__private)
+    requires { True } ensures  { True } returns bool
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__file_system," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__file_system
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val file_system  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__standard_in," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__standard_in
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val standard_in  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__standard_out," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__standard_out
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val standard_out  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__standard_err," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__standard_err
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val standard_err  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__current_in," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__current_in
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val current_in  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__current_out," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__current_out
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val current_out  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module declaring the external object "ada___ada__text_io__current_err," created in Gnat2Why.Decls.Translate_External_Object *)
+module Ada___ada__text_io__current_err
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  val current_err  : _gnatprove_standard.Main.__private
+
+end
+
+(* Module for declaring a program function (and possibly an axiom) for "put_line" defined at a-textio.ads:507, created in Gnat2Why.Subprograms.Generate_Subprogram_Completion *)
+module Ada___ada__text_io__put_line__2___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use        _gnatprove_standard.Main
+  use        Standard__string
+  use        Ada___ada__text_io__line_length__2
+  use        Ada___ada__text_io__page_length__2
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  
+  function   put_line (item : Standard__string.string__) requires { True }
+    ensures 
+    { (([GP_Pretty_Ada:3218] ((at old (Ada___ada__text_io__line_length__2.line_length
+                                         !Ada___ada__text_io__file_system.file_system
+                                         !Ada___ada__text_io__standard_in.standard_in
+                                         !Ada___ada__text_io__standard_out.standard_out
+                                         !Ada___ada__text_io__standard_err.standard_err
+                                         !Ada___ada__text_io__current_in.current_in
+                                         !Ada___ada__text_io__current_out.current_out
+                                         !Ada___ada__text_io__current_err.current_err))
+                                = (Ada___ada__text_io__line_length__2.line_length
+                                     !Ada___ada__text_io__file_system.file_system
+                                     !Ada___ada__text_io__standard_in.standard_in
+                                     !Ada___ada__text_io__standard_out.standard_out
+                                     !Ada___ada__text_io__standard_err.standard_err
+                                     !Ada___ada__text_io__current_in.current_in
+                                     !Ada___ada__text_io__current_out.current_out
+                                     !Ada___ada__text_io__current_err.current_err)))
+         /\
+         ([GP_Pretty_Ada:3224] ((at old (Ada___ada__text_io__page_length__2.page_length
+                                           !Ada___ada__text_io__file_system.file_system
+                                           !Ada___ada__text_io__standard_in.standard_in
+                                           !Ada___ada__text_io__standard_out.standard_out
+                                           !Ada___ada__text_io__standard_err.standard_err
+                                           !Ada___ada__text_io__current_in.current_in
+                                           !Ada___ada__text_io__current_out.current_out
+                                           !Ada___ada__text_io__current_err.current_err))
+                                  = (Ada___ada__text_io__page_length__2.page_length
+                                       !Ada___ada__text_io__file_system.file_system
+                                       !Ada___ada__text_io__standard_in.standard_in
+                                       !Ada___ada__text_io__standard_out.standard_out
+                                       !Ada___ada__text_io__standard_err.standard_err
+                                       !Ada___ada__text_io__current_in.current_in
+                                       !Ada___ada__text_io__current_out.current_out
+                                       !Ada___ada__text_io__current_err.current_err)))) }
+    returns unit
+
+end
+
+(* Module for defining a value for string literal  defined at main.adb:15, created in Gnat2Why.Expr.Transform_String_Literal *)
+module Temp___String_Literal_199
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__character
+  use        Standard__character__rep
+  use        Array__Int__Standard__character
+  use        Array__Int__Standard__character
+  
+  function   temp___String_Literal_199 (__void_param : unit) requires
+    { True } ensures  { True } returns Array__Int__Standard__character.map
+  
+  axiom temp___String_Literal_199__def_axiom : ( forall __void_param : unit
+                                               [(temp___String_Literal_199
+                                                   __void_param)].(((Standard__character__rep.to_rep
+                                                                    (Array__Int__Standard__character.get
+                                                                    (temp___String_Literal_199
+                                                                    __void_param)
+                                                                    1)) = 90)
+                                                                    /\
+                                                                    ((Standard__character__rep.to_rep
+                                                                    (Array__Int__Standard__character.get
+                                                                    (temp___String_Literal_199
+                                                                    __void_param)
+                                                                    2)) = 32)
+                                                                    /\
+                                                                    ((Standard__character__rep.to_rep
+                                                                    (Array__Int__Standard__character.get
+                                                                    (temp___String_Literal_199
+                                                                    __void_param)
+                                                                    3)) = 61)))
+
+end
+
+(* Module for defining a value for string literal  defined at main.adb:18, created in Gnat2Why.Expr.Transform_String_Literal *)
+module Temp___String_Literal_205
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__character
+  use        Standard__character__rep
+  use        Array__Int__Standard__character
+  use        Array__Int__Standard__character
+  
+  function   temp___String_Literal_205 (__void_param : unit) requires
+    { True } ensures  { True } returns Array__Int__Standard__character.map
+  
+  axiom temp___String_Literal_205__def_axiom : ( forall __void_param : unit
+                                               [(temp___String_Literal_205
+                                                   __void_param)].(((Standard__character__rep.to_rep
+                                                                    (Array__Int__Standard__character.get
+                                                                    (temp___String_Literal_205
+                                                                    __void_param)
+                                                                    1)) = 90)
+                                                                    /\
+                                                                    ((Standard__character__rep.to_rep
+                                                                    (Array__Int__Standard__character.get
+                                                                    (temp___String_Literal_205
+                                                                    __void_param)
+                                                                    2)) = 32)
+                                                                    /\
+                                                                    ((Standard__character__rep.to_rep
+                                                                    (Array__Int__Standard__character.get
+                                                                    (temp___String_Literal_205
+                                                                    __void_param)
+                                                                    3)) = 61)))
+
+end
+
+(* Module giving axioms for type "positive", created in Gnat2Why.Types.Generate_Type_Completion *)
+module Standard__positive___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__positive
+  
+  function   dynamic_invariant
+    (([mlw:proxy_symbol] [introduced] temp___expr_53) : int
+    ([mlw:proxy_symbol] [introduced] temp___is_init_49) : bool
+    ([mlw:proxy_symbol] [introduced] temp___skip_constant_50) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_toplevel_51) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_typ_inv_52) : bool) requires
+    { True } ensures  { True } returns
+     = (if
+       ((([mlw:proxy_symbol] [introduced] temp___is_init_49) = True) \/
+          (Standard__positive.first <= Standard__positive.last))
+       then
+       (Standard__positive.dynamic_property Standard__positive.first
+          Standard__positive.last ([mlw:proxy_symbol]
+          [introduced] temp___expr_53))
+       )
+  
+  function   default_initial_assumption
+    (([mlw:proxy_symbol] [introduced] temp___expr_54) : int
+    ([mlw:proxy_symbol] [introduced] temp___skip_top_level_55) : bool)
+    requires { True } ensures  { True } returns  = True
+
+end
+
+(* Module giving axioms for type "character", created in Gnat2Why.Types.Generate_Type_Completion *)
+module Standard__character___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Standard__character
+  
+  function   dynamic_invariant
+    (([mlw:proxy_symbol] [introduced] temp___expr_88) : int
+    ([mlw:proxy_symbol] [introduced] temp___is_init_84) : bool
+    ([mlw:proxy_symbol] [introduced] temp___skip_constant_85) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_toplevel_86) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_typ_inv_87) : bool) requires
+    { True } ensures  { True } returns
+     = (if
+       ((([mlw:proxy_symbol] [introduced] temp___is_init_84) = True) \/
+          (Standard__character.first <= Standard__character.last))
+       then
+       (Standard__character.dynamic_property Standard__character.first
+          Standard__character.last ([mlw:proxy_symbol]
+          [introduced] temp___expr_88))
+       )
+  
+  function   default_initial_assumption
+    (([mlw:proxy_symbol] [introduced] temp___expr_89) : int
+    ([mlw:proxy_symbol] [introduced] temp___skip_top_level_90) : bool)
+    requires { True } ensures  { True } returns  = True
+
+end
+
+(* Module giving axioms for type "string", created in Gnat2Why.Types.Generate_Type_Completion *)
+module Standard__string___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use        Standard__positive
+  use        Standard__string
+  
+  function   dynamic_invariant
+    (([mlw:proxy_symbol]
+    [introduced] temp___expr_110) : Standard__string.string__
+    ([mlw:proxy_symbol] [introduced] temp___is_init_106) : bool
+    ([mlw:proxy_symbol] [introduced] temp___skip_constant_107) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_toplevel_108) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_typ_inv_109) : bool) requires
+    { True } ensures  { True } returns
+     = (if ([mlw:proxy_symbol] [introduced] temp___skip_constant_107) then
+       True  else
+       (Standard__string.dynamic_property Standard__positive.first
+          Standard__positive.last
+          (Standard__string.first ([mlw:proxy_symbol]
+             [introduced] temp___expr_110))
+          (Standard__string.last ([mlw:proxy_symbol]
+             [introduced] temp___expr_110))))
+
+end
+
+(* Module giving an empty axiom for the entity "x" defined at main.adb:11, created in Gnat2Why.Driver.Translate_Entity.Generate_Empty_Axiom_Theory *)
+module Main__x___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  
+
+end
+
+(* Module giving an empty axiom for the entity "y" defined at main.adb:12, created in Gnat2Why.Driver.Translate_Entity.Generate_Empty_Axiom_Theory *)
+module Main__y___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  
+
+end
+
+(* Module giving an empty axiom for the entity "z" defined at main.adb:13, created in Gnat2Why.Driver.Translate_Entity.Generate_Empty_Axiom_Theory *)
+module Main__z___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  
+  
+
+end
+
+(* Module for axiomatizing type "count" defined at a-textio.ads:79, created in Gnat2Why.Types.Translate_Type *)
+module Ada___ada__text_io__count
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  
+  type count  = <range 0 2147483647>
+  
+  function   first () requires { True } ensures  { True } returns int = 0
+  
+  function   last () requires { True } ensures  { True } returns
+    int = 2147483647
+  
+  function [GP_Inline]  in_range (x : int) requires { True } ensures 
+    { True } returns
+     = (([GP_Pretty_Ada:-1] (first <= x)) /\ ([GP_Pretty_Ada:-2] (x <= last)))
+  
+  clone export ada__model.Static_Discrete with axiom . type t = count,
+    function first = first, function last = last,
+    predicate in_range = in_range
+  
+  type count__ref  = { mutable count__content : count }
+  
+  function   count__ref_count__content__projection (a : count__ref) requires
+    {  } ensures  {  } returns count = a.count__content
+  
+  meta model_projection function count__ref_count__content__projection
+  
+  meta inline:no function count__ref_count__content__projection
+  
+  function   count__havoc (x : count__ref) requires {  } ensures  {  }
+    returns unit
+
+end
+
+(* Module giving axioms for type "count" defined at a-textio.ads:79, created in Gnat2Why.Types.Generate_Type_Completion *)
+module Ada___ada__text_io__count___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        Ada___ada__text_io__count
+  
+  function   dynamic_invariant
+    (([mlw:proxy_symbol] [introduced] temp___expr_174) : int
+    ([mlw:proxy_symbol] [introduced] temp___is_init_170) : bool
+    ([mlw:proxy_symbol] [introduced] temp___skip_constant_171) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_toplevel_172) : bool
+    ([mlw:proxy_symbol] [introduced] temp___do_typ_inv_173) : bool) requires
+    { True } ensures  { True } returns
+     = (if
+       ((([mlw:proxy_symbol] [introduced] temp___is_init_170) = True) \/
+          (Ada___ada__text_io__count.first <= Ada___ada__text_io__count.last))
+       then
+       (Ada___ada__text_io__count.dynamic_property
+          Ada___ada__text_io__count.first Ada___ada__text_io__count.last
+          ([mlw:proxy_symbol] [introduced] temp___expr_174))
+       )
+  
+  function   default_initial_assumption
+    (([mlw:proxy_symbol] [introduced] temp___expr_175) : int
+    ([mlw:proxy_symbol] [introduced] temp___skip_top_level_176) : bool)
+    requires { True } ensures  { True } returns  = True
+
+end
+
+(* Module for declaring a program function (and possibly an axiom) for "line_length" defined at a-textio.ads:244, created in Gnat2Why.Subprograms.Generate_Subprogram_Completion *)
+module Ada___ada__text_io__line_length__2___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use        _gnatprove_standard.Main
+  use        Ada___ada__text_io__line_length__2
+  use        Ada___ada__text_io__count___axiom
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  
+  function   line_length (__void_param : unit) requires { True } ensures 
+    { (([RAC:assume] (result
+                        = (Ada___ada__text_io__line_length__2.line_length
+                             !Ada___ada__text_io__file_system.file_system
+                             !Ada___ada__text_io__standard_in.standard_in
+                             !Ada___ada__text_io__standard_out.standard_out
+                             !Ada___ada__text_io__standard_err.standard_err
+                             !Ada___ada__text_io__current_in.current_in
+                             !Ada___ada__text_io__current_out.current_out
+                             !Ada___ada__text_io__current_err.current_err)))
+         /\ True /\
+         (Ada___ada__text_io__count___axiom.dynamic_invariant result True
+            False True True)) } returns int
+  
+  axiom line_length__post_axiom : ( forall
+                                  Ada___ada__text_io__file_system___file_system___
+                                  Ada___ada__text_io__standard_in___standard_in___
+                                  Ada___ada__text_io__standard_out___standard_out___
+                                  Ada___ada__text_io__standard_err___standard_err___
+                                  Ada___ada__text_io__current_in___current_in___
+                                  Ada___ada__text_io__current_out___current_out___
+                                  Ada___ada__text_io__current_err___current_err___
+                                  : _gnatprove_standard.Main.__private
+                                  [(Ada___ada__text_io__line_length__2.line_length
+                                      Ada___ada__text_io__file_system___file_system___
+                                      Ada___ada__text_io__standard_in___standard_in___
+                                      Ada___ada__text_io__standard_out___standard_out___
+                                      Ada___ada__text_io__standard_err___standard_err___
+                                      Ada___ada__text_io__current_in___current_in___
+                                      Ada___ada__text_io__current_out___current_out___
+                                      Ada___ada__text_io__current_err___current_err___)].
+                                  (let result =
+                                  (Ada___ada__text_io__line_length__2.line_length
+                                     Ada___ada__text_io__file_system___file_system___
+                                     Ada___ada__text_io__standard_in___standard_in___
+                                     Ada___ada__text_io__standard_out___standard_out___
+                                     Ada___ada__text_io__standard_err___standard_err___
+                                     Ada___ada__text_io__current_in___current_in___
+                                     Ada___ada__text_io__current_out___current_out___
+                                     Ada___ada__text_io__current_err___current_err___)
+                                  in
+                                  (True /\
+                                     (Ada___ada__text_io__count___axiom.dynamic_invariant
+                                        result True False True True) /\ True)))
+
+end
+
+(* Module for declaring a program function (and possibly an axiom) for "page_length" defined at a-textio.ads:250, created in Gnat2Why.Subprograms.Generate_Subprogram_Completion *)
+module Ada___ada__text_io__page_length__2___axiom
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use        _gnatprove_standard.Main
+  use        Ada___ada__text_io__page_length__2
+  use        Ada___ada__text_io__count___axiom
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  use        Ada___ada__text_io__file_system
+  use        Ada___ada__text_io__standard_in
+  use        Ada___ada__text_io__standard_out
+  use        Ada___ada__text_io__standard_err
+  use        Ada___ada__text_io__current_in
+  use        Ada___ada__text_io__current_out
+  use        Ada___ada__text_io__current_err
+  
+  function   page_length (__void_param : unit) requires { True } ensures 
+    { (([RAC:assume] (result
+                        = (Ada___ada__text_io__page_length__2.page_length
+                             !Ada___ada__text_io__file_system.file_system
+                             !Ada___ada__text_io__standard_in.standard_in
+                             !Ada___ada__text_io__standard_out.standard_out
+                             !Ada___ada__text_io__standard_err.standard_err
+                             !Ada___ada__text_io__current_in.current_in
+                             !Ada___ada__text_io__current_out.current_out
+                             !Ada___ada__text_io__current_err.current_err)))
+         /\ True /\
+         (Ada___ada__text_io__count___axiom.dynamic_invariant result True
+            False True True)) } returns int
+  
+  axiom page_length__post_axiom : ( forall
+                                  Ada___ada__text_io__file_system___file_system___
+                                  Ada___ada__text_io__standard_in___standard_in___
+                                  Ada___ada__text_io__standard_out___standard_out___
+                                  Ada___ada__text_io__standard_err___standard_err___
+                                  Ada___ada__text_io__current_in___current_in___
+                                  Ada___ada__text_io__current_out___current_out___
+                                  Ada___ada__text_io__current_err___current_err___
+                                  : _gnatprove_standard.Main.__private
+                                  [(Ada___ada__text_io__page_length__2.page_length
+                                      Ada___ada__text_io__file_system___file_system___
+                                      Ada___ada__text_io__standard_in___standard_in___
+                                      Ada___ada__text_io__standard_out___standard_out___
+                                      Ada___ada__text_io__standard_err___standard_err___
+                                      Ada___ada__text_io__current_in___current_in___
+                                      Ada___ada__text_io__current_out___current_out___
+                                      Ada___ada__text_io__current_err___current_err___)].
+                                  (let result =
+                                  (Ada___ada__text_io__page_length__2.page_length
+                                     Ada___ada__text_io__file_system___file_system___
+                                     Ada___ada__text_io__standard_in___standard_in___
+                                     Ada___ada__text_io__standard_out___standard_out___
+                                     Ada___ada__text_io__standard_err___standard_err___
+                                     Ada___ada__text_io__current_in___current_in___
+                                     Ada___ada__text_io__current_out___current_out___
+                                     Ada___ada__text_io__current_err___current_err___)
+                                  in
+                                  (True /\
+                                     (Ada___ada__text_io__count___axiom.dynamic_invariant
+                                        result True False True True) /\ True)))
+
+end
+
+(* Module for checking contracts and absence of run-time errors in subprogram "main" defined at main.adb:3, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram *)
+module Main__subprogram_def
+  
+  use import _gnatprove_standard.Main
+  use import int.Int
+  use import int.Int
+  use        _gnatprove_standard.Integer
+  use        Standard_String__Img
+  use        Standard__integer
+  use        Standard__integer___axiom
+  use        Standard__positive
+  use        Array__Int__Standard__character__Concat
+  use        Standard__string
+  use        Main__add___axiom
+  use        Main__x
+  use        Main__y
+  use        Main__z
+  use        Ada___ada__text_io__put_line__2___axiom
+  use        Temp___String_Literal_199
+  use        Array__Int__Standard__character
+  use        Array__Int__Standard__character
+  use        Temp___String_Literal_205
+  use        Array__Int__Standard__character
+  use        Array__Int__Standard__character
+  use        Standard__integer___axiom
+  use        Standard__positive___axiom
+  use        Standard__character___axiom
+  use        Standard__string___axiom
+  use        Standard__integer___axiom
+  use        Main__add___axiom
+  use        Main__x___axiom
+  use        Main__y___axiom
+  use        Main__z___axiom
+  use        Ada___ada__text_io__count___axiom
+  use        Ada___ada__text_io__line_length__2___axiom
+  use        Ada___ada__text_io__page_length__2___axiom
+  use        Ada___ada__text_io__put_line__2___axiom
+  
+  function  [sloc:main.adb:3] def (__void_param : unit) requires { True }
+    ensures  {  } returns
+     = (* Assume dynamic invariants of inputs of the subprogram main.adb:3 *);
+        (* Assume moved pointers in outputs of the subprogram main.adb:3 *);
+        (* Check for RTE in the Pre of the subprogram main.adb:3 *);
+        abstract ensures
+        { True } begin  (let _ = True in ())  end;
+        (* Assume Pre of the subprogram main.adb:3 *);
+        (try
+        ();
+          ([sloc:main.adb:3] ());
+          ([sloc:main.adb:5] ());
+          ([sloc:main.adb:9] ());
+          ([sloc:main.adb:7] ());
+          ([sloc:main.adb:7] ());
+          ([sloc:main.adb:8] ());
+          ([sloc:main.adb:11] ( Main__x.x := ( 1));
+          assume
+          { (Standard__integer___axiom.dynamic_invariant !Main__x.x True
+               False True True) });
+          ([sloc:main.adb:12] ( Main__y.y := ( 2));
+          assume
+          { (Standard__integer___axiom.dynamic_invariant !Main__y.y True
+               False True True) });
+          ([sloc:main.adb:13] ( Main__z.z := ( 0));
+          assume
+          { (Standard__integer___axiom.dynamic_invariant !Main__z.z True
+               False True True) });
+          ();
+          ([sloc:main.adb:15] ());
+          ([sloc:main.adb:15] ( any --pp_effects NOT IMPLEMENTED pre {} post
+          {} return unit);
+          (Ada___ada__text_io__put_line__2___axiom.put_line
+             (let ([mlw:proxy_symbol] [introduced] temp___201) =
+             (Standard_String__Img.to_string
+                (Standard__integer.attr__ATTRIBUTE_IMAGE !Main__z.z) 12) in
+             (let ([mlw:proxy_symbol] [introduced] temp___200) =
+             (Temp___String_Literal_199.temp___String_Literal_199 ()) in
+             (Standard__string.of_array
+                (Array__Int__Standard__character__Concat.concat
+                   ([mlw:proxy_symbol] [introduced] temp___200) 1 3
+                   (Standard__string.to_array ([mlw:proxy_symbol]
+                      [introduced] temp___201))
+                   (Standard__string.first ([mlw:proxy_symbol]
+                      [introduced] temp___201))
+                   (Standard__string.last ([mlw:proxy_symbol]
+                      [introduced] temp___201))) 1
+                ([sloc:main.adb:15] ([vc:annotation]
+                                    [GP_Check:0:VC_RANGE_CHECK:main.adb:15:32]
+                                    [GP_Shape:call_put_line__concat] (
+                                    Standard__positive.range_check_
+                                      ((1
+                                          + ((_gnatprove_standard.Integer.length
+                                                1 3)
+                                               + (_gnatprove_standard.Integer.length
+                                                    (Standard__string.first
+                                                       ([mlw:proxy_symbol]
+                                                       [introduced] temp___201))
+                                                    (Standard__string.last
+                                                       ([mlw:proxy_symbol]
+                                                       [introduced] temp___201)))))
+                                         - 1))))))));
+          ());
+        ([sloc:main.adb:16] ());
+        ([sloc:main.adb:16] ());
+        ([sloc:main.adb:16] ());
+        ([sloc:main.adb:16] ());
+        ([sloc:main.adb:16] (let ([mlw:proxy_symbol]
+        [introduced] temp___compl_202) = !Main__x.x in
+        (let ([mlw:proxy_symbol] [introduced] temp___compl_203) = !Main__y.y
+        in (let ([mlw:proxy_symbol] [introduced] temp___compl_204) =
+        !Main__z.z in ( any --pp_effects NOT IMPLEMENTED pre {} post {
+        } return unit);
+        (Main__add___axiom.add Main__x.x Main__y.y Main__z.z);
+        ()))));
+    ([sloc:main.adb:17] abstract ensures
+    { True } begin  (let _ = (!Main__z.z = 3) in ())  end;
+    ();
+    assert
+    { ([sloc:main.adb:17] ([GP_Shape:pragargs__cmp] [vc:annotation]
+                          [GP_Check:1:VC_ASSERT:main.adb:17:19] (!Main__z.z
+                                                                   = 3))) });
+    ([sloc:main.adb:18] ());
+    ([sloc:main.adb:18] ( any --pp_effects NOT IMPLEMENTED pre {} post {
+    } return unit);
+    (Ada___ada__text_io__put_line__2___axiom.put_line
+       (let ([mlw:proxy_symbol] [introduced] temp___207) =
+       (Standard_String__Img.to_string
+          (Standard__integer.attr__ATTRIBUTE_IMAGE !Main__z.z) 12) in
+       (let ([mlw:proxy_symbol] [introduced] temp___206) =
+       (Temp___String_Literal_205.temp___String_Literal_205 ()) in
+       (Standard__string.of_array
+          (Array__Int__Standard__character__Concat.concat ([mlw:proxy_symbol]
+             [introduced] temp___206) 1 3
+             (Standard__string.to_array ([mlw:proxy_symbol]
+                [introduced] temp___207))
+             (Standard__string.first ([mlw:proxy_symbol]
+                [introduced] temp___207))
+             (Standard__string.last ([mlw:proxy_symbol]
+                [introduced] temp___207))) 1
+          ([sloc:main.adb:18] ([vc:annotation]
+                              [GP_Check:2:VC_RANGE_CHECK:main.adb:18:32]
+                              [GP_Shape:call_put_line__concat] (Standard__positive.range_check_
+                                                                  ((1
+                                                                    + (
+                                                                    (_gnatprove_standard.Integer.length
+                                                                    1 3)
+                                                                    + (
+                                                                    _gnatprove_standard.Integer.length
+                                                                    (Standard__string.first
+                                                                    ([mlw:proxy_symbol]
+                                                                    [introduced] temp___207))
+                                                                    (Standard__string.last
+                                                                    ([mlw:proxy_symbol]
+                                                                    [introduced] temp___207)))))
+                                                                    - 1))))))));
+    ());
+  raise Return__exc with | Return__exc  -> ());
+abstract ensures
+{ True } begin  (let _ = True in ())  end
+
+end
