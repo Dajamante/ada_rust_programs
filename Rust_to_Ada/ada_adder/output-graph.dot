@@ -2,8 +2,8 @@ digraph Mir_0_5 {
     graph [fontname="Courier, monospace"];
     node [fontname="Courier, monospace"];
     edge [fontname="Courier, monospace"];
-    label=<fn main() -&gt; ()<br align="left"/>let _1: i32;<br align="left"/>let _2: i32;<br align="left"/>let _3: i32;<br align="left"/>let _4: &amp;i32;<br align="left"/>let _5: &amp;i32;<br align="left"/>debug x =&gt; _1;<br align="left"/>debug y =&gt; _2;<br align="left"/>debug z =&gt; _3;<br align="left"/>>;
-    bb0__0_5 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">0</td></tr><tr><td align="left" balign="left">_1 = const 1_i32<br/>_2 = const 2_i32<br/>_4 = &amp;_1<br/>_5 = &amp;_2<br/></td></tr><tr><td align="left">_3 = add(_4, _5)</td></tr></table>>];
+    label=<fn main() -&gt; ()<br align="left"/>let _1: i32;<br align="left"/>let _2: i32;<br align="left"/>let _3: i32;<br align="left"/>debug x =&gt; _1;<br align="left"/>debug y =&gt; _2;<br align="left"/>debug z =&gt; _3;<br align="left"/>>;
+    bb0__0_5 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">0</td></tr><tr><td align="left" balign="left">_1 = const 1_i32<br/>_2 = const 2_i32<br/></td></tr><tr><td align="left">_3 = add(_1, _2)</td></tr></table>>];
     bb1__0_5 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">1</td></tr><tr><td align="left">return</td></tr></table>>];
     bb0__0_5 -> bb1__0_5 [label="return"];
 }
