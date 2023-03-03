@@ -1,0 +1,1372 @@
+Crate {
+    owners: [
+        Owner(
+            OwnerInfo {
+                nodes: OwnerNodes {
+                    node: Some(
+                        ParentedNode {
+                            parent: 4294967040,
+                            node: Crate(
+                                Mod {
+                                    spans: ModSpans {
+                                        inner_span: src/main.rs:1:1: 13:2 (#0),
+                                        inject_use_span: no-location (#0),
+                                    },
+                                    item_ids: [
+                                        ItemId {
+                                            owner_id: DefId(0:1 ~ ada_adder[1b52]::{use#0}),
+                                        },
+                                        ItemId {
+                                            owner_id: DefId(0:2 ~ ada_adder[1b52]::std),
+                                        },
+                                        ItemId {
+                                            owner_id: DefId(0:3 ~ ada_adder[1b52]::{extern#0}),
+                                        },
+                                        ItemId {
+                                            owner_id: DefId(0:5 ~ ada_adder[1b52]::main),
+                                        },
+                                    ],
+                                },
+                            ),
+                        },
+                    ),
+                    parents: [
+                        (0, Some(4294967040)),
+                    ],
+                    bodies: {},
+                    hash_without_bodies: Fingerprint(
+                        14315675994794394747,
+                        18381676193573646859,
+                    ),
+                    hash_including_bodies: Fingerprint(
+                        14315675994794394747,
+                        18381676193573646859,
+                    ),
+                },
+                parenting: {
+                    DefId(0:5 ~ ada_adder[1b52]::main): 0,
+                    DefId(0:2 ~ ada_adder[1b52]::std): 0,
+                    DefId(0:1 ~ ada_adder[1b52]::{use#0}): 0,
+                    DefId(0:3 ~ ada_adder[1b52]::{extern#0}): 0,
+                },
+                attrs: AttributeMap {
+                    map: {},
+                    hash: Fingerprint(
+                        9785122672296426403,
+                        8173264106939382879,
+                    ),
+                },
+                trait_map: {},
+            },
+        ),
+        Owner(
+            OwnerInfo {
+                nodes: OwnerNodes {
+                    node: Some(
+                        ParentedNode {
+                            parent: 4294967040,
+                            node: Item(
+                                Item {
+                                    ident: #0,
+                                    owner_id: DefId(0:1 ~ ada_adder[1b52]::{use#0}),
+                                    kind: Use(
+                                        Path {
+                                            span: no-location (#1),
+                                            res: [
+                                                Err,
+                                            ],
+                                            segments: [
+                                                PathSegment {
+                                                    ident: std#1,
+                                                    hir_id: HirId(DefId(0:1 ~ ada_adder[1b52]::{use#0}).1),
+                                                    res: Def(
+                                                        Mod,
+                                                        DefId(1:0 ~ std[d012]),
+                                                    ),
+                                                    args: None,
+                                                    infer_args: false,
+                                                },
+                                                PathSegment {
+                                                    ident: prelude#1,
+                                                    hir_id: HirId(DefId(0:1 ~ ada_adder[1b52]::{use#0}).2),
+                                                    res: Def(
+                                                        Mod,
+                                                        DefId(1:47 ~ std[d012]::prelude),
+                                                    ),
+                                                    args: None,
+                                                    infer_args: false,
+                                                },
+                                                PathSegment {
+                                                    ident: rust_2021#1,
+                                                    hir_id: HirId(DefId(0:1 ~ ada_adder[1b52]::{use#0}).3),
+                                                    res: Def(
+                                                        Mod,
+                                                        DefId(1:134 ~ std[d012]::prelude::rust_2021),
+                                                    ),
+                                                    args: None,
+                                                    infer_args: false,
+                                                },
+                                            ],
+                                        },
+                                        Glob,
+                                    ),
+                                    span: no-location (#1),
+                                    vis_span: no-location (#1),
+                                },
+                            ),
+                        },
+                    ),
+                    parents: [
+                        (0, Some(4294967040)),
+                        (1, Some(0)),
+                        (2, Some(0)),
+                        (3, Some(0)),
+                    ],
+                    bodies: {},
+                    hash_without_bodies: Fingerprint(
+                        5633236943013562430,
+                        18015286009329245094,
+                    ),
+                    hash_including_bodies: Fingerprint(
+                        5633236943013562430,
+                        18015286009329245094,
+                    ),
+                },
+                parenting: {},
+                attrs: AttributeMap {
+                    map: {
+                        0: [
+                            Attribute {
+                                kind: Normal(
+                                    NormalAttr {
+                                        item: AttrItem {
+                                            path: Path {
+                                                span: no-location (#1),
+                                                segments: [
+                                                    PathSegment {
+                                                        ident: prelude_import#1,
+                                                        id: NodeId(2),
+                                                        args: None,
+                                                    },
+                                                ],
+                                                tokens: None,
+                                            },
+                                            args: Empty,
+                                            tokens: None,
+                                        },
+                                        tokens: None,
+                                    },
+                                ),
+                                id: AttrId(1)],
+                                style: Outer,
+                                span: no-location (#1),
+                            },
+                        ],
+                    },
+                    hash: Fingerprint(
+                        2982915528122400854,
+                        302984239481724298,
+                    ),
+                },
+                trait_map: {},
+            },
+        ),
+        Owner(
+            OwnerInfo {
+                nodes: OwnerNodes {
+                    node: Some(
+                        ParentedNode {
+                            parent: 4294967040,
+                            node: Item(
+                                Item {
+                                    ident: std#1,
+                                    owner_id: DefId(0:2 ~ ada_adder[1b52]::std),
+                                    kind: ExternCrate(
+                                        None,
+                                    ),
+                                    span: no-location (#1),
+                                    vis_span: no-location (#1),
+                                },
+                            ),
+                        },
+                    ),
+                    parents: [
+                        (0, Some(4294967040)),
+                    ],
+                    bodies: {},
+                    hash_without_bodies: Fingerprint(
+                        14369488976452222123,
+                        11379131374183673378,
+                    ),
+                    hash_including_bodies: Fingerprint(
+                        14369488976452222123,
+                        11379131374183673378,
+                    ),
+                },
+                parenting: {},
+                attrs: AttributeMap {
+                    map: {
+                        0: [
+                            Attribute {
+                                kind: Normal(
+                                    NormalAttr {
+                                        item: AttrItem {
+                                            path: Path {
+                                                span: no-location (#1),
+                                                segments: [
+                                                    PathSegment {
+                                                        ident: macro_use#1,
+                                                        id: NodeId(7),
+                                                        args: None,
+                                                    },
+                                                ],
+                                                tokens: None,
+                                            },
+                                            args: Empty,
+                                            tokens: None,
+                                        },
+                                        tokens: None,
+                                    },
+                                ),
+                                id: AttrId(0)],
+                                style: Outer,
+                                span: no-location (#1),
+                            },
+                        ],
+                    },
+                    hash: Fingerprint(
+                        8901620420899046333,
+                        8743174763526217815,
+                    ),
+                },
+                trait_map: {},
+            },
+        ),
+        Owner(
+            OwnerInfo {
+                nodes: OwnerNodes {
+                    node: Some(
+                        ParentedNode {
+                            parent: 4294967040,
+                            node: Item(
+                                Item {
+                                    ident: #0,
+                                    owner_id: DefId(0:3 ~ ada_adder[1b52]::{extern#0}),
+                                    kind: ForeignMod {
+                                        abi: C {
+                                            unwind: false,
+                                        },
+                                        items: [
+                                            ForeignItemRef {
+                                                id: ForeignItemId {
+                                                    owner_id: DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add),
+                                                },
+                                                ident: add#0,
+                                                span: src/main.rs:2:5: 2:45 (#0),
+                                            },
+                                        ],
+                                    },
+                                    span: src/main.rs:1:1: 3:2 (#0),
+                                    vis_span: no-location (#0),
+                                },
+                            ),
+                        },
+                    ),
+                    parents: [
+                        (0, Some(4294967040)),
+                    ],
+                    bodies: {},
+                    hash_without_bodies: Fingerprint(
+                        8601143222688809666,
+                        15963048510141474203,
+                    ),
+                    hash_including_bodies: Fingerprint(
+                        8601143222688809666,
+                        15963048510141474203,
+                    ),
+                },
+                parenting: {
+                    DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add): 0,
+                },
+                attrs: AttributeMap {
+                    map: {},
+                    hash: Fingerprint(
+                        9785122672296426403,
+                        8173264106939382879,
+                    ),
+                },
+                trait_map: {},
+            },
+        ),
+        Owner(
+            OwnerInfo {
+                nodes: OwnerNodes {
+                    node: Some(
+                        ParentedNode {
+                            parent: 4294967040,
+                            node: ForeignItem(
+                                ForeignItem {
+                                    ident: add#0,
+                                    kind: Fn(
+                                        FnDecl {
+                                            inputs: [
+                                                Ty {
+                                                    hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).3),
+                                                    kind: Ptr(
+                                                        MutTy {
+                                                            ty: Ty {
+                                                                hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).1),
+                                                                kind: Path(
+                                                                    Resolved(
+                                                                        None,
+                                                                        Path {
+                                                                            span: src/main.rs:2:20: 2:23 (#0),
+                                                                            res: PrimTy(
+                                                                                Int(
+                                                                                    I32,
+                                                                                ),
+                                                                            ),
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: i32#0,
+                                                                                    hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).2),
+                                                                                    res: PrimTy(
+                                                                                        Int(
+                                                                                            I32,
+                                                                                        ),
+                                                                                    ),
+                                                                                    args: None,
+                                                                                    infer_args: false,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    ),
+                                                                ),
+                                                                span: src/main.rs:2:20: 2:23 (#0),
+                                                            },
+                                                            mutbl: Mut,
+                                                        },
+                                                    ),
+                                                    span: src/main.rs:2:15: 2:23 (#0),
+                                                },
+                                                Ty {
+                                                    hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).6),
+                                                    kind: Ptr(
+                                                        MutTy {
+                                                            ty: Ty {
+                                                                hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).4),
+                                                                kind: Path(
+                                                                    Resolved(
+                                                                        None,
+                                                                        Path {
+                                                                            span: src/main.rs:2:33: 2:36 (#0),
+                                                                            res: PrimTy(
+                                                                                Int(
+                                                                                    I32,
+                                                                                ),
+                                                                            ),
+                                                                            segments: [
+                                                                                PathSegment {
+                                                                                    ident: i32#0,
+                                                                                    hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).5),
+                                                                                    res: PrimTy(
+                                                                                        Int(
+                                                                                            I32,
+                                                                                        ),
+                                                                                    ),
+                                                                                    args: None,
+                                                                                    infer_args: false,
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    ),
+                                                                ),
+                                                                span: src/main.rs:2:33: 2:36 (#0),
+                                                            },
+                                                            mutbl: Mut,
+                                                        },
+                                                    ),
+                                                    span: src/main.rs:2:28: 2:36 (#0),
+                                                },
+                                            ],
+                                            output: Return(
+                                                Ty {
+                                                    hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).7),
+                                                    kind: Path(
+                                                        Resolved(
+                                                            None,
+                                                            Path {
+                                                                span: src/main.rs:2:41: 2:44 (#0),
+                                                                res: PrimTy(
+                                                                    Int(
+                                                                        I32,
+                                                                    ),
+                                                                ),
+                                                                segments: [
+                                                                    PathSegment {
+                                                                        ident: i32#0,
+                                                                        hir_id: HirId(DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add).8),
+                                                                        res: PrimTy(
+                                                                            Int(
+                                                                                I32,
+                                                                            ),
+                                                                        ),
+                                                                        args: None,
+                                                                        infer_args: false,
+                                                                    },
+                                                                ],
+                                                            },
+                                                        ),
+                                                    ),
+                                                    span: src/main.rs:2:41: 2:44 (#0),
+                                                },
+                                            ),
+                                            c_variadic: false,
+                                            implicit_self: None,
+                                            lifetime_elision_allowed: false,
+                                        },
+                                        [
+                                            x#0,
+                                            y#0,
+                                        ],
+                                        Generics {
+                                            params: [],
+                                            predicates: [],
+                                            has_where_clause_predicates: false,
+                                            where_clause_span: src/main.rs:2:44: 2:44 (#0),
+                                            span: src/main.rs:2:11: 2:11 (#0),
+                                        },
+                                    ),
+                                    owner_id: DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add),
+                                    span: src/main.rs:2:5: 2:45 (#0),
+                                    vis_span: src/main.rs:2:5: 2:5 (#0),
+                                },
+                            ),
+                        },
+                    ),
+                    parents: [
+                        (0, Some(4294967040)),
+                        (1, Some(3)),
+                        (2, Some(1)),
+                        (3, Some(0)),
+                        (4, Some(6)),
+                        (5, Some(4)),
+                        (6, Some(0)),
+                        (7, Some(0)),
+                        (8, Some(7)),
+                    ],
+                    bodies: {},
+                    hash_without_bodies: Fingerprint(
+                        18158041089502178188,
+                        1404993960709538568,
+                    ),
+                    hash_including_bodies: Fingerprint(
+                        18158041089502178188,
+                        1404993960709538568,
+                    ),
+                },
+                parenting: {},
+                attrs: AttributeMap {
+                    map: {},
+                    hash: Fingerprint(
+                        9785122672296426403,
+                        8173264106939382879,
+                    ),
+                },
+                trait_map: {},
+            },
+        ),
+        Owner(
+            OwnerInfo {
+                nodes: OwnerNodes {
+                    node: Some(
+                        ParentedNode {
+                            parent: 4294967040,
+                            node: Item(
+                                Item {
+                                    ident: main#0,
+                                    owner_id: DefId(0:5 ~ ada_adder[1b52]::main),
+                                    kind: Fn(
+                                        FnSig {
+                                            header: FnHeader {
+                                                unsafety: Normal,
+                                                constness: NotConst,
+                                                asyncness: NotAsync,
+                                                abi: Rust,
+                                            },
+                                            decl: FnDecl {
+                                                inputs: [],
+                                                output: DefaultReturn(
+                                                    src/main.rs:6:11: 6:11 (#0),
+                                                ),
+                                                c_variadic: false,
+                                                implicit_self: None,
+                                                lifetime_elision_allowed: false,
+                                            },
+                                            span: src/main.rs:6:1: 6:10 (#0),
+                                        },
+                                        Generics {
+                                            params: [],
+                                            predicates: [],
+                                            has_where_clause_predicates: false,
+                                            where_clause_span: src/main.rs:6:10: 6:10 (#0),
+                                            span: src/main.rs:6:8: 6:8 (#0),
+                                        },
+                                        BodyId {
+                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).73),
+                                        },
+                                    ),
+                                    span: src/main.rs:6:1: 13:2 (#0),
+                                    vis_span: src/main.rs:6:1: 6:1 (#0),
+                                },
+                            ),
+                        },
+                    ),
+                    parents: [
+                        (0, Some(4294967040)),
+                        (1, Some(72)),
+                        (2, Some(8)),
+                        (3, Some(2)),
+                        (4, Some(5)),
+                        (5, Some(3)),
+                        (6, Some(3)),
+                        (7, Some(2)),
+                        (8, Some(1)),
+                        (9, Some(8)),
+                        (10, Some(72)),
+                        (11, Some(17)),
+                        (12, Some(11)),
+                        (13, Some(14)),
+                        (14, Some(12)),
+                        (15, Some(12)),
+                        (16, Some(11)),
+                        (17, Some(10)),
+                        (18, Some(17)),
+                        (19, Some(72)),
+                        (20, Some(27)),
+                        (21, Some(20)),
+                        (22, Some(23)),
+                        (23, Some(21)),
+                        (24, Some(21)),
+                        (25, Some(20)),
+                        (26, Some(25)),
+                        (27, Some(19)),
+                        (28, Some(27)),
+                        (29, Some(72)),
+                        (30, Some(37)),
+                        (31, Some(30)),
+                        (32, Some(33)),
+                        (33, Some(31)),
+                        (34, Some(31)),
+                        (35, Some(30)),
+                        (36, Some(35)),
+                        (37, Some(29)),
+                        (38, Some(37)),
+                        (39, Some(71)),
+                        (40, Some(69)),
+                        (41, Some(40)),
+                        (42, Some(41)),
+                        (43, Some(41)),
+                        (44, Some(41)),
+                        (45, Some(40)),
+                        (46, Some(48)),
+                        (47, Some(48)),
+                        (48, Some(49)),
+                        (49, Some(45)),
+                        (50, Some(59)),
+                        (51, Some(58)),
+                        (52, Some(51)),
+                        (53, Some(52)),
+                        (54, Some(51)),
+                        (55, Some(54)),
+                        (56, Some(51)),
+                        (57, Some(56)),
+                        (58, Some(50)),
+                        (59, Some(63)),
+                        (60, Some(62)),
+                        (61, Some(62)),
+                        (62, Some(63)),
+                        (63, Some(64)),
+                        (64, Some(65)),
+                        (65, Some(45)),
+                        (66, Some(68)),
+                        (67, Some(68)),
+                        (68, Some(45)),
+                        (69, Some(70)),
+                        (70, Some(39)),
+                        (71, Some(72)),
+                        (72, Some(73)),
+                        (73, Some(0)),
+                    ],
+                    bodies: {
+                        73: Body {
+                            params: [],
+                            value: Expr {
+                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).73),
+                                kind: Block(
+                                    Block {
+                                        stmts: [
+                                            Stmt {
+                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).1),
+                                                kind: Local(
+                                                    Local {
+                                                        pat: Pat {
+                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).9),
+                                                            kind: Binding(
+                                                                BindingAnnotation(
+                                                                    No,
+                                                                    Not,
+                                                                ),
+                                                                HirId(DefId(0:5 ~ ada_adder[1b52]::main).9),
+                                                                x#0,
+                                                                None,
+                                                            ),
+                                                            span: src/main.rs:7:9: 7:10 (#0),
+                                                            default_binding_modes: true,
+                                                        },
+                                                        ty: None,
+                                                        init: Some(
+                                                            Expr {
+                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).2),
+                                                                kind: Call(
+                                                                    Expr {
+                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).3),
+                                                                        kind: Path(
+                                                                            TypeRelative(
+                                                                                Ty {
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).5),
+                                                                                    kind: Path(
+                                                                                        Resolved(
+                                                                                            None,
+                                                                                            Path {
+                                                                                                span: src/main.rs:7:13: 7:16 (#0),
+                                                                                                res: Def(
+                                                                                                    Struct,
+                                                                                                    DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                ),
+                                                                                                segments: [
+                                                                                                    PathSegment {
+                                                                                                        ident: Box#0,
+                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).4),
+                                                                                                        res: Def(
+                                                                                                            Struct,
+                                                                                                            DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                        ),
+                                                                                                        args: None,
+                                                                                                        infer_args: true,
+                                                                                                    },
+                                                                                                ],
+                                                                                            },
+                                                                                        ),
+                                                                                    ),
+                                                                                    span: src/main.rs:7:13: 7:16 (#0),
+                                                                                },
+                                                                                PathSegment {
+                                                                                    ident: new#0,
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).6),
+                                                                                    res: Err,
+                                                                                    args: None,
+                                                                                    infer_args: true,
+                                                                                },
+                                                                            ),
+                                                                        ),
+                                                                        span: src/main.rs:7:13: 7:21 (#0),
+                                                                    },
+                                                                    [
+                                                                        Expr {
+                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).7),
+                                                                            kind: Lit(
+                                                                                Spanned {
+                                                                                    node: Int(
+                                                                                        1,
+                                                                                        Unsuffixed,
+                                                                                    ),
+                                                                                    span: src/main.rs:7:22: 7:23 (#0),
+                                                                                },
+                                                                            ),
+                                                                            span: src/main.rs:7:22: 7:23 (#0),
+                                                                        },
+                                                                    ],
+                                                                ),
+                                                                span: src/main.rs:7:13: 7:24 (#0),
+                                                            },
+                                                        ),
+                                                        els: None,
+                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).8),
+                                                        span: src/main.rs:7:5: 7:25 (#0),
+                                                        source: Normal,
+                                                    },
+                                                ),
+                                                span: src/main.rs:7:5: 7:25 (#0),
+                                            },
+                                            Stmt {
+                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).10),
+                                                kind: Local(
+                                                    Local {
+                                                        pat: Pat {
+                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).18),
+                                                            kind: Binding(
+                                                                BindingAnnotation(
+                                                                    No,
+                                                                    Not,
+                                                                ),
+                                                                HirId(DefId(0:5 ~ ada_adder[1b52]::main).18),
+                                                                y#0,
+                                                                None,
+                                                            ),
+                                                            span: src/main.rs:8:9: 8:10 (#0),
+                                                            default_binding_modes: true,
+                                                        },
+                                                        ty: None,
+                                                        init: Some(
+                                                            Expr {
+                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).11),
+                                                                kind: Call(
+                                                                    Expr {
+                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).12),
+                                                                        kind: Path(
+                                                                            TypeRelative(
+                                                                                Ty {
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).14),
+                                                                                    kind: Path(
+                                                                                        Resolved(
+                                                                                            None,
+                                                                                            Path {
+                                                                                                span: src/main.rs:8:13: 8:16 (#0),
+                                                                                                res: Def(
+                                                                                                    Struct,
+                                                                                                    DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                ),
+                                                                                                segments: [
+                                                                                                    PathSegment {
+                                                                                                        ident: Box#0,
+                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).13),
+                                                                                                        res: Def(
+                                                                                                            Struct,
+                                                                                                            DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                        ),
+                                                                                                        args: None,
+                                                                                                        infer_args: true,
+                                                                                                    },
+                                                                                                ],
+                                                                                            },
+                                                                                        ),
+                                                                                    ),
+                                                                                    span: src/main.rs:8:13: 8:16 (#0),
+                                                                                },
+                                                                                PathSegment {
+                                                                                    ident: new#0,
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).15),
+                                                                                    res: Err,
+                                                                                    args: None,
+                                                                                    infer_args: true,
+                                                                                },
+                                                                            ),
+                                                                        ),
+                                                                        span: src/main.rs:8:13: 8:21 (#0),
+                                                                    },
+                                                                    [
+                                                                        Expr {
+                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).16),
+                                                                            kind: Lit(
+                                                                                Spanned {
+                                                                                    node: Int(
+                                                                                        6,
+                                                                                        Unsuffixed,
+                                                                                    ),
+                                                                                    span: src/main.rs:8:22: 8:23 (#0),
+                                                                                },
+                                                                            ),
+                                                                            span: src/main.rs:8:22: 8:23 (#0),
+                                                                        },
+                                                                    ],
+                                                                ),
+                                                                span: src/main.rs:8:13: 8:24 (#0),
+                                                            },
+                                                        ),
+                                                        els: None,
+                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).17),
+                                                        span: src/main.rs:8:5: 8:25 (#0),
+                                                        source: Normal,
+                                                    },
+                                                ),
+                                                span: src/main.rs:8:5: 8:25 (#0),
+                                            },
+                                            Stmt {
+                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).19),
+                                                kind: Local(
+                                                    Local {
+                                                        pat: Pat {
+                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).28),
+                                                            kind: Binding(
+                                                                BindingAnnotation(
+                                                                    No,
+                                                                    Not,
+                                                                ),
+                                                                HirId(DefId(0:5 ~ ada_adder[1b52]::main).28),
+                                                                x_ptr#0,
+                                                                None,
+                                                            ),
+                                                            span: src/main.rs:9:9: 9:14 (#0),
+                                                            default_binding_modes: true,
+                                                        },
+                                                        ty: None,
+                                                        init: Some(
+                                                            Expr {
+                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).20),
+                                                                kind: Call(
+                                                                    Expr {
+                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).21),
+                                                                        kind: Path(
+                                                                            TypeRelative(
+                                                                                Ty {
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).23),
+                                                                                    kind: Path(
+                                                                                        Resolved(
+                                                                                            None,
+                                                                                            Path {
+                                                                                                span: src/main.rs:9:17: 9:20 (#0),
+                                                                                                res: Def(
+                                                                                                    Struct,
+                                                                                                    DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                ),
+                                                                                                segments: [
+                                                                                                    PathSegment {
+                                                                                                        ident: Box#0,
+                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).22),
+                                                                                                        res: Def(
+                                                                                                            Struct,
+                                                                                                            DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                        ),
+                                                                                                        args: None,
+                                                                                                        infer_args: true,
+                                                                                                    },
+                                                                                                ],
+                                                                                            },
+                                                                                        ),
+                                                                                    ),
+                                                                                    span: src/main.rs:9:17: 9:20 (#0),
+                                                                                },
+                                                                                PathSegment {
+                                                                                    ident: into_raw#0,
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).24),
+                                                                                    res: Err,
+                                                                                    args: None,
+                                                                                    infer_args: true,
+                                                                                },
+                                                                            ),
+                                                                        ),
+                                                                        span: src/main.rs:9:17: 9:30 (#0),
+                                                                    },
+                                                                    [
+                                                                        Expr {
+                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).25),
+                                                                            kind: Path(
+                                                                                Resolved(
+                                                                                    None,
+                                                                                    Path {
+                                                                                        span: src/main.rs:9:31: 9:32 (#0),
+                                                                                        res: Local(
+                                                                                            HirId(DefId(0:5 ~ ada_adder[1b52]::main).9),
+                                                                                        ),
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: x#0,
+                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).26),
+                                                                                                res: Local(
+                                                                                                    HirId(DefId(0:5 ~ ada_adder[1b52]::main).9),
+                                                                                                ),
+                                                                                                args: None,
+                                                                                                infer_args: true,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                ),
+                                                                            ),
+                                                                            span: src/main.rs:9:31: 9:32 (#0),
+                                                                        },
+                                                                    ],
+                                                                ),
+                                                                span: src/main.rs:9:17: 9:33 (#0),
+                                                            },
+                                                        ),
+                                                        els: None,
+                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).27),
+                                                        span: src/main.rs:9:5: 9:34 (#0),
+                                                        source: Normal,
+                                                    },
+                                                ),
+                                                span: src/main.rs:9:5: 9:34 (#0),
+                                            },
+                                            Stmt {
+                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).29),
+                                                kind: Local(
+                                                    Local {
+                                                        pat: Pat {
+                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).38),
+                                                            kind: Binding(
+                                                                BindingAnnotation(
+                                                                    No,
+                                                                    Not,
+                                                                ),
+                                                                HirId(DefId(0:5 ~ ada_adder[1b52]::main).38),
+                                                                y_ptr#0,
+                                                                None,
+                                                            ),
+                                                            span: src/main.rs:10:9: 10:14 (#0),
+                                                            default_binding_modes: true,
+                                                        },
+                                                        ty: None,
+                                                        init: Some(
+                                                            Expr {
+                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).30),
+                                                                kind: Call(
+                                                                    Expr {
+                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).31),
+                                                                        kind: Path(
+                                                                            TypeRelative(
+                                                                                Ty {
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).33),
+                                                                                    kind: Path(
+                                                                                        Resolved(
+                                                                                            None,
+                                                                                            Path {
+                                                                                                span: src/main.rs:10:17: 10:20 (#0),
+                                                                                                res: Def(
+                                                                                                    Struct,
+                                                                                                    DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                ),
+                                                                                                segments: [
+                                                                                                    PathSegment {
+                                                                                                        ident: Box#0,
+                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).32),
+                                                                                                        res: Def(
+                                                                                                            Struct,
+                                                                                                            DefId(5:288 ~ alloc[24dd]::boxed::Box),
+                                                                                                        ),
+                                                                                                        args: None,
+                                                                                                        infer_args: true,
+                                                                                                    },
+                                                                                                ],
+                                                                                            },
+                                                                                        ),
+                                                                                    ),
+                                                                                    span: src/main.rs:10:17: 10:20 (#0),
+                                                                                },
+                                                                                PathSegment {
+                                                                                    ident: into_raw#0,
+                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).34),
+                                                                                    res: Err,
+                                                                                    args: None,
+                                                                                    infer_args: true,
+                                                                                },
+                                                                            ),
+                                                                        ),
+                                                                        span: src/main.rs:10:17: 10:30 (#0),
+                                                                    },
+                                                                    [
+                                                                        Expr {
+                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).35),
+                                                                            kind: Path(
+                                                                                Resolved(
+                                                                                    None,
+                                                                                    Path {
+                                                                                        span: src/main.rs:10:31: 10:32 (#0),
+                                                                                        res: Local(
+                                                                                            HirId(DefId(0:5 ~ ada_adder[1b52]::main).18),
+                                                                                        ),
+                                                                                        segments: [
+                                                                                            PathSegment {
+                                                                                                ident: y#0,
+                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).36),
+                                                                                                res: Local(
+                                                                                                    HirId(DefId(0:5 ~ ada_adder[1b52]::main).18),
+                                                                                                ),
+                                                                                                args: None,
+                                                                                                infer_args: true,
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                ),
+                                                                            ),
+                                                                            span: src/main.rs:10:31: 10:32 (#0),
+                                                                        },
+                                                                    ],
+                                                                ),
+                                                                span: src/main.rs:10:17: 10:33 (#0),
+                                                            },
+                                                        ),
+                                                        els: None,
+                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).37),
+                                                        span: src/main.rs:10:5: 10:34 (#0),
+                                                        source: Normal,
+                                                    },
+                                                ),
+                                                span: src/main.rs:10:5: 10:34 (#0),
+                                            },
+                                            Stmt {
+                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).71),
+                                                kind: Semi(
+                                                    Expr {
+                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).39),
+                                                        kind: Block(
+                                                            Block {
+                                                                stmts: [
+                                                                    Stmt {
+                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).69),
+                                                                        kind: Semi(
+                                                                            Expr {
+                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).40),
+                                                                                kind: Call(
+                                                                                    Expr {
+                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).41),
+                                                                                        kind: Path(
+                                                                                            Resolved(
+                                                                                                None,
+                                                                                                Path {
+                                                                                                    span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:9: 137:27 (#4),
+                                                                                                    res: Def(
+                                                                                                        Fn,
+                                                                                                        DefId(1:3322 ~ std[d012]::io::stdio::_print),
+                                                                                                    ),
+                                                                                                    segments: [
+                                                                                                        PathSegment {
+                                                                                                            ident: $crate#4,
+                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).42),
+                                                                                                            res: Err,
+                                                                                                            args: None,
+                                                                                                            infer_args: true,
+                                                                                                        },
+                                                                                                        PathSegment {
+                                                                                                            ident: io#4,
+                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).43),
+                                                                                                            res: Def(
+                                                                                                                Mod,
+                                                                                                                DefId(1:2426 ~ std[d012]::io),
+                                                                                                            ),
+                                                                                                            args: None,
+                                                                                                            infer_args: true,
+                                                                                                        },
+                                                                                                        PathSegment {
+                                                                                                            ident: _print#4,
+                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).44),
+                                                                                                            res: Def(
+                                                                                                                Fn,
+                                                                                                                DefId(1:3322 ~ std[d012]::io::stdio::_print),
+                                                                                                            ),
+                                                                                                            args: None,
+                                                                                                            infer_args: true,
+                                                                                                        },
+                                                                                                    ],
+                                                                                                },
+                                                                                            ),
+                                                                                        ),
+                                                                                        span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:9: 137:27 (#4),
+                                                                                    },
+                                                                                    [
+                                                                                        Expr {
+                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).45),
+                                                                                            kind: Call(
+                                                                                                Expr {
+                                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).68),
+                                                                                                    kind: Path(
+                                                                                                        TypeRelative(
+                                                                                                            Ty {
+                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).66),
+                                                                                                                kind: Path(
+                                                                                                                    LangItem(
+                                                                                                                        FormatArguments,
+                                                                                                                        /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:28: 137:61 (#5),
+                                                                                                                        None,
+                                                                                                                    ),
+                                                                                                                ),
+                                                                                                                span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:28: 137:61 (#5),
+                                                                                                            },
+                                                                                                            PathSegment {
+                                                                                                                ident: new_v1#5,
+                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).67),
+                                                                                                                res: Err,
+                                                                                                                args: None,
+                                                                                                                infer_args: true,
+                                                                                                            },
+                                                                                                        ),
+                                                                                                    ),
+                                                                                                    span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:28: 137:61 (#5),
+                                                                                                },
+                                                                                                [
+                                                                                                    Expr {
+                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).49),
+                                                                                                        kind: AddrOf(
+                                                                                                            Ref,
+                                                                                                            Not,
+                                                                                                            Expr {
+                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).48),
+                                                                                                                kind: Array(
+                                                                                                                    [
+                                                                                                                        Expr {
+                                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).46),
+                                                                                                                            kind: Lit(
+                                                                                                                                Spanned {
+                                                                                                                                    node: Str(
+                                                                                                                                        "The unsafe z is ",
+                                                                                                                                        Cooked,
+                                                                                                                                    ),
+                                                                                                                                    span: src/main.rs:11:14: 11:36 (#0),
+                                                                                                                                },
+                                                                                                                            ),
+                                                                                                                            span: src/main.rs:11:14: 11:36 (#0),
+                                                                                                                        },
+                                                                                                                        Expr {
+                                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).47),
+                                                                                                                            kind: Lit(
+                                                                                                                                Spanned {
+                                                                                                                                    node: Str(
+                                                                                                                                        "\n",
+                                                                                                                                        Cooked,
+                                                                                                                                    ),
+                                                                                                                                    span: src/main.rs:11:14: 11:36 (#0),
+                                                                                                                                },
+                                                                                                                            ),
+                                                                                                                            span: src/main.rs:11:14: 11:36 (#0),
+                                                                                                                        },
+                                                                                                                    ],
+                                                                                                                ),
+                                                                                                                span: src/main.rs:11:14: 11:36 (#0),
+                                                                                                            },
+                                                                                                        ),
+                                                                                                        span: src/main.rs:11:14: 11:36 (#0),
+                                                                                                    },
+                                                                                                    Expr {
+                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).65),
+                                                                                                        kind: AddrOf(
+                                                                                                            Ref,
+                                                                                                            Not,
+                                                                                                            Expr {
+                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).64),
+                                                                                                                kind: Array(
+                                                                                                                    [
+                                                                                                                        Expr {
+                                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).63),
+                                                                                                                            kind: Call(
+                                                                                                                                Expr {
+                                                                                                                                    hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).62),
+                                                                                                                                    kind: Path(
+                                                                                                                                        TypeRelative(
+                                                                                                                                            Ty {
+                                                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).60),
+                                                                                                                                                kind: Path(
+                                                                                                                                                    LangItem(
+                                                                                                                                                        FormatArgument,
+                                                                                                                                                        src/main.rs:11:38: 11:65 (#5),
+                                                                                                                                                        None,
+                                                                                                                                                    ),
+                                                                                                                                                ),
+                                                                                                                                                span: src/main.rs:11:38: 11:65 (#5),
+                                                                                                                                            },
+                                                                                                                                            PathSegment {
+                                                                                                                                                ident: new_debug#5,
+                                                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).61),
+                                                                                                                                                res: Err,
+                                                                                                                                                args: None,
+                                                                                                                                                infer_args: true,
+                                                                                                                                            },
+                                                                                                                                        ),
+                                                                                                                                    ),
+                                                                                                                                    span: src/main.rs:11:38: 11:65 (#5),
+                                                                                                                                },
+                                                                                                                                [
+                                                                                                                                    Expr {
+                                                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).59),
+                                                                                                                                        kind: AddrOf(
+                                                                                                                                            Ref,
+                                                                                                                                            Not,
+                                                                                                                                            Expr {
+                                                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).50),
+                                                                                                                                                kind: Block(
+                                                                                                                                                    Block {
+                                                                                                                                                        stmts: [],
+                                                                                                                                                        expr: Some(
+                                                                                                                                                            Expr {
+                                                                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).51),
+                                                                                                                                                                kind: Call(
+                                                                                                                                                                    Expr {
+                                                                                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).52),
+                                                                                                                                                                        kind: Path(
+                                                                                                                                                                            Resolved(
+                                                                                                                                                                                None,
+                                                                                                                                                                                Path {
+                                                                                                                                                                                    span: src/main.rs:11:47: 11:50 (#0),
+                                                                                                                                                                                    res: Def(
+                                                                                                                                                                                        Fn,
+                                                                                                                                                                                        DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add),
+                                                                                                                                                                                    ),
+                                                                                                                                                                                    segments: [
+                                                                                                                                                                                        PathSegment {
+                                                                                                                                                                                            ident: add#0,
+                                                                                                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).53),
+                                                                                                                                                                                            res: Def(
+                                                                                                                                                                                                Fn,
+                                                                                                                                                                                                DefId(0:4 ~ ada_adder[1b52]::{extern#0}::add),
+                                                                                                                                                                                            ),
+                                                                                                                                                                                            args: None,
+                                                                                                                                                                                            infer_args: true,
+                                                                                                                                                                                        },
+                                                                                                                                                                                    ],
+                                                                                                                                                                                },
+                                                                                                                                                                            ),
+                                                                                                                                                                        ),
+                                                                                                                                                                        span: src/main.rs:11:47: 11:50 (#0),
+                                                                                                                                                                    },
+                                                                                                                                                                    [
+                                                                                                                                                                        Expr {
+                                                                                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).54),
+                                                                                                                                                                            kind: Path(
+                                                                                                                                                                                Resolved(
+                                                                                                                                                                                    None,
+                                                                                                                                                                                    Path {
+                                                                                                                                                                                        span: src/main.rs:11:51: 11:56 (#0),
+                                                                                                                                                                                        res: Local(
+                                                                                                                                                                                            HirId(DefId(0:5 ~ ada_adder[1b52]::main).28),
+                                                                                                                                                                                        ),
+                                                                                                                                                                                        segments: [
+                                                                                                                                                                                            PathSegment {
+                                                                                                                                                                                                ident: x_ptr#0,
+                                                                                                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).55),
+                                                                                                                                                                                                res: Local(
+                                                                                                                                                                                                    HirId(DefId(0:5 ~ ada_adder[1b52]::main).28),
+                                                                                                                                                                                                ),
+                                                                                                                                                                                                args: None,
+                                                                                                                                                                                                infer_args: true,
+                                                                                                                                                                                            },
+                                                                                                                                                                                        ],
+                                                                                                                                                                                    },
+                                                                                                                                                                                ),
+                                                                                                                                                                            ),
+                                                                                                                                                                            span: src/main.rs:11:51: 11:56 (#0),
+                                                                                                                                                                        },
+                                                                                                                                                                        Expr {
+                                                                                                                                                                            hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).56),
+                                                                                                                                                                            kind: Path(
+                                                                                                                                                                                Resolved(
+                                                                                                                                                                                    None,
+                                                                                                                                                                                    Path {
+                                                                                                                                                                                        span: src/main.rs:11:57: 11:62 (#0),
+                                                                                                                                                                                        res: Local(
+                                                                                                                                                                                            HirId(DefId(0:5 ~ ada_adder[1b52]::main).38),
+                                                                                                                                                                                        ),
+                                                                                                                                                                                        segments: [
+                                                                                                                                                                                            PathSegment {
+                                                                                                                                                                                                ident: y_ptr#0,
+                                                                                                                                                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).57),
+                                                                                                                                                                                                res: Local(
+                                                                                                                                                                                                    HirId(DefId(0:5 ~ ada_adder[1b52]::main).38),
+                                                                                                                                                                                                ),
+                                                                                                                                                                                                args: None,
+                                                                                                                                                                                                infer_args: true,
+                                                                                                                                                                                            },
+                                                                                                                                                                                        ],
+                                                                                                                                                                                    },
+                                                                                                                                                                                ),
+                                                                                                                                                                            ),
+                                                                                                                                                                            span: src/main.rs:11:57: 11:62 (#0),
+                                                                                                                                                                        },
+                                                                                                                                                                    ],
+                                                                                                                                                                ),
+                                                                                                                                                                span: src/main.rs:11:47: 11:63 (#0),
+                                                                                                                                                            },
+                                                                                                                                                        ),
+                                                                                                                                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).58),
+                                                                                                                                                        rules: UnsafeBlock(
+                                                                                                                                                            UserProvided,
+                                                                                                                                                        ),
+                                                                                                                                                        span: src/main.rs:11:38: 11:65 (#0),
+                                                                                                                                                        targeted_by_break: false,
+                                                                                                                                                    },
+                                                                                                                                                    None,
+                                                                                                                                                ),
+                                                                                                                                                span: src/main.rs:11:38: 11:65 (#0),
+                                                                                                                                            },
+                                                                                                                                        ),
+                                                                                                                                        span: src/main.rs:11:38: 11:65 (#5),
+                                                                                                                                    },
+                                                                                                                                ],
+                                                                                                                            ),
+                                                                                                                            span: src/main.rs:11:38: 11:65 (#5),
+                                                                                                                        },
+                                                                                                                    ],
+                                                                                                                ),
+                                                                                                                span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:28: 137:61 (#5),
+                                                                                                            },
+                                                                                                        ),
+                                                                                                        span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:28: 137:61 (#5),
+                                                                                                    },
+                                                                                                ],
+                                                                                            ),
+                                                                                            span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:28: 137:61 (#5),
+                                                                                        },
+                                                                                    ],
+                                                                                ),
+                                                                                span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:9: 137:62 (#4),
+                                                                            },
+                                                                        ),
+                                                                        span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:137:9: 137:63 (#4),
+                                                                    },
+                                                                ],
+                                                                expr: None,
+                                                                hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).70),
+                                                                rules: DefaultBlock,
+                                                                span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:136:23: 138:6 (#4),
+                                                                targeted_by_break: false,
+                                                            },
+                                                            None,
+                                                        ),
+                                                        span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:136:23: 138:6 (#4),
+                                                    },
+                                                ),
+                                                span: /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs:136:23: 138:6 (#4),
+                                            },
+                                        ],
+                                        expr: None,
+                                        hir_id: HirId(DefId(0:5 ~ ada_adder[1b52]::main).72),
+                                        rules: DefaultBlock,
+                                        span: src/main.rs:6:11: 13:2 (#0),
+                                        targeted_by_break: false,
+                                    },
+                                    None,
+                                ),
+                                span: src/main.rs:6:11: 13:2 (#0),
+                            },
+                            generator_kind: None,
+                        },
+                    },
+                    hash_without_bodies: Fingerprint(
+                        14563868947894142800,
+                        12788422956047301466,
+                    ),
+                    hash_including_bodies: Fingerprint(
+                        15368524062521704247,
+                        17988331614819775829,
+                    ),
+                },
+                parenting: {},
+                attrs: AttributeMap {
+                    map: {},
+                    hash: Fingerprint(
+                        9785122672296426403,
+                        8173264106939382879,
+                    ),
+                },
+                trait_map: {
+                    21: [],
+                    31: [],
+                    12: [],
+                    3: [],
+                },
+            },
+        ),
+    ],
+    hir_hash: Fingerprint(
+        7347846430953947042,
+        8554552865234305380,
+    ),
+}

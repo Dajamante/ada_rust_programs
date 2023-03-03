@@ -5,3 +5,7 @@ version = "0.1.0-dev"
 authors = ["Your Name"]
 maintainers = ["Your Name <example@example.com>"]
 maintainers-logins = ["github-username"]
+
+[library.adder]
+sources = ["src/**/*.ad*"]
+ada_library_compilation_arguments = ["-g"]
