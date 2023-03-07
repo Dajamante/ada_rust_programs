@@ -1,9 +1,11 @@
-digraph Mir_0_5 {
+digraph Mir_0_7 {
     graph [fontname="Courier, monospace"];
     node [fontname="Courier, monospace"];
     edge [fontname="Courier, monospace"];
-    label=<fn main() -&gt; ()<br align="left"/>let _1: i32;<br align="left"/>let _2: i32;<br align="left"/>let _3: i32;<br align="left"/>debug x =&gt; _1;<br align="left"/>debug y =&gt; _2;<br align="left"/>debug z =&gt; _3;<br align="left"/>>;
-    bb0__0_5 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">0</td></tr><tr><td align="left" balign="left">_1 = const 1_i32<br/>_2 = const 2_i32<br/></td></tr><tr><td align="left">_3 = add(_1, _2)</td></tr></table>>];
-    bb1__0_5 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">1</td></tr><tr><td align="left">return</td></tr></table>>];
-    bb0__0_5 -> bb1__0_5 [label="return"];
+    label=<fn main() -&gt; ()<br align="left"/>let _1: i32;<br align="left"/>let _2: i32;<br align="left"/>let mut _3: i32;<br align="left"/>let _4: ();<br align="left"/>let mut _5: &amp;mut i32;<br align="left"/>let _6: i32;<br align="left"/>let mut _7: &amp;mut i32;<br align="left"/>debug x =&gt; _1;<br align="left"/>debug y =&gt; _2;<br align="left"/>debug z =&gt; _3;<br align="left"/>debug tmp =&gt; _6;<br align="left"/>>;
+    bb0__0_7 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">0</td></tr><tr><td align="left" balign="left">_1 = const 1_i32<br/>_2 = const 2_i32<br/></td></tr><tr><td align="left">_3 = add(_1, _2)</td></tr></table>>];
+    bb1__0_7 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">1</td></tr><tr><td align="left" balign="left">_5 = &amp;mut _3<br/></td></tr><tr><td align="left">_4 = increment(_5)</td></tr></table>>];
+    bb2__0_7 [shape="none", label=<<table border="0" cellborder="1" cellspacing="0"><tr><td bgcolor="gray" align="center" colspan="1">2</td></tr><tr><td align="left" balign="left">_7 = &amp;mut _3<br/>_6 = (*_7)<br/></td></tr><tr><td align="left">return</td></tr></table>>];
+    bb0__0_7 -> bb1__0_7 [label="return"];
+    bb1__0_7 -> bb2__0_7 [label="return"];
 }
