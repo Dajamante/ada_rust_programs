@@ -1,20 +1,19 @@
-use std::os::raw::c_int;
-// #[derive(Copy, Clone)]
-// #[repr(C)]
-// pub enum Day {
-//     Monday,
-//     Tuesday,
-//     Wednesday,
-//     Thursday,
-//     Friday,
-// }
+#[derive(Copy, Clone)]
+#[repr(C)]
+// Oups, totally unsafe
+pub struct MyData([i32; 7]);
+// pub struct MyData([i32; 4]);
 
-#[no_mangle]
-pub extern "C" fn add_in_array(a: *mut c_int, s: usize) -> i32 {
-    unsafe {
-        let a = std::slice::from_raw_parts(a, s);
-        a.into_iter().sum()
+impl Iterator for MyData {
+    type Item = i32;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.iter().copied().next()
     }
+}
+#[no_mangle]
+pub extern "C" fn add_in_array(a: &MyData) -> i32 {
+    a.0.iter().for_each(|c| println!("{c}"));
+    a.0.iter().sum()
 }
 
 // #[no_mangle]

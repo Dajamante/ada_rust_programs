@@ -1,6 +1,6 @@
-set -e 
+set -e
 
-gcc -O0 -c main.adb -gnat2022
-rustc --crate-type=staticlib array_manip.rs -L/lib/x86_64-linux-gnu/ -lc -o mylib.a
+gcc -O0 -c -g main.adb -gnat2022
+rustc --crate-type=staticlib array_manip.rs -g
 gnatbind main
-gnatlink main -pthread mylib.a
+gnatlink main -pthread -l:libarray_manip.a
