@@ -1,5 +1,3 @@
-use std::convert::TryInto;
-
 // #[repr(C)]
 // pub struct AdaString {
 //     length: u32,
@@ -10,7 +8,7 @@ pub struct Pointed {
     x: i32,
     // we will give away ownership
     // does it need to be a bounded string?
-    s: [u8; 5],
+    s: String,
 }
 
 // This is a way to find for the symbol
@@ -18,7 +16,7 @@ pub struct Pointed {
 #[no_mangle]
 pub extern "C" fn overwrite(ptr: &mut Pointed) {
     ptr.x = 16;
-    ptr.s = "Bluey".as_bytes().try_into().expect("Could not convert.");
+    ptr.s = String::from("Bluey");
     // ptr.s.data will yield incorrect result.
     // do we need to forget ownership here?
 }

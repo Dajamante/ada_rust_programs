@@ -3,14 +3,16 @@ with Ada.Text_IO; use Ada.Text_IO;
 procedure Main with
    SPARK_Mode
 is
+    -- This type is the same but has no bounded string.
     type Pointed is record
-        X : Integer         := 42;
-        S : String (1 .. 5) := "Hello";
+        X : Integer := 42;
+        S : access String;
     end record;
+
     procedure Overwrite (Ptr : access Pointed) with
        Import, Convention => C, Global => null,
        -- Why is the post condition not triggered
-       Post               => Ptr.X = 16 and Ptr.S = "Bluey";
+       Post               => Ptr.X = 16 and Ptr.S.all = "Bluey";
 
     -- pointer.adb:9:13: error: unconstrained subtype in component declaration
 
@@ -22,25 +24,16 @@ is
     -- Ptr : PtrPointed      := new Pointed'(P);
     Ptr : PtrPointed := P'Access;
 
-    procedure Print_out (Ptr : access Pointed) is
-    begin
-        --Put_Line ("P is " & P'Img);
-        --Put_Line ("P alignment is " & P'Alignment'Img);
-        --Put_Line ("P size is " & P'Size'Img);
-        Put_Line ("Ptr is " & Ptr.all'Img);
-    end Print_out;
-
 begin
     -- This is what needs to be done in Rust
     -- Ptr.X := 16;
     -- Ptr.S := "Bluey";
-
+    Ptr.S := new String'("Hello");
     Put_Line ("BEFORE OVERWRITE:");
-    Print_out (Ptr);
+    Put_Line ("Ptr is " & Ptr.all'Img);
 
     Overwrite (Ptr);
 
     Put_Line ("AFTER OVERWRITE:");
-    Print_out (Ptr);
-
+    Put_Line ("Ptr is " & Ptr.all'Img);
 end Main;
