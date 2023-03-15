@@ -9,3 +9,8 @@ edition = "2021"
 
 [build-dependencies]
 gpr = { git = "https://github.com/jklmnn/gpr-rust", branch = "alire" }
+
+#lib]
+#name = "adder"
+#rate-type = ["cdylib"]
+#path = "adder/lib/libadder.so"

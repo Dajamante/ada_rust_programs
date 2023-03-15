@@ -1,4 +1,5 @@
 #[derive(Debug)]
+//#[repr(u8)]
 enum TwoNum {
     One,
     Two,
@@ -11,3 +12,9 @@ extern "C" fn print_enum(one: TwoNum, two: TwoNum) {
         one, two
     );
 }
+/*
+gcc -c main.adb
+rustc --crate-type=lib --emit=obj swap.rs
+gnatbind main
+gnatlink main swap.o
+*/
