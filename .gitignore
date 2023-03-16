@@ -15,3 +15,6 @@
 # Rust files
 *target
 *target/
+
+*b~*.adb
+*b~*.ads
