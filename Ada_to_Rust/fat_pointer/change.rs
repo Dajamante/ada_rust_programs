@@ -1,13 +1,20 @@
 use std::slice;
-
 #[repr(C)]
 pub struct AdaBounds {
     first: i32,
     last: i32,
 }
 
+#[repr(C)]
+pub struct AdaString {
+    data: *mut u8,
+    bounds: *const AdaBounds,
+}
+
 #[no_mangle]
-pub extern "C" fn change(data: *mut u8, bounds: *const AdaBounds) {
+pub extern "C" fn change(ada_string: AdaString) {
+    let data = ada_string.data;
+    let bounds = ada_string.bounds;
     let _ = match safe_checks(data, bounds) {
         Ok(_) => (),
         Err(e) => println!("Error {e}"),
@@ -15,12 +22,16 @@ pub extern "C" fn change(data: *mut u8, bounds: *const AdaBounds) {
 }
 
 fn safe_checks(data: *mut u8, bounds: *const AdaBounds) -> Result<(), &'static str> {
-    if data.is_null() || bounds.is_null() {
-        return Err("Null pointers.");
+    if data.is_null() {
+        return Err("From Rust: data is null pointer.");
     }
-    let len = unsafe { ((*bounds).last - (*bounds).first + 1) as usize };
+    if bounds.is_null() {
+        return Err("From Rust: Bounds is null pointer.");
+    }
+    let bounds = unsafe { bounds.as_ref().ok_or_else(|| "Bounds not found")? };
+    let len = (bounds.last - bounds.first + 1) as usize;
     let slice = unsafe { slice::from_raw_parts_mut(data, len) };
-
+    //  slice::from_raw_parts_mut(data, len)
     let new_data = b"world";
     let new_len = new_data.len();
 
