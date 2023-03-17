@@ -8,7 +8,17 @@ pub struct AdaBounds {
 
 #[no_mangle]
 pub extern "C" fn change(data: *mut u8, bounds: *const AdaBounds) {
-    let len = unsafe { (*bounds).last - (*bounds).first + 1 } as usize;
+    let _ = match safe_checks(data, bounds) {
+        Ok(_) => (),
+        Err(e) => println!("Error {e}"),
+    };
+}
+
+fn safe_checks(data: *mut u8, bounds: *const AdaBounds) -> Result<(), &'static str> {
+    if data.is_null() || bounds.is_null() {
+        return Err("Null pointers.");
+    }
+    let len = unsafe { ((*bounds).last - (*bounds).first + 1) as usize };
     let slice = unsafe { slice::from_raw_parts_mut(data, len) };
 
     let new_data = b"world";
@@ -19,5 +29,8 @@ pub extern "C" fn change(data: *mut u8, bounds: *const AdaBounds) {
     // if the data is longuer valgrind gives some interesting output: valgrind --tool=memcheck --leak-check=full
     if new_len <= len {
         slice[..new_len].copy_from_slice(new_data);
+    } else {
+        return Err("Trying to overwrite with longuer string");
     }
+    Ok(())
 }
