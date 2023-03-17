@@ -1,0 +1,6 @@
+project Strings is
+
+   for Languages use ("C", "Ada");
+   for Main use ("cstr.adb");
+
+end Strings;
