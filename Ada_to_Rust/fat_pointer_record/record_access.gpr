@@ -1,0 +1,6 @@
+project Record_access is
+
+   for Languages use ("Rust", "Ada");
+   for Main use ("record_access.adb");
+
+end Record_access;
