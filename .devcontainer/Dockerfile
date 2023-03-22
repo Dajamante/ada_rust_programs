@@ -49,6 +49,6 @@ RUN wget -q https://github.com/alire-project/alire/releases/download/v1.2.1/alr-
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-     && apt-get -y install --no-install-recommends libudev-dev
+    && apt-get -y install --no-install-recommends libudev-dev libasan6
 
 
