@@ -1,20 +1,23 @@
+--pragma Ada_2022;
+
 with Ada.Text_IO; use Ada.Text_IO;
-with System;      use System;
+
 procedure Record_access is
-   --type Access_5 is access all String (1 .. 5);
+
    type Record_String_Int is record
-      S : String (1 .. 5) := "hello";
-      I : Integer         := 42;
+      S : access String;
+      I : Integer;
    end record;
 
    procedure Change (Data : in out Record_String_Int) with
      Import, External_Name => "change";
+   --Pre => Data /= System.Null_Address and Bounds /= System.Null_Address;
+   -- , Convention => C;
 
-   Rsi : Record_String_Int := (S => "world", I => 43);
-   --Rsi : Record_String_Int;
-
+   Rsi : Record_String_Int := (S => new String'("hello"), I => 42);
 begin
-   Put_Line ("Rsi'Alignment" & Integer'Image (Rsi'Alignment));
-   Put_Line ("Rsi'Size" & Integer'Image (Rsi'Size));
+   Put_Line ("Rsi:" & Rsi'Img);
+   -- is the data destroyed in between?
    Change (Rsi);
+   Put_Line ("Rsi:" & Rsi'Img);
 end Record_access;
