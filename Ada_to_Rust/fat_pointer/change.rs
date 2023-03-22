@@ -1,10 +1,15 @@
 use std::slice;
 #[repr(C)]
 pub struct AdaBounds {
+    // make sure the platform match
+    //  wrong to use i32
+    // check to make sure
     first: i32,
     last: i32,
 }
-
+// whats the view
+// document exactly what they represent
+// repr transparent trivia
 #[repr(C)]
 pub struct AdaString {
     data: *mut u8,
@@ -30,6 +35,33 @@ fn safe_checks(data: *mut u8, bounds: *const AdaBounds) -> Result<(), &'static s
     }
     let bounds = unsafe { bounds.as_ref().ok_or_else(|| "Bounds not found")? };
     let len = (bounds.last - bounds.first + 1) as usize;
+    // It assumes this is a unique pointer!!
+    // very long argument to be made
+    // make a rigorous argument!
+    // raw_parts_mut in its documentation explains security invariant
+
+    // Safety
+
+    // Behavior is undefined if any of the following conditions are violated:
+
+    // data must be valid for both reads and writes for len * mem::size_of::<T>() many bytes, and it must be properly aligned.
+    // This means in particular:
+    // The entire memory range of this slice must be contained within a single allocated object!
+    // Slices can never span across multiple allocated objects.
+    // data must be non-null and aligned even for zero-length slices.
+    // One reason for this is that enum layout optimizations may rely on references (including slices of any length)
+    // being aligned and non-null to distinguish them from other data.
+    // You can obtain a pointer that is usable as data for zero-length slices using
+    // NonNull::dangling().
+
+    // data must point to len consecutive properly initialized values of type T.
+    // The memory referenced by the returned slice must not be accessed through
+    // any other pointer (not derived from the return value) for the duration of
+    // lifetime 'a. Both read and write accesses are forbidden.
+
+    // The total size len * mem::size_of::<T>() of the slice must be no larger than isize::MAX.
+    // See the safety documentation of pointer::offset.
+
     let slice = unsafe { slice::from_raw_parts_mut(data, len) };
     //  slice::from_raw_parts_mut(data, len)
     let new_data = b"world";

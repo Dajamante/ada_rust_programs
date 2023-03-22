@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 
 [build-dependencies]
-#gpr = "0.1.1"
-gpr = { git = "https://github.com/jklmnn/gpr-rust", branch = "alire" }
+gpr = "0.1.2"
+#gpr = { git = "https://github.com/jklmnn/gpr-rust", branch = "alire" }
