@@ -49,11 +49,14 @@ fn safe_change(ada_record: &mut AdaRecord) -> Result<(), &'static str> {
     let len = (bounds.last - bounds.first + 1) as usize;
     println!("Len {:?}", len);
     // This yields... Len 457085576552
-    let info = unsafe { slice::from_raw_parts(string, len) };
-    let combined_string: String = String::from_utf8(info.to_vec()).unwrap();
-    println!("Ada record {:?}", combined_string);
+    let info: &mut [u8] = unsafe { slice::from_raw_parts_mut(string, len) };
+    let world = b"World";
+    //let combined_string: String = String::from_utf8(info.to_vec()).unwrap();
+    info[..world.len()].copy_from_slice(world);
+
+    //println!("Ada record {:?}", combined_string);
     println!("The integer: {:?}", ada_record.integer);
-    ada_record += 1;
+    ada_record.integer += 1;
 
     Ok(())
 }

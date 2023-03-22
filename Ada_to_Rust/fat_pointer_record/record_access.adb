@@ -19,5 +19,5 @@ begin
    Put_Line ("Rsi:" & Rsi'Img);
    -- is the data destroyed in between?
    Change (Rsi);
-   Put_Line ("Rsi:" & Rsi'Img);
+   Put_Line ("Rsi:" & Rsi.S.all'Img);
 end Record_access;
