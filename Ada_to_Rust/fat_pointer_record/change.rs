@@ -1,27 +1,27 @@
 use std::convert::TryFrom;
 use std::mem;
 use std::slice;
-#[repr(C)]
-pub struct AdaBounds {
-    first: isize,
-    last: isize,
-}
+// #[repr(C)]
+// pub struct AdaBounds {
+//     first: isize,
+//     last: isize,
+// }
 
-#[repr(C)]
-pub struct AdaString {
-    data: *const u8,
-    bounds: *const AdaBounds,
-}
+// #[repr(C)]
+// pub struct AdaString {
+//     data: *const u8,
+//     bounds: *const AdaBounds,
+// }
 
 #[repr(C)]
 pub struct AdaRecord {
-    data: AdaString,
+    data: *mut u8,
     integer: i32,
 }
 
 #[no_mangle]
 pub extern "C" fn change(ada_record: AdaRecord) {
-    let data = ada_record.data.data as *mut u8;
+    let data = ada_record.data;
     let integer = ada_record.integer;
     println!("Integer: {}", integer);
     println!("Data: {:?}", data);
