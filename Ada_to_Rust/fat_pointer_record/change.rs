@@ -1,22 +1,54 @@
+use std::convert::TryFrom;
+use std::mem;
+use std::slice;
+#[repr(C)]
+pub struct AdaBounds {
+    first: isize,
+    last: isize,
+}
+
+#[repr(C)]
+pub struct AdaString {
+    data: *const u8,
+    bounds: *const AdaBounds,
+}
+
 #[repr(C)]
 pub struct AdaRecord {
-    data: *mut u8,
+    data: AdaString,
     integer: i32,
 }
 
 #[no_mangle]
 pub extern "C" fn change(ada_record: AdaRecord) {
-    let data = ada_record.data;
+    let data = ada_record.data.data as *mut u8;
     let integer = ada_record.integer;
-    let slice = unsafe { std::slice::from_raw_parts_mut(data, 5) };
+    let size = mem::size_of::<AdaRecord>();
+    let align = mem::align_of::<AdaRecord>();
 
-    println!("In Rust: slice: {:?}, integer {:?}", slice, integer);
-    // What happens to the data when printed???
+    println!("Size: {} and align: {} of Ada record.", size * 8, align);
 
-    // (S => "hello",
-    // I =>  42)
-    // Data: 0x6f6c6c6568, integer 42
+    let _ = match safe_checks(data, integer) {
+        Ok(_) => (),
+        Err(e) => println!("Error {e}"),
+    };
+}
 
-    // (S => "",
-    // I =>  0)
+fn safe_checks(data: *mut u8, integer: i32) -> Result<(), &'static str> {
+    if data.is_null() {
+        return Err("From Rust: data is null pointer.");
+    }
+    // We know the string length, let's worry about the rest later
+    let slice = unsafe { slice::from_raw_parts_mut(data, 5) };
+
+    let charvec: Vec<String> = slice
+        .iter()
+        .map(|c| {
+            char::try_from(*c)
+                .map(|c| c.to_string())
+                .unwrap_or_else(|_| format!("{}", c))
+        })
+        .collect();
+    println!("Array is : {:?}, integer {:?}", charvec, integer);
+    Ok(())
 }

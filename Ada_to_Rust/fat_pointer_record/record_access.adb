@@ -1,20 +1,20 @@
 with Ada.Text_IO; use Ada.Text_IO;
-
+with System;      use System;
 procedure Record_access is
 
-   -- record_access.adb:6:11: error: unconstrained subtype in component declaration
-   type Record_string_int is record
-      S : access String := new String'("hello");
-      I : Integer       := 42;
+   type Record_String_Int is record
+      S : access String;
+      I : Integer;
    end record;
 
-   procedure Change (S : in out Record_string_int) with
+   procedure Change (Data : System.Address; I : in out Integer) with
      Import, External_Name => "change";
-   Rsi : Record_string_int;
+   --Pre => Data /= System.Null_Address and Bounds /= System.Null_Address;
+   -- , Convention => C;
+
+   Rsi : Record_String_Int := (S => new String'("Hello"), I => 42);
 begin
-   Put_Line (Rsi.S.all'Img);
-   Put_Line (Rsi'Img);
-   Change (Rsi);
-   Put_Line (Rsi.S.all'Img);
-   Put_Line (Rsi'Img);
+   Put_Line ("Rsi'Alignment" & Integer'Image (Rsi'Alignment));
+   Put_Line ("Rsi'Size" & Integer'Image (Rsi'Size));
+   Change (Rsi.S'Address, Rsi.I);
 end Record_access;
