@@ -1,20 +1,20 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with System;      use System;
 procedure Record_access is
-
+   type Access_5 is access all String (1 .. 5);
    type Record_String_Int is record
-      S : access String;
+      S : Access_5;
       I : Integer;
    end record;
 
-   procedure Change (Data : System.Address; I : in out Integer) with
+   procedure Change (Data : in out Record_String_Int) with
      Import, External_Name => "change";
-   --Pre => Data /= System.Null_Address and Bounds /= System.Null_Address;
-   -- , Convention => C;
 
-   Rsi : Record_String_Int := (S => new String'("Hello"), I => 42);
+   S   : aliased String (1 .. 5) := "Hello";
+   Rsi : Record_String_Int       := (S => S'Access, I => 42);
+
 begin
    Put_Line ("Rsi'Alignment" & Integer'Image (Rsi'Alignment));
    Put_Line ("Rsi'Size" & Integer'Image (Rsi'Size));
-   Change (Rsi.S'Address, Rsi.I);
+   Change (Rsi);
 end Record_access;

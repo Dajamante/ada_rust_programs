@@ -23,6 +23,9 @@ pub struct AdaRecord {
 pub extern "C" fn change(ada_record: AdaRecord) {
     let data = ada_record.data.data as *mut u8;
     let integer = ada_record.integer;
+    println!("Integer: {}", integer);
+    println!("Data: {:?}", data);
+
     let size = mem::size_of::<AdaRecord>();
     let align = mem::align_of::<AdaRecord>();
 
