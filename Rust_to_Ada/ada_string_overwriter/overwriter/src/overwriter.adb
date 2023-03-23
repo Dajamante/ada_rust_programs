@@ -1,7 +1,7 @@
 package body Overwriter is
 
-    function Replace return String is
-        Hello : String (1 .. 5) := "hello";
+    function Replace return access String is
+        Hello : access String := new String'("hello");
     begin
         return Hello;
     end Replace;
