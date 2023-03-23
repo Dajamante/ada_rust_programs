@@ -1,5 +1,7 @@
+pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Unchecked_Conversion;
+with System;      use System;
 package body Overwriter is
 
     function Replace return access String is
@@ -13,15 +15,10 @@ package body Overwriter is
         -- access va retourner les deux bornes avant!
         Hello : access String := new String'("hello");
 
-        -- Convert the access value to an integer using unchecked conversion.
-      function As_Integer is new Ada.Unchecked_Conversion (access String => Integer);
-      I : Integer := As_Integer (Hello);
-
-     
-   begin
-      -- Package unchecked conversion
-      Put_Line ("Address of Hello: " & Integer'Image (System'To_Address (Hello)));
-      return Hello;
-   end Replace;
+    begin
+        -- Package unchecked conversion
+        Put_Line ("Address of Hello: " & Hello'Img);
+        return Hello;
+    end Replace;
 
 end Overwriter;

@@ -4,7 +4,7 @@ use std::{
     process::{Command, Stdio},
 };
 fn main() {
-    let project = gpr::Project::load(Path::new("overwriter/overwriter.gpr")).unwrap();
+    let project = gpr::Project::load(Path::new("overwriter/ada_overwriter.gpr")).unwrap();
 
     let output = Command::new("gprbuild")
         .args(project.gprbuild_args().unwrap())
