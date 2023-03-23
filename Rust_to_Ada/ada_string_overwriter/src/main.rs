@@ -1,3 +1,5 @@
+// use std::slice;
+
 extern "C" {
     // Segmentation fault (core dumped) if I am tryig to return
     // i32, usize, anything except a byte array
@@ -8,11 +10,22 @@ extern "C" {
 }
 fn main() {
     unsafe {
-        let s = replace();
-
-        println!(
-            "Hello, {:?}",
-            s //.map(|c| c as char).into_iter().collect::<String>()
-        );
+        let superlongsymbol = replace();
+        println!("Hello, {:?}", superlongsymbol);
+        // let superlongsymbol2 = slice::from_raw_parts(superlongsymbol, 5);
+        // Not the nicest error handling
+        // sometimes gives core dump?
+        // gdb target/debug/overwrite...
+        //  break *0x55921e0b2ad8
+        // Cannot insert breakpoint 1.
+        // Cannot access memory at address 0x55921e0b2ad8
+        // println!(
+        //     "Array bytes, {:?}",
+        //     superlongsymbol2
+        //         .iter()
+        //         .map(|c| *c as char)
+        //         .into_iter()
+        //         .collect::<String>()
+        // );
     }
 }
