@@ -1,3 +1,4 @@
+-- Pointer to a known type is not an issue.
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Main is

@@ -1,3 +1,5 @@
+-- This is the same than fat pointer record.
+-- Do not work on this.
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Main with

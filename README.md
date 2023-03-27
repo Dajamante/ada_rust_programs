@@ -21,6 +21,29 @@ gnatbind record_access
 gnatlink record_access -pthread -l:libchange.a -g //pthread prevents a bunch of errors
 ```
 
+To use ![gnatprove](gnatprove.png):
+Terminal > Run Task > Prove
+
+This seems to be "working":
+```
+$ export PATH="/workspaces/ada_rust_programs/gnatprove-x86_64-linux-12.1.0-1/bin/:$PATH"
+$ gnatprove -P  panicking.gpr 
+```
+
+It is mostly useless but can show errors:
+
+In `Rust_to_Ada/ada_adder/adder`:
+```
+$ gnatprove -P  adder.gpr 
+Phase 1 of 2: generation of Global contracts ...
+Phase 2 of 2: flow analysis and proof ...
+
+adder.ads:10:55: medium: pointer dereference check might fail
+   10 |     Annotate => (GNATprove, Terminating), Post => (X.all'Old = X.all + 1),
+      |                                                    ~~^~~
+warning: no bodies have been analyzed by GNATprove
+enable analysis of a non-generic body using SPARK_Mode
+```
 #### Usual troubleshooting
 
 `error: failed to run custom build command for openssl-sys v0.9.82`

@@ -1,5 +1,8 @@
 --pragma Ada_2022;
-
+-- We are passing it a Record with a pointer,
+-- it is essential they have the same size and alignment
+-- and this we can test with the Ada flag -gnatRj and print
+-- size and alignment on the Rust side.
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Record_access is

@@ -13,6 +13,8 @@ extern "C" {
 //     }};
 // }
 
+// This is a voluntary memory leak, returning a raw pointer instead of
+// Box operation.
 macro_rules! increment {
     ($x:expr) => {{
         unsafe {

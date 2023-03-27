@@ -1,4 +1,3 @@
-use gpr::Project;
 use std::{
     path::Path,
     process::{Command, Stdio},

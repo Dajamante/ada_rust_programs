@@ -2,13 +2,13 @@ use std::slice;
 #[repr(C)]
 pub struct AdaBounds {
     // make sure the platform match
-    //  wrong to use i32
-    // check to make sure
+    // It is NOT wrong to use i32
+    // Remember that usize makes an error!!
     first: i32,
     last: i32,
 }
 // whats the view
-// document exactly what they represent
+// We need to document exactly what they represent
 // repr transparent trivia
 #[repr(C)]
 pub struct AdaString {

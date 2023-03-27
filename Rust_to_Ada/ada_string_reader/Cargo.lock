@@ -74,7 +74,8 @@ dependencies = [
 [[package]]
 name = "gpr"
 version = "0.1.2"
-source = "git+https://github.com/jklmnn/gpr-rust?branch=alire#d4463b317835ad9b5e4cd28039e0d93e2b129ea1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0d64f5f5531ec01fda9e579cbf6799d6563a32b91f80b428abf399cb2ce97451"
 dependencies = [
  "enum-display-derive",
  "git2",

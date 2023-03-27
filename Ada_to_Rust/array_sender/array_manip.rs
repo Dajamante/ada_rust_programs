@@ -1,6 +1,10 @@
 #[derive(Copy, Clone)]
 #[repr(C)]
-// Oups, totally unsafe
+// This also shows an unsafe operation.
+// Even though the iterator is authorized to iterate
+// On all the length, it is just possible to "lie" to
+// the compiler. The correct length is of course 4
+
 pub struct MyData([i32; 5]);
 // pub struct MyData([i32; 4]);
 
