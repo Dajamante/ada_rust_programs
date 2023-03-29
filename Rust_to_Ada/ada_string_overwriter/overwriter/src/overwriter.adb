@@ -17,7 +17,7 @@ package body Overwriter is
 
     begin
         -- Package unchecked conversion
-        Put_Line ("Address of Hello: " & Hello'Img);
+        Put_Line ("Address of Hello in SPARK: " & Hello'Img);
         return Hello;
     end Replace;
 

@@ -12,27 +12,28 @@ extern "C" {
 fn main() {
     unsafe {
         let superlongsymbol = replace();
-        println!("Hello, {:?}", superlongsymbol);
-        let superlongsymbol2 = slice::from_raw_parts(superlongsymbol, 5);
+        println!("Hello, {:p}", superlongsymbol);
+        //println!("Hello pointer, {:p}", superlongsymbol);
+        //let superlongsymbol2 = slice::from_raw_parts(superlongsymbol, 5);
         // Not the nicest error handling
         // sometimes gives core dump?
         // gdb target/debug/overwrite...
         //  break *0x55921e0b2ad8
         // Cannot insert breakpoint 1.
         // Cannot access memory at address 0x55921e0b2ad8
-        println!(
-            "Array bytes, {:?}",
-            superlongsymbol2
-                .iter()
-                .map(|c| *c as char)
-                .into_iter()
-                .collect::<String>()
-        );
+        // println!(
+        //     "Array bytes, {:?}",
+        //     superlongsymbol2
+        //         .iter()
+        //         .map(|c| *c as char)
+        //         .into_iter()
+        //         .collect::<String>()
+        // );
 
         // Deallocate the memory
-        dealloc(
-            superlongsymbol as *mut _,
-            Layout::from_size_align_unchecked(5, std::mem::align_of::<u8>()),
-        );
+        // dealloc(
+        //     superlongsymbol as *mut _,
+        //     Layout::from_size_align_unchecked(5, std::mem::align_of::<u8>()),
+        // );
     }
 }
