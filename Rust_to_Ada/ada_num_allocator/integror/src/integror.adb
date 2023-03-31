@@ -1,3 +1,5 @@
+pragma Ada_2022;
+
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO; use Ada.Text_IO;
 package body Integror is
@@ -5,7 +7,7 @@ package body Integror is
     function Allocate_Integer return Integer_Access is
         Ptr : Integer_Access := new Integer'(42);
     begin
-        --Put_Line ("Our address : " & Integer_Access'Image (Ptr));
+        Put_Line ("Our address : " & Integer_Access'Image (Ptr));
         return Ptr;
     end Allocate_Integer;
 
