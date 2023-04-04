@@ -3,11 +3,16 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 
 package body Overwriter is
-
-    Hello : String_access := new String'("Hello");
+    -- already constructed at compile time
+    -- it was never alloc:ed!
+    -- Is there a difference to assign a value in a declare zone or after begin
+    -- declaring here ends the string in constant area
+    -- Hello : String_access := new String'("Hello");
+    Hello : String_access;
 
     function Allocate_Str return String_access is
     begin
+        Hello := new String'("hello");
         Put_Line ("Address of Hello in SPARK: " & Hello'Img);
         return Hello;
     end Allocate_Str;
@@ -16,12 +21,10 @@ package body Overwriter is
         procedure internal_free is new Ada.Unchecked_Deallocation
            (Object => String, Name => String_access);
     begin
+        -- Put_Line ("Image for pointer " & S'Img);
+        -- it is happening vvvv
+        -- Put_Line ("Returned string SPARK: " & S.all);
         internal_free (S);
     end Free_str;
 
 end Overwriter;
-
--- Use pointers internally, nothing visible outside
--- https://people.cs.kuleuven.be/~dirk.craeynest/ada-belgium/events/16/160130-fosdem/09-ada-memory.pdf
--- must be not null!
--- https://learn.adacore.com/courses/Ada_For_The_Embedded_C_Developer/chapters/02_Perspective.html

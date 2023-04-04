@@ -1,4 +1,5 @@
 package Overwriter is
+   --type Constrained_string is new String (1 .. 5);
    type String_access is access all String;
    function Allocate_str return String_access with
      Export, External_Name => "allocate_str";
