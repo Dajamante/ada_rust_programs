@@ -7,12 +7,14 @@ extern "C" {
     // *mut u8 seem to return an address 0x5582489ecad8
     // Is it a heap or a stack address?
     // do rust and ada share this stack? What parts of memory do they share??
-    fn replace() -> *mut u8;
+    fn allocate_str() -> *mut u8;
+    fn free_str(ptr: *mut u8);
 }
 fn main() {
     unsafe {
-        let superlongsymbol = replace();
+        let superlongsymbol = allocate_str();
         println!("Hello, {:p}", superlongsymbol);
+        free_str(superlongsymbol);
         //println!("Hello pointer, {:p}", superlongsymbol);
         //let superlongsymbol2 = slice::from_raw_parts(superlongsymbol, 5);
         // Not the nicest error handling

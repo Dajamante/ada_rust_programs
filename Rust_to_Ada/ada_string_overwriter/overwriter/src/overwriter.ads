@@ -1,4 +1,7 @@
 package Overwriter is
-    function Replace return access String with
-       Export, External_Name => "replace";
+   type String_access is access all String;
+   function Allocate_str return String_access with
+     Export, External_Name => "allocate_str";
+   procedure Free_str (S : in out String_access) with
+     Export, External_Name => "free_str";
 end Overwriter;
