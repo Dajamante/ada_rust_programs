@@ -25,6 +25,9 @@ fn main() {
     let ada_string_ptr = unsafe { allocate_str() };
     let ptr = ada_string_ptr.ptr;
     println!("Hello pointer1, {:p}", ptr);
+    let ada_string_ptr = unsafe { allocate_str() };
+    let ptr = ada_string_ptr.ptr;
+    println!("Hello pointer2, {:p}", ptr);
     let array_slice: &mut [u8] = unsafe { slice::from_raw_parts_mut(ptr, 5) };
 
     println!(
