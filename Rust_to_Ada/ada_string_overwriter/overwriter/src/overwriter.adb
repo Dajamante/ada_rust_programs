@@ -44,7 +44,7 @@ package body Overwriter is
     begin
         -- Put_Line ("Image for pointer " & S'Img);
         -- it is happening vvvv
-        -- Put_Line ("Returned string SPARK: " & S.all);
+        Put_Line ("Returned string SPARK: " & S.all);
         internal_free (S);
     end Free_str;
 
