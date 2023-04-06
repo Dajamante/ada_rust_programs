@@ -25,7 +25,7 @@ impl RustFFIString {
 // tuples do!
 extern "C" fn get_rust_str() -> RustFFIString {
     // s kept the lifetime tracking information
-    let s = String::from("Hello");
+    let s = String::from("hello");
     let raw_str = RustFFIString::from_string(s);
     raw_str
 }
