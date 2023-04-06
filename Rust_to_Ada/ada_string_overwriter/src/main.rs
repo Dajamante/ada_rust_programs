@@ -30,6 +30,7 @@ impl AdaString {
 
     fn as_mut(&mut self) -> &mut [c_char] {
         // compiler gives wrong diagnostic here, we should keep c_char
+
         unsafe { slice::from_raw_parts_mut(self.ptr.data as *mut c_char, self.len()) }
     }
 
