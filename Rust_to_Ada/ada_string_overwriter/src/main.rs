@@ -1,14 +1,49 @@
+use std::ops::{Deref, DerefMut};
+use std::os::raw::c_char;
 use std::slice;
-
 #[derive(Debug)]
+#[repr(C)]
+// using i8 causes layout problems
+struct AdaBounds {
+    first: i32,
+    last: i32,
+}
+// move occurs because `*self` has type `AdaStringPtr`, which does not implement the `Copy` trait
+// ^^^^ `Copy` not allowed on types with destructors
+#[derive(Copy, Clone, Debug)]
+#[repr(C)]
 struct AdaStringPtr {
-    ptr: *mut u8,
+    data: *mut u8,
+    bounds: *const AdaBounds,
 }
 
-// OWNERSHIP BASED MODELLING
-// ADDING another class adds actually a very useful trait, the possibility to call ownership and let rust manage memory for you RRELY ON OWNERSHIP
+// this stays in the rust world and will not adventure over the boundary
+struct AdaString {
+    ptr: AdaStringPtr,
+}
 
-impl Drop for AdaStringPtr {
+impl AdaString {
+    fn new() -> Self {
+        let ptr = unsafe { allocate_str() };
+        Self { ptr }
+    }
+
+    fn as_mut(&mut self) -> &mut [c_char] {
+        // compiler gives wrong diagnostic here, we should keep c_char
+        unsafe { slice::from_raw_parts_mut(self.ptr.data as *mut c_char, self.len()) }
+    }
+
+    fn as_ref(&self) -> &[c_char] {
+        unsafe { slice::from_raw_parts(self.ptr.data as *mut c_char, self.len()) }
+    }
+
+    // self will consume!
+    fn len(&self) -> usize {
+        5
+    }
+}
+
+impl Drop for AdaString {
     fn drop(&mut self) {
         unsafe {
             free_str(self.ptr);
@@ -16,63 +51,33 @@ impl Drop for AdaStringPtr {
     }
 }
 
+impl Deref for AdaString {
+    type Target = [c_char];
+
+    fn deref(&self) -> &Self::Target {
+        self.as_ref()
+    }
+}
+
+impl DerefMut for AdaString {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.as_mut()
+    }
+}
 extern "C" {
     // check whether u8 is correct or c_char is more appropriate
     fn allocate_str() -> AdaStringPtr;
-    fn free_str(ptr: *mut u8);
+    fn free_str(ptr: AdaStringPtr);
 }
 fn main() {
-    let ada_string_ptr = unsafe { allocate_str() };
-    let ptr = ada_string_ptr.ptr;
-    println!("Hello pointer1, {:p}", ptr);
-    let array_slice: &mut [u8] = unsafe { slice::from_raw_parts_mut(ptr, 5) };
+    let mut ada_str = AdaString::new();
+    // let slice = ada_str.as_mut();
 
-    println!(
-        "Array bytes, {:?}",
-        array_slice
-            .iter()
-            .map(|c| *c as char)
-            .into_iter()
-            .collect::<String>()
-    );
+    // */ [] / . allowed to dereference
+    // unsafety is isolated and we can rely on good rust behaviour
+    ada_str[0] = b'W' as c_char;
 
-    let world = b"World";
-    array_slice[..5].copy_from_slice(world);
-    println!(
-        "Printing after replacing in Rust, {:?}",
-        array_slice
-            .iter()
-            .map(|c| *c as char)
-            .into_iter()
-            .collect::<String>()
-    );
-    // is that forcing Rust to forget about the array and let spark handle it?
-    // std::mem::forget(array_slice);
-    drop(ada_string_ptr);
-    // the slice becomes illegal
-    // println!("{:?}", ada_string_ptr);
+    drop(ada_str);
 
-    // if i leave this it is segfault
-
-    // println!(
-    //     "Array bytes, {:?}",
-    //     array_slice
-    //         .iter()
-    //         .map(|c| *c as char)
-    //         .into_iter()
-    //         .collect::<String>()
-    // );
+    println!("The pointer was just dropped in Rust.");
 }
-
-/*
-Address of Hello in SPARK: (access 4ce9a18)
-Hello pointer1, 0x4ce9a18
-Array bytes, "hello"
-Printing after replacing in Rust, "World"
-0x4ce9a18
-==60505== Invalid read of size 1
-==60505==    at 0x11397D: ada_string_overwriter::main::{{closure}} (main.rs:44)
-==60505==    by 0x1116B5: core::iter::adapters::map::map_fold::{{closure}} (map.rs:84)
-==60505==    by 0x110B08: core::iter::traits::iterator::Iterator::fold (iterator.rs:2438)
-==60505==    by 0x111124: <core::iter::adapters::map::Map<I,F> as core::iter::traits::iterator::Iterator>::fold (map.rs:124)
- */
