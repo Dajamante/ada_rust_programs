@@ -22,7 +22,7 @@ impl RustFFIString {
 }
 impl Drop for RustFFIString {
     fn drop(&mut self) {
-        println!("The string was dropped.")
+        println!("The string was dropped.");
     }
 }
 #[no_mangle]
@@ -38,6 +38,6 @@ extern "C" fn get_rust_str() -> RustFFIString {
 }
 // We absolutely need the no mangle!
 #[no_mangle]
-extern "C" fn drop_rust_str(s: RustFFIString) {
+extern "C" fn drop_rust_str(s: *mut RustFFIString) {
     drop(s);
 }
