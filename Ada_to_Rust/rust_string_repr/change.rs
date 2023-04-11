@@ -1,6 +1,8 @@
+use std::os::raw::c_char;
+
 #[repr(C)]
 struct RustFFIString {
-    ptr: *const u8,
+    ptr: *mut c_char,
     len: usize,
     cap: usize,
 }
@@ -8,7 +10,7 @@ struct RustFFIString {
 impl RustFFIString {
     fn from_string(s: String) -> Self {
         let raw_str = RustFFIString {
-            ptr: s.as_ptr(),
+            ptr: s.as_ptr() as *mut c_char,
             len: s.len(),
             cap: s.capacity(),
         };
@@ -16,6 +18,11 @@ impl RustFFIString {
 
         std::mem::forget(s);
         raw_str
+    }
+}
+impl Drop for RustFFIString {
+    fn drop(&mut self) {
+        println!("The string was dropped.")
     }
 }
 #[no_mangle]
@@ -28,4 +35,9 @@ extern "C" fn get_rust_str() -> RustFFIString {
     let s = String::from("hello");
     let raw_str = RustFFIString::from_string(s);
     raw_str
+}
+// We absolutely need the no mangle!
+#[no_mangle]
+extern "C" fn drop_rust_str(s: RustFFIString) {
+    drop(s);
 }
