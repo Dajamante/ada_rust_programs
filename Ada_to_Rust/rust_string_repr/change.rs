@@ -1,16 +1,11 @@
 use std::os::raw::c_char;
 use std::ptr::drop_in_place;
-#[derive(Copy, Clone, Debug)]
+#[derive(Debug)]
 #[repr(C)]
 struct RustFFIString {
     ptr: *mut c_char,
     len: usize,
     cap: usize,
-}
-#[derive(Debug)]
-#[repr(C)]
-struct RustFFIStringPtr {
-    ptr: RustFFIString,
 }
 
 impl RustFFIString {
@@ -26,10 +21,10 @@ impl RustFFIString {
         raw_str
     }
 }
-impl Drop for RustFFIStringPtr {
+impl Drop for RustFFIString {
     fn drop(&mut self) {
-        let s = (*self).ptr;
-        println!("Self in destructor {:?}", s);
+        let s = unsafe { String::from_raw_parts(self.ptr as *mut u8, self.len, self.cap) };
+        println!("Self in destructor {:?}", self);
         println!("The string was dropped.");
     }
 }
@@ -38,18 +33,24 @@ impl Drop for RustFFIStringPtr {
 // 2. remember ada expects *mut c_char
 // rust does NOT guarantee proper alignment
 // tuples do!
-extern "C" fn get_rust_str() -> RustFFIStringPtr {
+extern "C" fn get_rust_str() -> RustFFIString {
     // s kept the lifetime tracking information
     let s = String::from("hello");
     let raw_str = RustFFIString::from_string(s);
     println!("{:?}", raw_str);
-    let ptr = RustFFIStringPtr { ptr: raw_str };
-    ptr
+    raw_str
 }
 // We absolutely need the no mangle!
 #[no_mangle]
-extern "C" fn drop_rust_str(s: *mut RustFFIStringPtr) {
-    println!("S in Rust drop_rust_str function: {:?}", s);
+extern "C" fn drop_rust_str(s: *mut RustFFIString) {
+    let returned_ptr = unsafe { (*s).ptr };
+    let returned_cap = unsafe { (*s).cap };
+    let returned_len = unsafe { (*s).len };
+
+    println!(
+        "S in Rust drop_rust_str function: ptr: {:?} cap: {:?}, len: {:?}",
+        returned_ptr, returned_cap, returned_len
+    );
     // correct address arrives here
     unsafe { drop_in_place(s) };
 }

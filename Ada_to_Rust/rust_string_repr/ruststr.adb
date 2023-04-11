@@ -17,7 +17,7 @@ procedure Ruststr is
   function Get_Rust_str return Rust_String with
    Import, External_Name => "get_rust_str";
 
-  procedure Drop_Rust_str (S : System.Address) with
+  procedure Drop_Rust_str (S : Rust_String) with
    Import, External_Name => "drop_rust_str";
 
   S : Rust_String := Get_Rust_str;
@@ -36,6 +36,6 @@ begin
   end loop;
   New_Line;
 
-  Drop_Rust_str (S.ptr);
+  Drop_Rust_str (S);
 
 end Ruststr;
