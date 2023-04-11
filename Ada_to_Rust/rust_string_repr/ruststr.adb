@@ -16,7 +16,7 @@ procedure Ruststr is
   function Get_Rust_str return Rust_String with
    Import, External_Name => "get_rust_str";
 
-  procedure Drop_Rust_str (S : Rust_String) with
+  procedure Drop_Rust_str (S : System.Address) with
    Import, External_Name => "drop_rust_str";
 
   S : Rust_String := Get_Rust_str;
@@ -26,17 +26,15 @@ procedure Ruststr is
 
 begin
 
-  --Put_Line ("0x:" & System.Address_Image (S.ptr));
-  Put_Line ("S'Img:" & S'Img);
-  Put_Line ("S.len'Img:" & S.len'Img);
-  Put_Line ("S.cap'Img:" & S.cap'Img);
+  Put_Line ("(SPARK) 0x:" & System.Address_Image (S.ptr));
+  Put_Line ("(SPARK) S.len'Img:" & S.len'Img);
+  Put_Line ("(SPARK) S.cap'Img:" & S.cap'Img);
 
-  --Put_Line ("F:" & F'Img);
   for I in 1 .. 5 loop
     Put (F (I)'Img);
   end loop;
   New_Line;
 
-  Drop_Rust_str (S);
+  Drop_Rust_str (S.ptr);
 
 end Ruststr;
