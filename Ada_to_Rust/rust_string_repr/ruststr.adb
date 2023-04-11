@@ -12,6 +12,7 @@ procedure Ruststr is
     cap : Interfaces.Unsigned_64;
 
   end record;
+  pragma Convention (Ada_Pass_By_Reference, Rust_String);
 
   function Get_Rust_str return Rust_String with
    Import, External_Name => "get_rust_str";
