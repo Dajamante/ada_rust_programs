@@ -1,0 +1,9 @@
+name = "printer"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Your Name"]
+maintainers = ["Your Name <example@example.com>"]
+maintainers-logins = ["github-username"]
+[[depends-on]]
+bbqueue = "~0.3.1"
