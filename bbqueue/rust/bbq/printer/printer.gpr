@@ -1,31 +1,14 @@
--- first alr build
--- then gprbuild
-with "config/printer_config.gpr";
-project Printer is
 
-   for Library_Name use "Printer";
-   for Library_Version use Project'Library_Name & ".so." & Printer_Config.Crate_Version;
-
-   for Source_Dirs use ("src/", "config/");
-   for Object_Dir use "obj/" & Printer_Config.Build_Profile;
+project Printer
+is
+   for Library_Auto_Init use "True";
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
    for Create_Missing_Dirs use "True";
+   for Library_Name use "printer";
+   for Library_Kind use "dynamic";
+   for Library_Standalone use "encapsulated";
+   for Library_Interface use ("printer");
    for Library_Dir use "lib";
-
-   type Library_Type_Type is ("relocatable", "static", "static-pic");
-   Library_Type : Library_Type_Type :=
-     external ("PRINTER_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
-   for Library_Kind use Library_Type;
-
-   package Compiler is
-      for Default_Switches ("Ada") use Printer_Config.Ada_Compiler_Switches;
-   end Compiler;
-
-   package Binder is
-      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
-   end Binder;
-
-   package Install is
-      for Artifacts (".") use ("share");
-   end Install;
 
 end Printer;

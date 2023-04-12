@@ -4,7 +4,7 @@ extern "C" {
 }
 fn main() {
     println!("Hello, world!");
-    // unsafe {
-    //     fill();
-    // }
+    unsafe {
+        fill();
+    }
 }

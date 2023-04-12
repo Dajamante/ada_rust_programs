@@ -19,6 +19,7 @@ fn main() {
         "cargo:rustc-link-search={}",
         project.library_dir().unwrap().to_str().unwrap()
     );
+
     println!(
         "cargo:rustc-link-lib={}={}",
         project.library_kind().unwrap(),
@@ -28,4 +29,8 @@ fn main() {
     for dir in project.source_dirs().unwrap() {
         println!("cargo:rerun-if-changed={}", dir.as_str());
     }
+
+    // println!("cargo:rustc-link-search=native=/home/vscode/.config/alire/cache/dependencies/gnat_native_12.2.1_11f3b811/lib/gcc/x86_64-pc-linux-gnu/12.2.0/adalib");
+    // println!("cargo:rustc-link-lib=gnat");
+    // println!("cargo:rustc-link-lib=gnarl");
 }
