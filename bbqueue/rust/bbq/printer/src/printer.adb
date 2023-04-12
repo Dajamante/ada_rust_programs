@@ -12,7 +12,7 @@ package body Printer is
         Arr : Storage_Array (1 .. S.Length) with
            Address => S.Addr;
     begin
-        Put_Line ("Fill");
+        Put_Line ("(SPARK) Fill");
         --Put_Line ("Fill" & S.Length'Img & " bytes.");
         --Arr := (others => Val);
     end Fill;

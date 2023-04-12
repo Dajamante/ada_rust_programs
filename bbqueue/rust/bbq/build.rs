@@ -7,6 +7,7 @@ fn main() {
 
     let output = Command::new("gprbuild")
         .args(project.gprbuild_args().unwrap())
+        .env("LIBRARY_TYPE", "relocatable")
         .stderr(Stdio::inherit())
         .output()
         .unwrap();

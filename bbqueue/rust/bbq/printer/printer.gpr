@@ -1,4 +1,6 @@
 
+with "bbqueue.gpr";
+with "config/printer_config.gpr";
 project Printer
 is
    for Library_Auto_Init use "True";
@@ -7,8 +9,6 @@ is
    for Create_Missing_Dirs use "True";
    for Library_Name use "printer";
    for Library_Kind use "dynamic";
-   for Library_Standalone use "encapsulated";
    for Library_Interface use ("printer");
    for Library_Dir use "lib";
-
 end Printer;

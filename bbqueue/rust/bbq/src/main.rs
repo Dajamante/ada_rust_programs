@@ -1,4 +1,3 @@
-#[no_mangle]
 extern "C" {
     fn fill();
 }
