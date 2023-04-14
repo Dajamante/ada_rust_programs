@@ -127,7 +127,7 @@ impl BBBuffer {
         }
     }
 }
-
+#[derive(Debug)]
 pub struct Producer<'a> {
     bbq: NonNull<BBBuffer>,
     pd: PhantomData<&'a ()>,
