@@ -3,9 +3,25 @@
 version = 3
 
 [[package]]
+name = "atomic"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b88d82667eca772c4aa12f0f1348b3ae643424c8876448f3f7bd5787032e234c"
+dependencies = [
+ "autocfg",
+]
+
+[[package]]
+name = "autocfg"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
+
+[[package]]
 name = "bbq"
 version = "0.1.0"
 dependencies = [
+ "atomic",
  "gpr",
 ]
 
