@@ -565,3 +565,59 @@ impl<'a> DerefMut for GrantR<'a> {
         self.buf
     }
 }
+
+#[cfg(feature = "thumbv6")]
+mod atomic {
+    use core::sync::atomic::{
+        AtomicBool, AtomicUsize,
+        Ordering::{self, Acquire, Release},
+    };
+    use cortex_m::interrupt::free;
+
+    #[inline(always)]
+    pub fn fetch_add(atomic: &AtomicUsize, val: usize, _order: Ordering) -> usize {
+        free(|_| {
+            let prev = atomic.load(Acquire);
+            atomic.store(prev.wrapping_add(val), Release);
+            prev
+        })
+    }
+
+    #[inline(always)]
+    pub fn fetch_sub(atomic: &AtomicUsize, val: usize, _order: Ordering) -> usize {
+        free(|_| {
+            let prev = atomic.load(Acquire);
+            atomic.store(prev.wrapping_sub(val), Release);
+            prev
+        })
+    }
+
+    #[inline(always)]
+    pub fn swap(atomic: &AtomicBool, val: bool, _order: Ordering) -> bool {
+        free(|_| {
+            let prev = atomic.load(Acquire);
+            atomic.store(val, Release);
+            prev
+        })
+    }
+}
+
+#[cfg(not(feature = "thumbv6"))]
+mod atomic {
+    use core::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+
+    #[inline(always)]
+    pub fn fetch_add(atomic: &AtomicUsize, val: usize, order: Ordering) -> usize {
+        atomic.fetch_add(val, order)
+    }
+
+    #[inline(always)]
+    pub fn fetch_sub(atomic: &AtomicUsize, val: usize, order: Ordering) -> usize {
+        atomic.fetch_sub(val, order)
+    }
+
+    #[inline(always)]
+    pub fn swap(atomic: &AtomicBool, val: bool, order: Ordering) -> bool {
+        atomic.swap(val, order)
+    }
+}
