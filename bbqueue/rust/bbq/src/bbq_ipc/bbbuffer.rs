@@ -340,11 +340,12 @@ impl<'a> Consumer<'a> {
         })
     }
 }
-#[repr(C)]
+
 #[derive(Debug, PartialEq)]
+#[repr(C)]
 pub struct GrantW<'a> {
     pub(crate) buf: &'a mut [u8],
-    bbq: NonNull<BBBuffer>,
+    pub bbq: NonNull<BBBuffer>,
     pub(crate) to_commit: usize,
 }
 

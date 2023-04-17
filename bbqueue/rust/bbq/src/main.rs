@@ -1,51 +1,58 @@
-use core::cell::UnsafeCell;
+use core::{cell::UnsafeCell, ptr::NonNull};
 mod bbq_ipc;
 use bbq_ipc::*;
+use std::os::raw::c_char;
 // in printer/: LIBRARY_TYPE=relocatable alr build
 // still in printer/: eval $(alr -q printenv --unix)
 // outside printer: LD_LIBRARY_PATH=printer/lib cargo run
 extern "C" {
     // `extern` block uses type `bbbuffer::GrantW<'_>`, which is not FFI-safe
-    fn fill(g: GrantW);
+    fn fill(g: AdaGrantW);
 }
 
-// Could be static, or heap initialized, needs to live
-// as long as both A and B exist
+#[derive(Debug)]
+#[repr(C)]
+struct InnerBuf {
+    // ptr: *mut c_char,
+    size: usize,
+}
+
+#[repr(C)]
+struct AdaGrantW {
+    bbq: NonNull<bbbuffer::BBBuffer>,
+    inner: InnerBuf,
+}
 
 fn main() {
-    //let bbq: BBBuffer = BBBuffer::new();
     let bbq: Box<BBBuffer> = Box::new(BBBuffer::new());
 
     println!("bbq {:?}\n", bbq);
-    //let data: UnsafeCell<[u8; 1024]> = UnsafeCell::new([0u8; 1024]);
-    let data: Box<UnsafeCell<[u8; 1024]>> = Box::new(UnsafeCell::new([0u8; 1024]));
+    let data: Box<UnsafeCell<[u8; 128]>> = Box::new(UnsafeCell::new([0u8; 128]));
     println!("Inner data {:?}\n", data);
-    // Ok this is gross but I guess I need it?
-    // how to get that heap allocated
-    //let buf_ptr = (&bbq as *const BBBuffer).cast_mut();
+
     let buf_ptr = Box::into_raw(bbq);
     println!("buf_ptr: {:?}\n", buf_ptr);
     let producer = unsafe {
-        // initialize ONCE
-        // Signature:
-        //fn initialize(&'a self, buf_start: *mut u8, buf_len: usize)
-        //bbq.initialize(data.get().cast::<u8>(), 1024);
-        (*buf_ptr).initialize(data.as_ref().get().cast::<u8>(), 1024);
+        (*buf_ptr).initialize(data.as_ref().get().cast::<u8>(), 128);
         BBBuffer::take_producer(buf_ptr)
     };
 
     let grant = producer.grant_exact(4).unwrap();
     println!("{:?} \n", producer);
     println!("{:?} \n", grant);
-    // we probably need to do the commit!
-    // grant is moved into commit
-    //  This consumes the grant.
-    // let grant = grant.commit(1);
+
+    println!("Grant buf {:?} \n", grant.buf);
+    let inner = InnerBuf {
+        //ptr: grant.buf.as_ptr() as *mut c_char,
+        size: grant.buf.len(),
+    };
+    println!("Inner buf {:?} \n", inner);
+
+    let ada_grantw = AdaGrantW {
+        bbq: grant.bbq,
+        inner: inner,
+    };
     unsafe {
-        fill(grant);
+        fill(ada_grantw);
     }
-    // we probably need to forget the grant here?
-    // std::mem::forget(grant);
-    // even looping to prevent the holder to go out of scope produce the same error
-    // loop {}
 }

@@ -1,10 +1,11 @@
 pragma Ada_2022;
 with Ada.Text_IO; use Ada.Text_IO;
-
-with System.Storage_Elements; use System.Storage_Elements;
+with System.Address_Image;
+with System.Storage_Elements;
+use System.Storage_Elements;
 with BBqueue;
 with BBqueue.Buffers;
-with System;                  use System;
+with System; use System;
 
 package body Printer is
 
@@ -24,7 +25,11 @@ package body Printer is
     --    Address => S.Addr;
     begin
         Put_Line ("(SPARK) Fill");
-        Put_Line ("RWG'Img" & RWG'Img);
+        Put_Line
+           ("RWG'Img: 0x" &
+            System.Address_Image (RWG.bbq));
+        -- This seems to be the size!
+        Put_Line ("RWG'buffer: " & RWG.buf'Img);
         --Put_Line ("Fill" & S.Length'Img & " bytes.");
         --Arr := (others => Val);
     end Fill;
