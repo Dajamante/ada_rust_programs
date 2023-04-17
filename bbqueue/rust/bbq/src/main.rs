@@ -13,8 +13,8 @@ extern "C" {
 #[derive(Debug)]
 #[repr(C)]
 struct InnerBuf {
-    // ptr: *mut c_char,
-    size: usize,
+    ptr: *mut c_char,
+    //size: usize,
 }
 
 #[repr(C)]
@@ -43,8 +43,8 @@ fn main() {
 
     println!("Grant buf {:?} \n", grant.buf);
     let inner = InnerBuf {
-        //ptr: grant.buf.as_ptr() as *mut c_char,
-        size: grant.buf.len(),
+        ptr: grant.buf.as_ptr() as *mut c_char,
+        //size: grant.buf.len(),
     };
     println!("Inner buf {:?} \n", inner);
 

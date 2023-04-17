@@ -12,14 +12,13 @@ package Printer is
     --}
     -- assumed to be aligned, not null, and pointing to memory containing a valid value of T - for example
     type RustMutU8 is record
-        len : Interfaces.Unsigned_64;
-        -- ptr : System.Address;
+        ptr : System.Address;
+        --len : Interfaces.Unsigned_64;
     end record;
 
     type RustWriteGrant is record
-        bbq : System.Address;
-        buf : RustMutU8;
-        --to_commit : Interfaces.Unsigned_64;
+        bbq       : System.Address;
+        inner_buf : RustMutU8;
     end record;
 
     procedure Fill (RWG : RustWriteGrant) with
