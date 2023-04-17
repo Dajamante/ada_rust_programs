@@ -340,7 +340,7 @@ impl<'a> Consumer<'a> {
         })
     }
 }
-
+#[repr(C)]
 #[derive(Debug, PartialEq)]
 pub struct GrantW<'a> {
     pub(crate) buf: &'a mut [u8],
