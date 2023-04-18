@@ -246,6 +246,7 @@ impl<'a> Producer<'a> {
 }
 
 /// `Consumer` is the primary interface for reading data from a `BBBuffer`.
+#[derive(Debug)]
 pub struct Consumer<'a> {
     bbq: NonNull<BBBuffer>,
     pd: PhantomData<&'a ()>,
@@ -354,7 +355,7 @@ unsafe impl<'a> Send for GrantW<'a> {}
 #[derive(Debug, PartialEq)]
 pub struct GrantR<'a> {
     pub(crate) buf: &'a mut [u8],
-    bbq: NonNull<BBBuffer>,
+    pub bbq: NonNull<BBBuffer>,
     pub(crate) to_release: usize,
 }
 

@@ -7,7 +7,7 @@ use std::os::raw::c_char;
 // outside printer: LD_LIBRARY_PATH=printer/lib cargo run
 extern "C" {
     // `extern` block uses type `bbbuffer::GrantW<'_>`, which is not FFI-safe
-    fn fill(g: RustGrantW);
+    fn fill(g: RustGrantR);
 }
 
 #[derive(Debug)]
@@ -22,6 +22,12 @@ struct RustGrantW {
     inner: InnerBuf,
     bbq: NonNull<bbbuffer::BBBuffer>, // Pointer to the original queue
     to_commit: usize,
+}
+#[repr(C)]
+struct RustGrantR {
+    inner: *mut u8,
+    bbq: *mut BBBuffer, // Pointer to the original queue
+                        //to_release: usize,
 }
 
 fn main() {
@@ -38,23 +44,27 @@ fn main() {
         BBBuffer::take_producer(buf_ptr)
     };
 
-    let grant = producer.grant_exact(4).unwrap();
-    println!("{:?} \n", grant);
+    let mut w_grant = producer.grant_exact(4).unwrap();
+    w_grant[0] = 42;
+    w_grant.commit(4);
+    let consumer = unsafe { BBBuffer::take_consumer(buf_ptr) };
+    let r_grant = consumer.read().unwrap();
+    // let inner = InnerBuf {
+    //     ptr: grant.buf.as_ptr() as *mut c_char,
+    //     size: grant.buf.len(),
+    // };
+    println!(
+        "r_grant.buf.as_mut_ptr(): {:?}\n",
+        r_grant.buf.as_ptr() as *mut u8
+    );
 
-    println!("Grant buf {:?} \n", grant.buf);
-    let inner = InnerBuf {
-        ptr: grant.buf.as_ptr() as *mut c_char,
-        size: grant.buf.len(),
-    };
-    println!("Inner buf {:?} \n", inner);
-    println!("grant.bbq {:?} \n", grant.bbq);
-
-    let ada_grantw = RustGrantW {
-        inner: inner,
-        bbq: grant.bbq,
-        to_commit: grant.to_commit,
+    println!("last {:?}", buf_ptr);
+    let ada_grantr = RustGrantR {
+        inner: r_grant.buf.as_ptr() as *mut u8,
+        bbq: buf_ptr,
+        //to_release: r_grant.to_release,
     };
     unsafe {
-        fill(ada_grantw);
+        fill(ada_grantr);
     }
 }

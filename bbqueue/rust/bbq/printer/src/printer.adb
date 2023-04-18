@@ -7,12 +7,27 @@ with System;      use System;
 
 package body Printer is
 
-    procedure Fill (RWG : RustWriteGrant) is
+    procedure Fill (RRG : RustReadGrant) is
 
     begin
         Put_Line ("(SPARK) Fill");
-        Put_Line ("RWG'Address: (dec)" & RWG'Address'Image);
-        Put_Line ("RWG'Img" & RWG'Img);
+        Put_Line ("RWG'Image:" & RRG'Image);
+        Put_Line
+           ("System.Address_Image(RRG):" &
+            System.Address_Image (RRG'Address));
+        Put_Line
+           ("RWG'Image innerbuf:" &
+            RRG.inner_buf'Image);
+        Put_Line
+           ("System.Address_Image (RRG.inner_buf'Address)" &
+            System.Address_Image
+               (RRG.inner_buf'Address));
+        Put_Line
+           ("RWG'Image bbq:" & RRG.bbq'Image);
+        Put_Line
+           ("System.Address_Image (RRG.bbq'Address)" &
+            System.Address_Image
+               (RRG.bbq'Address));
 
     end Fill;
 end Printer;
