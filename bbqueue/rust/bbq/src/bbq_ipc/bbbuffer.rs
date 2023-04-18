@@ -353,6 +353,7 @@ pub struct GrantW<'a> {
 unsafe impl<'a> Send for GrantW<'a> {}
 
 #[derive(Debug, PartialEq)]
+#[repr(C)]
 pub struct GrantR<'a> {
     pub(crate) buf: &'a mut [u8],
     pub bbq: NonNull<BBBuffer>,
