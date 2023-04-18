@@ -8,7 +8,12 @@ with System;      use System;
 package body Printer is
 
     procedure Fill (RRG : RustReadGrant) is
-
+        type Arr is
+           array
+              (Positive range <>) of Interfaces
+              .Unsigned_8;
+        F : Arr (1 .. 4) with
+           Address => RRG'Address;
     begin
         Put_Line ("(SPARK) Fill");
         Put_Line ("RWG'Image:" & RRG'Image);
@@ -28,6 +33,11 @@ package body Printer is
            ("System.Address_Image (RRG.bbq'Address)" &
             System.Address_Image
                (RRG.bbq'Address));
+
+        for I in 1 .. 2 loop
+            Put (F (I)'Img);
+        end loop;
+        New_Line;
 
     end Fill;
 end Printer;

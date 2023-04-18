@@ -46,13 +46,11 @@ fn main() {
 
     let mut w_grant = producer.grant_exact(4).unwrap();
     w_grant[0] = 42;
+    w_grant[1] = 43;
     w_grant.commit(4);
     let consumer = unsafe { BBBuffer::take_consumer(buf_ptr) };
     let r_grant = consumer.read().unwrap();
-    // let inner = InnerBuf {
-    //     ptr: grant.buf.as_ptr() as *mut c_char,
-    //     size: grant.buf.len(),
-    // };
+
     println!(
         "r_grant.buf.as_mut_ptr(): {:?}\n",
         r_grant.buf.as_ptr() as *mut u8

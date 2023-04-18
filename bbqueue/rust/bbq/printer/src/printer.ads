@@ -11,7 +11,6 @@ package Printer is
     end record;
     pragma Convention
        (Ada_Pass_By_Reference, RustReadGrant);
-
     type RustWriteGrant is record
         inner_buf : System.Address;
         buf_len   : Interfaces.Unsigned_64;
