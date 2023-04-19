@@ -1,3 +1,4 @@
+#![allow(unused_imports, dead_code)]
 use crate::bbq_ipc::{
     framed::{FrameConsumer, FrameProducer},
     Error, Result,
@@ -356,7 +357,7 @@ unsafe impl<'a> Send for GrantW<'a> {}
 #[repr(C)]
 pub struct GrantR<'a> {
     pub(crate) buf: &'a mut [u8],
-    pub bbq: NonNull<BBBuffer>,
+    bbq: NonNull<BBBuffer>,
     pub(crate) to_release: usize,
 }
 

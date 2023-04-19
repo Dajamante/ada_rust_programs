@@ -1,20 +1,18 @@
-use core::{cell::UnsafeCell, ptr::NonNull};
+use core::cell::UnsafeCell;
 mod bbq_ipc;
 use bbq_ipc::*;
-use std::os::raw::c_char;
-// in printer/: LIBRARY_TYPE=relocatable alr build
-// still in printer/: eval $(alr -q printenv --unix)
-// outside printer: LD_LIBRARY_PATH=printer/lib cargo run
+
+#[allow(dead_code)]
+
 extern "C" {
-    // `extern` block uses type `bbbuffer::GrantW<'_>`, which is not FFI-safe
-    fn fill(g: *const RustReadGrant);
+    fn read_queue(g: *const RustReadGrant);
 }
 
 #[repr(C)]
 struct RustReadGrant {
-    bbq: *mut BBBuffer, // Pointer to the original queue
+    bbq: *mut BBBuffer, // Pointer to the original queue, it is mut to respect the original design
     inner: *mut u8,
-    buf_len: u64,
+    buf_len: usize,
 }
 
 fn main() {
@@ -41,13 +39,17 @@ fn main() {
     let rust_rgrant = Box::new(RustReadGrant {
         bbq: buf_ptr,
         inner: r_grant.buf.as_ptr() as *mut u8,
-        buf_len: r_grant.buf.len() as u64,
+        buf_len: r_grant.buf.len(),
     });
 
     //println!("ada_grantr.bbq: {:p}", ada_grantr.bbq);
     //println!("ada_grantr.inner: {:p}", ada_grantr.inner);
     //println!("ada_grantr.buf_len: {}", ada_grantr.buf_len);
+    // could the error be because of pass by value?
+    let pt = Box::into_raw(rust_rgrant);
+    println!("rust_rgrant structure: {:p}", pt);
     unsafe {
-        fill(Box::into_raw(rust_rgrant));
+        read_queue(pt);
     }
+    r_grant.release(4);
 }

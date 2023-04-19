@@ -98,6 +98,7 @@
 // #![deny(missing_docs)]
 // #![deny(warnings)]
 
+#![allow(unused_imports, dead_code)]
 pub mod bbbuffer;
 pub use bbbuffer::*;
 

@@ -70,6 +70,7 @@
 //! | (2^56)..(2^64)        | 9                    |
 //!
 
+#![allow(unused_imports, dead_code)]
 use crate::bbq_ipc::{Consumer, GrantR, GrantW, Producer};
 
 use crate::bbq_ipc::Result;
