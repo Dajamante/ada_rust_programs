@@ -30,9 +30,13 @@ package body Printer is
             System.Address_Image
                (RRG.bbq'Address));
         Put_Line
+           ("System.Address_Image (RRG.bbq), the pointer to BBQ " &
+            System.Address_Image (RRG.bbq));
+        Put_Line
            ("System.Address_Image (RRG.inner_buf'Address)" &
             System.Address_Image
                (RRG.inner_buf'Address));
+
         Put_Line
            ("System.Address_Image (RRG.buf_len'Address)" &
             System.Address_Image
