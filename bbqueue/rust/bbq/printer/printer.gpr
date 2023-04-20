@@ -1,4 +1,5 @@
 
+-- LIBRARY_TYPE=relocatable alr build
 with "bbqueue.gpr";
 with "config/printer_config.gpr";
 project Printer
