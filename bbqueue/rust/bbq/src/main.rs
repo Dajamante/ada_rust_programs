@@ -5,15 +5,8 @@ use bbq_ipc::*;
 use std::mem;
 #[allow(dead_code)]
 #[no_mangle]
-pub extern "C" fn send_bbq_data(bbq: &BBBuffer) -> (usize, usize, usize, usize, bool, bool) {
-    (
-        bbq.write.load(Ordering::Relaxed),
-        bbq.read.load(Ordering::Relaxed),
-        bbq.last.load(Ordering::Relaxed),
-        bbq.reserve.load(Ordering::Relaxed),
-        bbq.read_in_progress.load(Ordering::Relaxed),
-        bbq.write_in_progress.load(Ordering::Relaxed),
-    )
+pub extern "C" fn send_bbq_data(bbq: &BBBuffer) -> *const BBBuffer {
+    bbq as *const BBBuffer
 }
 
 extern "C" {
