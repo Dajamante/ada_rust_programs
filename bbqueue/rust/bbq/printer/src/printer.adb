@@ -8,7 +8,7 @@ with System;      use System;
 package body Printer is
 
     procedure Read_queue
-       (RRG : access RustReadGrant)
+       (RRG : in out RustReadGrant)
     is
         type Arr is
            array
@@ -20,8 +20,7 @@ package body Printer is
         Put_Line ("(SPARK) Fill");
         Put_Line
            ("System.Address_Image (RRG.all'Address):" &
-            System.Address_Image
-               (RRG.all'Address));
+            System.Address_Image (RRG'Address));
         Put_Line
            ("Pointer RRG: " &
             System.Address_Image (RRG'Address));

@@ -21,7 +21,8 @@ package Printer is
        (Ada_Pass_By_Reference, RustReadGrant);
 
     procedure Read_queue
-       (RRG : access RustReadGrant) with
-       Export, External_Name => "read_queue";
+       (RRG : in out RustReadGrant) with
+       Export, External_Name => "read_queue",
+       SPARK_Mode            => On;
 
 end Printer;
