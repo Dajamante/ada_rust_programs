@@ -1,11 +1,24 @@
-use core::{cell::UnsafeCell, ptr::NonNull};
+use core::{cell::UnsafeCell, ptr::NonNull, sync::atomic::Ordering};
+
 mod bbq_ipc;
 use bbq_ipc::*;
 use std::mem;
 #[allow(dead_code)]
+#[no_mangle]
+pub extern "C" fn send_bbq_data(bbq: &BBBuffer) -> (usize, usize, usize, usize, bool, bool) {
+    (
+        bbq.write.load(Ordering::Relaxed),
+        bbq.read.load(Ordering::Relaxed),
+        bbq.last.load(Ordering::Relaxed),
+        bbq.reserve.load(Ordering::Relaxed),
+        bbq.read_in_progress.load(Ordering::Relaxed),
+        bbq.write_in_progress.load(Ordering::Relaxed),
+    )
+}
 
 extern "C" {
     fn read_queue(g: *const RustReadGrant);
+    //fn send_bbq_data(bbq: &BBBuffer) -> (usize, usize, usize, usize, bool, bool);
 }
 
 #[repr(C)]
@@ -78,6 +91,8 @@ fn main() {
         mem::size_of::<*const RustReadGrant>()
     );
     unsafe {
+        //send_bbq_data(&*buf_ptr); // reconstructing &bbq moved into Box!
+
         read_queue(pt);
     }
     r_grant.release(4);

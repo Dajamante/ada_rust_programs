@@ -20,15 +20,15 @@ use core::{
 /// A backing structure for a BBQueue. Can be used to create either
 /// a BBQueue or a split Producer/Consumer pair
 pub struct BBBuffer {
-    buf: AtomicPtr<u8>,
+    pub buf: AtomicPtr<u8>,
 
-    buf_len: AtomicUsize,
+    pub buf_len: AtomicUsize,
 
     /// Where the next byte will be written
-    write: AtomicUsize,
+    pub write: AtomicUsize,
 
     /// Where the next byte will be read from
-    read: AtomicUsize,
+    pub read: AtomicUsize,
 
     /// Used in the inverted case to mark the end of the
     /// readable streak. Otherwise will == sizeof::<self.buf>().
@@ -36,18 +36,18 @@ pub struct BBBuffer {
     /// place when entering an inverted condition, and Reader
     /// is responsible for moving it back to sizeof::<self.buf>()
     /// when exiting the inverted condition
-    last: AtomicUsize,
+    pub last: AtomicUsize,
 
     /// Used by the Writer to remember what bytes are currently
     /// allowed to be written to, but are not yet ready to be
     /// read from
-    reserve: AtomicUsize,
+    pub reserve: AtomicUsize,
 
     /// Is there an active read grant?
-    read_in_progress: AtomicBool,
+    pub read_in_progress: AtomicBool,
 
     /// Is there an active write grant?
-    write_in_progress: AtomicBool,
+    pub write_in_progress: AtomicBool,
 }
 
 unsafe impl Sync for BBBuffer {}
