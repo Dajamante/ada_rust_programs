@@ -7,6 +7,21 @@ with System;      use System;
 with Ada.Unchecked_Conversion;
 
 package body Printer is
+   --function Convert_RustBBQ_To_Offsets_Only
+   --  (Rust_BBQ : BBBuffer) return BBqueue.Offsets_Only
+   --is
+   --   Result : BBqueue.Offsets_Only (Size => 0);
+   --begin
+   --  Result.Write              := Atomic_Count.Init (Rust_BBQ.Write);
+   --   Result.Read               := Atomic_Count.Init (Rust_BBQ.Read);
+   --   Result.Last               := Atomic_Count.Init (Rust_BBQ.Last);
+   --   Result.Reserve            := Atomic_Count.Init (Rust_BBQ.Reserve);
+   --   Result.Read_In_Progress   := Atomic.Init (Rust_BBQ.Read_In_Progress);
+   --   Result.Write_In_Progress  := Atomic.Init (Rust_BBQ.Write_In_Progress);
+   --   Result.Granted_Write_Size := 0;
+   --   Result.Granted_Read_Size  := 0;
+   --   return Result;
+   --end Convert_RustBBQ_To_Offsets_Only;
 
    function Get_BBQ_Data (BBQ : System.Address) return RustBBQstruct with
      Import, Convention => C, External_Name => "send_bbq_data";
@@ -23,9 +38,11 @@ package body Printer is
         (System.Address, BBBuffer_ptr);
       BBBPtr : BBBuffer_ptr := To_BBBuffer_ptr (RRG.bbq);
 
-      Mirrored_bbq     : aliased BBqueue.Offsets_Only (128);
+      --Mirrored_bbq     : aliased BBqueue.Offsets_Only (128);
       RustOffsets_only : BBBuffer with
         Address => RRG.bbq'Address;
+        --Mirrored_bbq     : BBqueue.Offsets_Only :=
+        --  Convert_RustBBQ_To_Offsets_Only (RustOffsets_only);
    begin
 
       Put_Line ("SPARK function.");
